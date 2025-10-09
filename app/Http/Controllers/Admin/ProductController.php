@@ -15,7 +15,7 @@ class ProductController extends Controller
     {
         $listProducts = Product::all();
 
-        return view('admin.ptoducts.ListProduct', compact('listProducts'));
+        return view('admin.ptoducts.index', compact('listProducts'));
     }
 
     /**

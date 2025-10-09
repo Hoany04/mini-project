@@ -36,11 +36,9 @@ Route::prefix('admin')->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
     Route::resource('user_profiles', UserProfileController::class);
+    Route::resource('products', ProductController::class);
 });
 
-Route::get('danh-sach-san-pham', [ProductController::class, 'index']);
-
-//
 
 Route::get('login', [AuthController::class, 'showFormLogin']);
 Route::post('login', [AuthController::class, 'login'])->name('login');
@@ -49,8 +47,11 @@ Route::get('register', [AuthController::class, 'showFormRegister']);
 Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('forgot-password', [AuthController::class, 'showFormForgot']);
-Route::post('forgot-password', [AuthController::class, 'forgot-password'])->name('forgot-password');
+Route::get('forgot-password', [AuthController::class, 'showFormForgot'])->name('password.request');
+Route::post('forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+
+Route::get('/reset-password/{token}', [AuthController::class, 'showFormReset'])->name('password.reset');
+Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/home', fn() => view('admin.home'))->name('admin.home');
