@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
@@ -34,7 +35,7 @@ Route::get('/', function () {
 
 Route::prefix('admin')->group(function () {
     Route::resource('roles', RoleController::class);
-    Route::resource('users', UserController::class);
+    // Route::resource('users', UserController::class);
     Route::resource('user_profiles', UserProfileController::class);
     Route::resource('products', ProductController::class);
 });
@@ -53,8 +54,35 @@ Route::post('forgot-password', [AuthController::class, 'sendResetLink'])->name('
 Route::get('/reset-password/{token}', [AuthController::class, 'showFormReset'])->name('password.reset');
 Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
-Route::middleware(['auth'])->prefix('admin')->group(function () {
-    Route::get('/home', fn() => view('admin.home'))->name('admin.home');
+Route::middleware(['auth'])->prefix('admin')
+->as('admin.')
+->group(function () {
+    Route::get('/home', fn() => view('admin.home'))
+    ->name('home');
+
+    Route::prefix('users')
+    ->as('users.')
+    ->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::get('/create', [UserController::class, 'create'])->name('create');
+        Route::post('/store', [UserController::class, 'index'])->name('store');
+        Route::get('{id}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::put('{id}/update', [UserController::class, 'update'])->name('update');
+        Route::delete('{id}/destroy', [UserController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('categorys')
+    ->as('categorys.')
+    ->group(function () {
+        Route::get('/', [CategoryController::class, 'index'])->name('index');
+        Route::get('/create', [CategoryController::class, 'create'])->name('create');
+        Route::get('/', [CategoryController::class, 'index'])->name('index');
+        Route::get('/', [CategoryController::class, 'index'])->name('index');
+        Route::get('/', [CategoryController::class, 'index'])->name('index');
+        Route::get('/', [CategoryController::class, 'index'])->name('index');
+        Route::get('/', [CategoryController::class, 'index'])->name('index');
+    });
+
 });
 Route::middleware(['auth'])->prefix('client')->group(function () {
     Route::get('/home', fn() => view('client.home'))->name('client.home');

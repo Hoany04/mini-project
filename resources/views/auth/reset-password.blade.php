@@ -14,6 +14,17 @@
                 <input type="hidden" name="email" value="{{ $email }}">
                 
                 <div class="form-group">
+                    <div class="fxt-transformY-50 fxt-transition-delay-1">
+                        <input type="email" id="email" class="form-control @error('email') is-invalid @enderror"
+                            name="email" placeholder="Email" required="required" value="{{ $email ?? old('email') }}"
+                            autocomplete="email">
+                        @error('email')
+                            <p class="text-danger">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <div class="fxt-transformY-50 fxt-transition-delay-2">
                         <label for="">New password</label>
                         <input id="password" type="password" class="form-control" name="password" placeholder="********"

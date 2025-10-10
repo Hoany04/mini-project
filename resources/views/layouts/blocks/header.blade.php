@@ -419,7 +419,7 @@
               <li>
                 <div class="dropdown-divider"></div>
               </li>
-              {{ Auth::user()->name }}
+              {{-- {{ Auth::user()->name }} --}}
               <form action="{{ route('logout') }}" method="post">
                 @csrf
                 <button type="submit">Logout</button>

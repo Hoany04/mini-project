@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Services\UserService;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -12,10 +15,18 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+     protected $userService;
+     public function __construct(UserService $userService)
+     {
+        $this->userService = $userService;
+     }
+    public function index(Request $request)
     {
-        $users = User::with('role')->orderBy('id', 'desc')->paginate(10);
-        return view('admin.users.index', compact('users'));
+        $filters = $request->only(['search', 'role_id', 'status']);
+        $users = $this->userService->getUsersWithFilters($filters);
+        $roles = Role::all();
+        return view('admin.users.index', compact('users', 'roles'));
     }
 
     /**
@@ -23,7 +34,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::all();
+        return view('admin.users.create', compact('roles'));
     }
 
     /**
@@ -31,7 +43,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'username' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6|confirmed',
+            'role_id' => 'required|exists:roles,id',
+            'status' => 'required|string'
+        ]);
+
+        $this->userService->createUser($data);
+
+        return redirect()->route('admin.users.index')->with('success', 'Them user thanh cong');
     }
 
     /**
@@ -45,24 +67,37 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $users = $this->userService->getUserById($id);
+        $roles = Role::all();
+        return view('admin.users.edit', compact('users', 'roles'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $data = $request->validate([
+            'username' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6|confirmed',
+            'role_id' => 'required|exists:roles,id',
+            'status' => 'required|string'
+        ]);
+
+        $this->userService->updateUser($id, $data);
+
+        return redirect()->route('admin.users.index')->with('success', 'Cap nhat thong tin user thanh cong');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $this->userService->deleteUser($id);
+        return redirect()->route('admin.users.index')->with('success', 'Da xoa user');
     }
 }
