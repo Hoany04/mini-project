@@ -14,7 +14,7 @@ class UpdateUserRequest extends FormRequest
 
     public function rules(): array
     {
-        $id = $this->route('user'); // Lấy id từ route model hoặc param
+        $id = $this->route('id'); // Lấy id từ route model hoặc param
 
         return [
             'username' => 'required|string|max:255',

@@ -39,7 +39,13 @@ class UserRepository
     // Cập nhật user
     public function updateUser(User $user, array $data)
     {
-        return $user->update($data);
+        $user->username = $data['username'];
+        $user->email = $data['email'];
+        $user->role_id = $data['role_id'];
+        $user->status = $data['status'];
+        $user->save();
+
+        return $user;
     }
 
     // Xóa user

@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mt-4 col-md-6">
     <h3>Thêm người dùng mới</h3>
-    <form method="POST" action="{{ route('users.store') }}">
+    <form method="POST" action="{{ route('admin.users.store') }}">
         @csrf
         <div class="mb-3">
             <label>Tên đăng nhập</label>

@@ -41,17 +41,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $data = $request->validate([
-            'username' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|confirmed',
-            'role_id' => 'required|exists:roles,id',
-            'status' => 'required|string'
-        ]);
-
-        $this->userService->createUser($data);
+        $this->userService->createUser($request->validated());
 
         return redirect()->route('admin.users.index')->with('success', 'Them user thanh cong');
     }
@@ -69,25 +61,17 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $users = $this->userService->getUserById($id);
+        $user = $this->userService->getUserById($id);
         $roles = Role::all();
-        return view('admin.users.edit', compact('users', 'roles'));
+        return view('admin.users.edit', compact('user', 'roles'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
-        $data = $request->validate([
-            'username' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|confirmed',
-            'role_id' => 'required|exists:roles,id',
-            'status' => 'required|string'
-        ]);
-
-        $this->userService->updateUser($id, $data);
+        $this->userService->updateUser($id, $request->validated());
 
         return redirect()->route('admin.users.index')->with('success', 'Cap nhat thong tin user thanh cong');
     }

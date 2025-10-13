@@ -65,10 +65,10 @@ Route::middleware(['auth'])->prefix('admin')
     ->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('/create', [UserController::class, 'create'])->name('create');
-        Route::post('/store', [UserController::class, 'index'])->name('store');
+        Route::post('/', [UserController::class, 'store'])->name('store');
         Route::get('{id}/edit', [UserController::class, 'edit'])->name('edit');
-        Route::put('{id}/update', [UserController::class, 'update'])->name('update');
-        Route::delete('{id}/destroy', [UserController::class, 'destroy'])->name('destroy');
+        Route::put('{id}', [UserController::class, 'update'])->name('update');
+        Route::delete('{id}', [UserController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('categorys')
@@ -76,11 +76,10 @@ Route::middleware(['auth'])->prefix('admin')
     ->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('index');
         Route::get('/create', [CategoryController::class, 'create'])->name('create');
-        Route::get('/', [CategoryController::class, 'index'])->name('index');
-        Route::get('/', [CategoryController::class, 'index'])->name('index');
-        Route::get('/', [CategoryController::class, 'index'])->name('index');
-        Route::get('/', [CategoryController::class, 'index'])->name('index');
-        Route::get('/', [CategoryController::class, 'index'])->name('index');
+        Route::post('/', [CategoryController::class, 'store'])->name('store');
+        Route::get('{id}/edit', [CategoryController::class, 'edit'])->name('edit');
+        Route::put('{id}', [CategoryController::class, 'update'])->name('update');
+        Route::delete('{id}', [CategoryController::class, 'destroy'])->name('destroy');
     });
 
 });

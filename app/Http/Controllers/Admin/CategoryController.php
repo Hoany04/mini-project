@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use App\Models\Category;
 
@@ -11,11 +14,18 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $categorys = Category::all();
+    protected $categoryService;
 
-        return view('admin.categorys.index', compact('categorys'));
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+    public function index(Request $request)
+    {
+        $filters = $request->only(['search']);
+        $categories = $this->categoryService->getAllCategories($filters);
+
+        return view('admin.categorys.index', compact('categories'));
     }
 
     /**
@@ -23,17 +33,17 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categorys.create');
+        $parentCategories = $this->categoryService->getParentCategories();
+        return view('admin.categorys.create', compact('parentCategories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CategoryRequest $request)
+    public function store(StoreCategoryRequest $request)
     {
-        if ($request->isMethod('POST')) {
-            $param = $request->except('_token');
-        }
+        $this->categoryService->createCategory($request->validated());
+        return redirect()->route('admin.categorys.index')->with('success', 'Them danh muc thanh cong');
     }
 
     /**
@@ -47,24 +57,28 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $category = $this->categoryService->getCategoryById($id);
+        $parentCategories = $this->categoryService->getParentCategories();
+        return view('admin.categorys.edit', compact('parentCategories', 'category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCategoryRequest $request, $id)
     {
-        //
+        $this->categoryService->updateCategory($id, $request->validated());
+        return redirect()->route('admin.categorys.index')->with('success', 'Cap nhat danh muc thanh cong');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $this->categoryService->deleteCategory($id);
+        return redirect()->route('admin.categorys.index')->with('success', 'Xoa danh muc thanh cong');
     }
 }
