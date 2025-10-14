@@ -22,7 +22,22 @@ class Coupon extends Model
         'status'
     ];
 
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
+
     public function order(){
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class, 'coupon_id');
+    }
+
+    public function isValid()
+    {
+        if ($this->status !== 'active') return false;
+        $now = now();
+        if ($this->start_date && $now->lt($this->start_date)) return false;
+        if ($this->end_date && $now->gt($this->end_date)) return false;
+        if ($this->usage_limit && $this->used_count >= $this->usage_limit) return false;
+        return true;
     }
 }

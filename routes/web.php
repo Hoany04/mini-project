@@ -2,11 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserProfileController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
@@ -37,7 +38,7 @@ Route::prefix('admin')->group(function () {
     Route::resource('roles', RoleController::class);
     // Route::resource('users', UserController::class);
     Route::resource('user_profiles', UserProfileController::class);
-    Route::resource('products', ProductController::class);
+    // Route::resource('products', ProductController::class);
 });
 
 
@@ -82,7 +83,25 @@ Route::middleware(['auth'])->prefix('admin')
         Route::delete('{id}', [CategoryController::class, 'destroy'])->name('destroy');
     });
 
+    Route::prefix('products')
+    ->as('products.')
+    ->group(function () {
+        Route::get('/', [ProductController::class, 'index'])->name('index');
+        Route::get('/create', [ProductController::class, 'create'])->name('create');
+        Route::post('/', [ProductController::class, 'store'])->name('store');
+        Route::get('{id}/edit', [ProductController::class, 'edit'])->name('edit');
+        Route::put('{id}', [ProductController::class, 'update'])->name('update');
+        Route::delete('{id}', [ProductController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('products/{product}/images')
+    ->as('products.images.')
+    ->group(function () {
+        Route::post('/', [ProductImageController::class, 'store'])->name('store');
+        Route::delete('{id}', [ProductImageController::class, 'destroy'])->name('destroy');
+    });
 });
+
 Route::middleware(['auth'])->prefix('client')->group(function () {
     Route::get('/home', fn() => view('client.home'))->name('client.home');
 });
