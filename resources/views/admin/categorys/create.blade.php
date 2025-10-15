@@ -2,7 +2,7 @@
 
 @section('content')
       <!-- Form Repeater -->
-  <div class="col-12">
+  <div class="col-12 card">
     {{-- <div class="card"> --}}
       <h5 class="card-header">Add Category</h5>
       <form method="POST" action="{{ route('admin.categorys.store') }}">

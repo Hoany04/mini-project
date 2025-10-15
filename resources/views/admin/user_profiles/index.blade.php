@@ -3,7 +3,7 @@
 @section('content')
     <h2>List Profile User</h2>
 
-    <table class="table table-bordered">
+    <table class="table table-bordered card">
         <thead class="table-dark">
             <tr>
                 <th>STT</th>

@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-<div class="container mt-4">
+<div class="container mt-4 card">
     <h4 class="mb-3">Sửa mã giảm giá</h4>
 
     <form action="{{ route('admin.coupons.update', $coupon->id) }}" method="POST">

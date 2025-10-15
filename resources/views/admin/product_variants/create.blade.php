@@ -1,8 +1,8 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-<div class="container mt-4">
-    <h3 class="mb-3">Thêm biến thể cho sản phẩm: {{ $product->name }}</h3>
+<div class="container mt-4 card">
+    <h3 class="mb-3 card-title">Thêm biến thể cho sản phẩm: {{ $product->name }}</h3>
 
     <form action="{{ route('admin.product_variants.store', $product->id) }}" method="POST">
         @csrf

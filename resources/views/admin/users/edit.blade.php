@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-<div class="container mt-4 col-md-6">
+<div class="container mt-4 col-md-6 card">
     <h3>Sửa thông tin người dùng</h3>
     <form method="POST" action="{{ route('admin.users.update', $user->id) }}">
         @csrf 

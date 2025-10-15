@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-    <div class="container mt-4 col-md-8">
+    <div class="container mt-4 col-md-8 card">
         <h3>Thêm sản phẩm mới</h3>
 
         <form method="POST" action="{{ route('admin.products.store') }}">

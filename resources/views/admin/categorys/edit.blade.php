@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-    <div class="container mt-4 col-md-6">
+    <div class="container mt-4 col-md-6 card">
         <h3>Cập nhật danh mục</h3>
 
         <form method="POST" action="{{ route('admin.categorys.update', $category->id) }}">

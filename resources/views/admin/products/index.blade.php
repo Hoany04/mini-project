@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-    <div class="container mt-4">
+    <div class="container mt-5 card">
         <h2>List Product</h2>
 
         @if (session('success'))

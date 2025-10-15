@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-    <div class="container mt-4">
+    <div class="container mt-4 card">
         <h2>List users</h2>
 
         <form method="get" action="{{ route('admin.users.index') }}" class="row g-2 mb-3">

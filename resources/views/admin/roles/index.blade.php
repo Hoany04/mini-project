@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-    <div class="container mt-4">
+    <div class="container mt-4 card">
         <h2>List of authorizations</h2>
 
         <a href="" class="btn btn-primary mb-3">Add</a>

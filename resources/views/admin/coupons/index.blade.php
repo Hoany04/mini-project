@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-<div class="container mt-4">
+<div class="container mt-4 card">
     <h4 class="mb-3">Danh sách mã giảm giá</h4>
 
     <a href="{{ route('admin.coupons.create') }}" class="btn btn-primary mb-3">+ Thêm mã mới</a>

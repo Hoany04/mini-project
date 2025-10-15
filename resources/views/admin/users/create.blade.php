@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-<div class="container mt-4 col-md-6">
+<div class="container mt-4 col-md-6 card">
     <h3>Thêm người dùng mới</h3>
     <form method="POST" action="{{ route('admin.users.store') }}">
         @csrf
