@@ -222,8 +222,8 @@
                 </a>
               </li>
               <li class="menu-item">
-                <a href="app-ecommerce-product-add.html" class="menu-link">
-                  <div data-i18n="Add Product">Add Product</div>
+                <a href="{{ route('admin.coupons.index') }}" class="menu-link">
+                  <div data-i18n="Add Coupon">Coupon</div>
                 </a>
               </li>
               <li class="menu-item">
