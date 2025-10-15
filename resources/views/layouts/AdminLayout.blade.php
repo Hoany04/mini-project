@@ -154,9 +154,9 @@
   <!-- / Layout wrapper -->
 
   
-  <div class="buy-now">
+  {{-- <div class="buy-now">
     <a href="https://1.envato.market/frest_admin" target="_blank" class="btn btn-danger btn-buy-now">Buy Now</a>
-  </div>
+  </div> --}}
   
 
   

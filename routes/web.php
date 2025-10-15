@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\UserProfileController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductImageController;
+use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\AuthController;
 
@@ -105,6 +106,18 @@ Route::middleware(['auth'])->prefix('admin')
         Route::post('/', [ProductImageController::class, 'store'])->name('store');
         Route::delete('{id}', [ProductImageController::class, 'destroy'])->name('destroy');
     });
+
+    Route::prefix('products/{productId}/variants')
+    ->as('product_variants.')
+    ->group(function () {
+        Route::get('/', [ProductVariantController::class, 'index'])->name('index');
+        Route::get('/create', [ProductVariantController::class, 'create'])->name('create');
+        Route::post('/', [ProductVariantController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [ProductVariantController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [ProductVariantController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ProductVariantController::class, 'destroy'])->name('destroy');
+    });
+
 
     Route::prefix('coupons')
     ->as('coupons.')

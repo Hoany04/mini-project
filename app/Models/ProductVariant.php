@@ -17,7 +17,27 @@ class ProductVariant extends Model
         'stock'
     ];
 
+    public $timestamps = false;
+
     public function product(){
         return $this->belongsTo(Product::class);
+    }
+
+    // ✅ Tự động cập nhật tồn kho sản phẩm khi variant thay đổi
+    protected static function booted()
+    {
+        static::saved(function ($variant) {
+            $variant->updateProductStock();
+        });
+
+        static::deleted(function ($variant) {
+            $variant->updateProductStock();
+        });
+    }
+
+    public function updateProductStock()
+    {
+        $totalStock = $this->product->variants()->sum('stock');
+        $this->product->update(['stock' => $totalStock]);
     }
 }

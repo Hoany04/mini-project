@@ -31,7 +31,7 @@ class ProductImageController extends Controller
         return back()->with('success', 'Da them anh cho san pham');
     }
 
-    public function destroy($id)
+    public function destroy($productId, $id)
     {
         $image = ProductImage::findOrFail($id);
         Storage::disk('public')->delete($image->image_url);

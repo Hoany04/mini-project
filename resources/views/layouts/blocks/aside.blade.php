@@ -56,7 +56,7 @@
           <div data-i18n="Dashboards">Dashboards</div>
           <div class="badge bg-primary rounded-pill ms-auto">5</div>
         </a>
-        <ul class="menu-sub">
+        {{-- <ul class="menu-sub">
           <li class="menu-item active">
             <a href="index.html" class="menu-link">
               <div data-i18n="Analytics">Analytics</div>
@@ -76,12 +76,12 @@
             <a href="app-academy-dashboard.html" class="menu-link">
               <div data-i18n="Academy">Academy</div>
             </a>
-          </li>
-        </ul>
+          </li> --}}
+        {{-- </ul> --}}
       </li>
   
       <!-- Layouts -->
-      <li class="menu-item">
+      {{-- <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-layout"></i>
           <div data-i18n="Layouts">Layouts</div>
@@ -135,7 +135,7 @@
             </a>
           </li>
         </ul>
-      </li>
+      </li> --}}
   
       <!-- Front Pages -->
       <li class="menu-item">
@@ -143,7 +143,7 @@
           <i class='menu-icon tf-icons bx bx-store'></i>
           <div data-i18n="Front Pages">Front Pages</div>
         </a>
-        <ul class="menu-sub">
+        {{-- <ul class="menu-sub">
           <li class="menu-item">
             <a href="https://demos.pixinvent.com/frest-html-admin-template/html/front-pages/landing-page.html" class="menu-link" target="_blank">
               <div data-i18n="Landing">Landing</div>
@@ -169,13 +169,13 @@
               <div data-i18n="Help Center">Help Center</div>
             </a>
           </li>
-        </ul>
+        </ul> --}}
       </li>
   
   
       <!-- Apps & Pages -->
       <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Apps & Pages">Apps &amp; Pages</span></li>
-      <li class="menu-item">
+      {{-- <li class="menu-item">
         <a href="app-email.html" class="menu-link">
           <i class="menu-icon tf-icons bx bx-envelope"></i>
           <div data-i18n="Email">Email</div>
@@ -198,7 +198,7 @@
           <i class="menu-icon tf-icons bx bx-grid"></i>
           <div data-i18n="Kanban">Kanban</div>
         </a>
-      </li>
+      </li> --}}
       <!-- e-commerce-app menu start -->
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -221,9 +221,14 @@
                   <div data-i18n="Product List">Product List</div>
                 </a>
               </li>
+              {{-- <li class="menu-item">
+                <a href="{{ route('admin.product_variants.index') }}" class="menu-link">
+                  <div data-i18n="Product Variant List">Product Variant List</div>
+                </a>
+              </li> --}}
               <li class="menu-item">
                 <a href="{{ route('admin.coupons.index') }}" class="menu-link">
-                  <div data-i18n="Add Coupon">Coupon</div>
+                  <div data-i18n="Coupon List">Coupon</div>
                 </a>
               </li>
               <li class="menu-item">
@@ -726,9 +731,9 @@
       </li>
   
       <!-- Components -->
-      <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Components">Components</span></li>
+      {{-- <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Components">Components</span></li> --}}
       <!-- Cards -->
-      <li class="menu-item">
+      {{-- <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-collection"></i>
           <div data-i18n="Cards">Cards</div>
@@ -761,9 +766,9 @@
             </a>
           </li>
         </ul>
-      </li>
+      </li> --}}
       <!-- User interface -->
-      <li class="menu-item">
+      {{-- <li class="menu-item">
         <a href="javascript:void(0)" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-box"></i>
           <div data-i18n="User interface">User interface</div>
@@ -865,10 +870,10 @@
             </a>
           </li>
         </ul>
-      </li>
+      </li> --}}
   
       <!-- Extended components -->
-      <li class="menu-item">
+      {{-- <li class="menu-item">
         <a href="javascript:void(0)" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-copy"></i>
           <div data-i18n="Extended UI">Extended UI</div>
@@ -947,10 +952,10 @@
             </a>
           </li>
         </ul>
-      </li>
+      </li> --}}
   
       <!-- Icons -->
-      <li class="menu-item">
+      {{-- <li class="menu-item">
         <a href="javascript:void(0)" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-crown"></i>
           <div data-i18n="Icons">Icons</div>
@@ -967,12 +972,12 @@
             </a>
           </li>
         </ul>
-      </li>
+      </li> --}}
   
       <!-- Forms & Tables -->
-      <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Forms & Tables">Forms &amp; Tables</span></li>
+      {{-- <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Forms & Tables">Forms &amp; Tables</span></li> --}}
       <!-- Forms -->
-      <li class="menu-item">
+      {{-- <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-detail"></i>
           <div data-i18n="Form Elements">Form Elements</div>
@@ -1076,9 +1081,9 @@
           <i class="menu-icon tf-icons bx bx-list-check"></i>
           <div data-i18n="Form Validation">Form Validation</div>
         </a>
-      </li>
+      </li> --}}
       <!-- Tables -->
-      <li class="menu-item">
+      {{-- <li class="menu-item">
         <a href="tables-basic.html" class="menu-link">
           <i class="menu-icon tf-icons bx bx-table"></i>
           <div data-i18n="Tables">Tables</div>
@@ -1106,10 +1111,10 @@
             </a>
           </li>
         </ul>
-      </li>
+      </li> --}}
   
       <!-- Charts & Maps -->
-      <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Charts & Maps">Charts &amp; Maps</span></li>
+      {{-- <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Charts & Maps">Charts &amp; Maps</span></li>
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-chart"></i>
@@ -1133,7 +1138,7 @@
           <i class="menu-icon tf-icons bx bx-map-alt"></i>
           <div data-i18n="Leaflet Maps">Leaflet Maps</div>
         </a>
-      </li>
+      </li> --}}
   
       <!-- Misc -->
       <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Misc">Misc</span></li>
