@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\ProductVariantController;
+use App\Http\Controllers\Admin\ProductReviewController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\AuthController;
 
@@ -116,6 +117,13 @@ Route::middleware(['auth'])->prefix('admin')
         Route::get('/{id}/edit', [ProductVariantController::class, 'edit'])->name('edit');
         Route::put('/{id}', [ProductVariantController::class, 'update'])->name('update');
         Route::delete('/{id}', [ProductVariantController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('product_reviews')
+    ->as('product_reviews.')
+    ->group(function () {
+        Route::get('/', [ProductReviewController::class, 'index'])->name('index');
+        Route::delete('{id}', [ProductReviewController::class, 'destroy'])->name('destroy');
     });
 
 

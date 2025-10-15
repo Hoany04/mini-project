@@ -440,8 +440,8 @@
                 </a>
               </li>
               <li class="menu-item">
-                <a href="app-user-view-security.html" class="menu-link">
-                  <div data-i18n="Security">Security</div>
+                <a href="{{ route('admin.product_reviews.index') }}" class="menu-link">
+                  <div data-i18n="Evaluate">Evaluate</div>
                 </a>
               </li>
               <li class="menu-item">
