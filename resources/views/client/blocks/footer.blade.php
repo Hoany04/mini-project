@@ -7,7 +7,7 @@
                         <div class="widget-title">
                             <div class="widget-logo">
                                 <a href="index.html">
-                                    <img src="assets/img/logo/logo.png" alt="brand logo">
+                                    <img src="{{ asset('assets/client/img/logo/logo.png') }}" alt="brand logo">
                                 </a>
                             </div>
                         </div>
@@ -80,7 +80,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="footer-payment">
-                        <img src="assets/img/payment.png" alt="payment method">
+                        <img src="{{ asset('assets/client/img/payment.png') }}" alt="payment method">
                     </div>
                 </div>
             </div>

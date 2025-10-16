@@ -63,19 +63,19 @@
                                     <ul>
                                         <li class="active"><a href="index.html">Home <i
                                                     class="fa fa-angle-down"></i></a>
-                                            <ul class="dropdown">
+                                            {{-- <ul class="dropdown">
                                                 <li><a href="index.html">Home version 01</a></li>
                                                 <li><a href="index-2.html">Home version 02</a></li>
                                                 <li><a href="index-3.html">Home version 03</a></li>
                                                 <li><a href="index-4.html">Home version 04</a></li>
                                                 <li><a href="index-5.html">Home version 05</a></li>
                                                 <li><a href="index-6.html">Home version 06</a></li>
-                                            </ul>
+                                            </ul> --}}
                                         </li>
                                         <li class="position-static"><a href="#">pages <i
                                                     class="fa fa-angle-down"></i></a>
                                             <ul class="megamenu dropdown">
-                                                <li class="mega-title"><span>column 01</span>
+                                                {{-- <li class="mega-title"><span>column 01</span>
                                                     <ul>
                                                         <li><a href="shop.html">shop grid left sidebar</a></li>
                                                         <li><a href="shop-grid-right-sidebar.html">shop grid right
@@ -111,7 +111,7 @@
                                                         <li><a href="about-us.html">about us</a></li>
                                                         <li><a href="contact-us.html">contact us</a></li>
                                                     </ul>
-                                                </li>
+                                                </li> --}}
                                                 <li class="megamenu-banners d-none d-lg-block">
                                                     <a href="product-details.html">
                                                         <img src="{{ asset('assets/client/img/banner/img1-static-menu.jpg') }}"
@@ -127,7 +127,7 @@
                                             </ul>
                                         </li>
                                         <li><a href="shop.html">shop <i class="fa fa-angle-down"></i></a>
-                                            <ul class="dropdown">
+                                            {{-- <ul class="dropdown">
                                                 <li><a href="#">shop grid layout <i
                                                             class="fa fa-angle-right"></i></a>
                                                     <ul class="dropdown">
@@ -163,11 +163,11 @@
                                                                 group</a></li>
                                                     </ul>
                                                 </li>
-                                            </ul>
+                                            </ul> --}}
                                         </li>
                                         <li><a href="blog-left-sidebar.html">Blog <i
                                                     class="fa fa-angle-down"></i></a>
-                                            <ul class="dropdown">
+                                            {{-- <ul class="dropdown">
                                                 <li><a href="blog-left-sidebar.html">blog left sidebar</a></li>
                                                 <li><a href="blog-list-left-sidebar.html">blog list left
                                                         sidebar</a></li>
@@ -182,7 +182,7 @@
                                                 <li><a href="blog-details-audio.html">blog details audio</a></li>
                                                 <li><a href="blog-details-video.html">blog details video</a></li>
                                                 <li><a href="blog-details-image.html">blog details image</a></li>
-                                            </ul>
+                                            </ul> --}}
                                         </li>
                                         <li><a href="contact-us.html">Contact us</a></li>
                                     </ul>
@@ -298,7 +298,7 @@
                 <!-- search box end -->
 
                 <!-- mobile menu start -->
-                <div class="mobile-navigation">
+                {{-- <div class="mobile-navigation">
 
                     <!-- mobile menu navigation start -->
                     <nav>
@@ -404,10 +404,10 @@
                         </ul>
                     </nav>
                     <!-- mobile menu navigation end -->
-                </div>
+                </div> --}}
                 <!-- mobile menu end -->
 
-                <div class="mobile-settings">
+                {{-- <div class="mobile-settings">
                     <ul class="nav">
                         <li>
                             <div class="dropdown mobile-top-dropdown">
@@ -437,7 +437,7 @@
                             </div>
                         </li>
                     </ul>
-                </div>
+                </div> --}}
 
                 <!-- offcanvas widget area start -->
                 <div class="offcanvas-widget-area">

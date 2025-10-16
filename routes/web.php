@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\ProductReviewController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\AuthController;
 
+use App\Http\Controllers\Client\HomeController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -58,10 +60,7 @@ Route::post('forgot-password', [AuthController::class, 'sendResetLink'])->name('
 Route::get('/reset-password/{token}', [AuthController::class, 'showFormReset'])->name('password.reset');
 Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
-Route::middleware(['auth'])->prefix('client')->group(function () {
-    Route::get('/home', fn() => view('client.home'))->name('client.home');
-});
-
+// ======================== ADMIN SITE ========================
 Route::middleware(['auth'])->prefix('admin')
 ->as('admin.')
 ->group(function () {
@@ -137,5 +136,15 @@ Route::middleware(['auth'])->prefix('admin')
         Route::put('{id}', [CouponController::class, 'update'])->name('update');
         Route::delete('{id}', [CouponController::class, 'destroy'])->name('destroy');
     });
+});
+
+// ======================== CLIENT SITE ========================
+// Route::prefix('client')->name('client.')->group(function () {
+//     Route::get('/', [HomeController::class, 'index'])->name('home');
+// });
+Route::middleware(['auth'])->prefix('client')
+->as('client.')
+->group(function () {
+    Route::get('/home', fn() => view('client.home'))->name('client.home');
 });
 
