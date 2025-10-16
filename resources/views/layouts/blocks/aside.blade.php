@@ -240,11 +240,31 @@
           </li>
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <div data-i18n="Cart">Cart</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href="{{ route('admin.carts.index') }}" class="menu-link">
+                  <div data-i18n="Cart List">Product Cart</div>
+                </a>
+              </li>
+            </ul>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                {{-- {{ route('admin.carts.show', $cart->id) }} --}}
+                <a href="" class="menu-link"> 
+                  <div data-i18n="Cart Show">Show Cart</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
               <div data-i18n="Order">Order</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="app-ecommerce-order-list.html" class="menu-link">
+                <a href="{{ route('admin.orders.index') }}" class="menu-link">
                   <div data-i18n="Order List">Order List</div>
                 </a>
               </li>

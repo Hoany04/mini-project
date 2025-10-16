@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\Admin\ProductReviewController;
 use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\CartController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\Client\HomeController;
@@ -125,6 +127,22 @@ Route::middleware(['auth'])->prefix('admin')
         Route::delete('{id}', [ProductReviewController::class, 'destroy'])->name('destroy');
     });
 
+    Route::prefix('carts')
+    ->as('carts.')
+    ->group(function () {
+        Route::get('/', [CartController::class, 'index'])->name('index');
+        Route::get('{id}/show', [CartController::class, 'show'])->name('show');
+        Route::delete('{id}', [CartController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('orders')
+    ->as('orders.')
+    ->group(function () {
+        Route::get('/', [OrderController::class, 'index'])->name('index');
+        Route::get('{id}/show', [OrderController::class, 'show'])->name('show');
+        Route::put('{id}/status', [OrderController::class, 'updateStatus'])->name('updateStatus');
+        Route::delete('{id}', [OrderController::class, 'destroy'])->name('destroy');
+    });
 
     Route::prefix('coupons')
     ->as('coupons.')
@@ -137,6 +155,7 @@ Route::middleware(['auth'])->prefix('admin')
         Route::delete('{id}', [CouponController::class, 'destroy'])->name('destroy');
     });
 });
+
 
 // ======================== CLIENT SITE ========================
 // Route::prefix('client')->name('client.')->group(function () {
