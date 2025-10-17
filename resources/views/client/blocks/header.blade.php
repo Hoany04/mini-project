@@ -61,7 +61,7 @@
                                 <!-- main menu navbar start -->
                                 <nav class="desktop-menu">
                                     <ul>
-                                        <li class="active"><a href="index.html">Home <i
+                                        <li class="active"><a href="{{ route('client.home') }}">Home <i
                                                     class="fa fa-angle-down"></i></a>
                                             {{-- <ul class="dropdown">
                                                 <li><a href="index.html">Home version 01</a></li>
@@ -126,7 +126,7 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li><a href="shop.html">shop <i class="fa fa-angle-down"></i></a>
+                                        <li><a href="{{ route('client.pages.products.index') }}">shop <i class="fa fa-angle-down"></i></a>
                                             {{-- <ul class="dropdown">
                                                 <li><a href="#">shop grid layout <i
                                                             class="fa fa-angle-right"></i></a>
@@ -225,9 +225,9 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="minicart-btn">
+                                        <a href="{{ route('client.pages.cart.index') }}" class="minicart-btn">
                                             <i class="pe-7s-shopbag"></i>
-                                            <div class="notification">2</div>
+                                            <div class="notification">{{ session('cart') ? count(session('cart')) : '0'}}</div>
                                         </a>
                                     </li>
                                 </ul>
@@ -258,7 +258,7 @@
                         </div>
                         <div class="mobile-menu-toggler">
                             <div class="mini-cart-wrap">
-                                <a href="cart.html">
+                                <a href="{{ route('client.pages.cart.index') }}">
                                     <i class="pe-7s-shopbag"></i>
                                     <div class="notification">0</div>
                                 </a>

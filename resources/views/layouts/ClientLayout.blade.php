@@ -286,7 +286,7 @@
     <!-- Main JS -->
     <script src="{{ asset('assets/client/js/main.js') }}"></script>
 
-
+    @yield('js')
     {{-- End Js --}}
 </body>
 

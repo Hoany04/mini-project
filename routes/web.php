@@ -16,6 +16,9 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\ClientProductController;
+use App\Http\Controllers\Client\ClientCartController;
+use App\Http\Controllers\Client\ClientCheckController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -158,12 +161,21 @@ Route::middleware(['auth'])->prefix('admin')
 
 
 // ======================== CLIENT SITE ========================
-// Route::prefix('client')->name('client.')->group(function () {
-//     Route::get('/', [HomeController::class, 'index'])->name('home');
-// });
-Route::middleware(['auth'])->prefix('client')
-->as('client.')
-->group(function () {
-    Route::get('/home', fn() => view('client.home'))->name('client.home');
+Route::prefix('client')->name('client.')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 });
+
+
+Route::middleware(['auth'])
+    ->prefix('client')
+    ->as('client.')
+    ->group(function () {
+        Route::get('/home', [HomeController::class, 'index'])->name('home');
+        Route::get('/products', [ClientProductController::class, 'index'])->name('pages.products.index');
+        Route::get('/products/{id}', [ClientProductController::class, 'show'])->name('pages.products.detail');
+        Route::get('/cart', [ClientCartController::class, 'index'])->name('pages.cart.index');
+        Route::post('/add-to-cart', [ClientCartController::class, 'addCart'])->name('pages.cart.add');
+        Route::put('/update-cart', [ClientCartController::class, 'updateCart'])->name('cart.update');
+        Route::get('/checkout', [ClientCheckController::class, 'index'])->name('pages.checkout.index');
+    });
 
