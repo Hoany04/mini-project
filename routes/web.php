@@ -19,6 +19,7 @@ use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ClientProductController;
 use App\Http\Controllers\Client\ClientCartController;
 use App\Http\Controllers\Client\ClientCheckController;
+use App\Http\Controllers\Client\ClientCouponController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -174,8 +175,11 @@ Route::middleware(['auth'])
         Route::get('/products', [ClientProductController::class, 'index'])->name('pages.products.index');
         Route::get('/products/{id}', [ClientProductController::class, 'show'])->name('pages.products.detail');
         Route::get('/cart', [ClientCartController::class, 'index'])->name('pages.cart.index');
-        Route::post('/add-to-cart', [ClientCartController::class, 'addCart'])->name('pages.cart.add');
-        Route::put('/update-cart', [ClientCartController::class, 'updateCart'])->name('cart.update');
-        Route::get('/checkout', [ClientCheckController::class, 'index'])->name('pages.checkout.index');
+        Route::post('/cart', [ClientCartController::class, 'store'])->name('pages.cart.store');
+        Route::put('/cart/{itemId}', [ClientCartController::class, 'update'])->name('pages.cart.update');
+        Route::delete('/cart/{itemId}', [ClientCartController::class, 'destroy'])->name('pages.cart.destroy');
+        Route::get('/checkout', [ClientCheckController::class, 'index'])->name('pages.checkout.login_checkout');
+        Route::post('/apply-coupon', [ClientCouponController::class, 'apply'])->name('pages.coupon.apply');
+        Route::delete('/remove-coupon', [ClientCouponController::class, 'remove'])->name('pages.coupon.remove');
     });
 

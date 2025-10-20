@@ -10,11 +10,16 @@ class Cart extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'total_price',
+        'user_id', 'total_price', 'coupon_id', 'discount',
     ];
 
     public function user() {
         return $this->belongsTo(User::class);
+    }
+
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class);
     }
 
     public function items(){

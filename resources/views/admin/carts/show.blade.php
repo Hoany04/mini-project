@@ -25,7 +25,7 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $item->product->name ?? 'Sản phẩm đã xóa' }}</td>
-                    <td>{{ $item->variant->variant_value ?? '-' }}</td>
+                    <td>{{ $item->variant_text ?? '-' }}</td>
                     <td>{{ $item->quantity }}</td>
                     <td>{{ number_format($item->price) }}₫</td>
                     <td>{{ number_format($item->price * $item->quantity) }}₫</td>

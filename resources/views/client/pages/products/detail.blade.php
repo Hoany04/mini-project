@@ -75,19 +75,7 @@
                                             <span>{{ $product->stock }} in stock</span>
                                         </div>
                                         <p class="pro-desc">{{ $product->description }}</p>
-                                        <form action="{{ route('client.pages.cart.add') }}" method="post">
-                                            @csrf
-                                            <div class="quantity-cart-box d-flex align-items-center">
-                                                <h6 class="option-title">qty:</h6>
-                                                <div class="quantity">
-                                                    <div class="pro-qty"><input type="text" value="1" name="quantity" id="quantityInput"></div>
-                                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                </div>
-                                                <div class="action_link">
-                                                    <button type="submit" class="btn btn-cart2">Add to cart</button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                        
                                         {{-- <div class="pro-size">
                                         <h6 class="option-title">size :</h6>
                                         <select class="nice-select">
@@ -115,28 +103,68 @@
                                         </ul>
                                     </div> --}}
                                         {{-- Hiển thị các biến thể --}}
-                                        @if ($groupedVariants->count() > 0)
-                                            <div class="mt-4">
-                                                <h5>Chọn biến thể:</h5>
-                                                @foreach ($groupedVariants as $variantName => $variants)
-                                                    <div class="mb-3">
-                                                        <label class="fw-bold">{{ $variantName }}:</label><br>
-                                                        @foreach ($variants as $variant)
-                                                            <label class="me-3">
-                                                                <input type="radio" name="{{ Str::slug($variantName) }}"
-                                                                    value="{{ $variant->id }}"
-                                                                    data-extra="{{ $variant->extra_price }}"
-                                                                    class="variant-option">
-                                                                {{ $variant->variant_value }}
-                                                                @if ($variant->extra_price > 0)
-                                                                    (+{{ number_format($variant->extra_price, 0, ',', '.') }}₫)
+                                        <p class="text-danger fs-4 fw-bold" id="product-price" data-base-price="{{ $product->price }}">
+                                            {{ number_format($product->price, 0, ',', '.') }}₫
+                                        </p>
+                                        
+                                        <form action="{{ route('client.pages.cart.store') }}" method="POST" id="add-to-cart-form">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <input type="hidden" name="price" id="price-input" value="{{ $product->price }}">
+                                        
+                                            {{-- Size --}}
+                                            <div class="pro-size mb-3">
+                                                <h6 class="option-title">Size :</h6>
+                                                <select class="nice-select variant-select" name="variants[size]" data-name="Size">
+                                                    <option value="">-- Chọn size --</option>
+                                                    @foreach($groupedVariants['Size'] ?? [] as $variant)
+                                                        <option value="{{ $variant->variant_value }}" data-extra="{{ $variant->extra_price }}">
+                                                            {{ $variant->variant_value }}
+                                                            @if($variant->extra_price > 0)
+                                                                (+{{ number_format($variant->extra_price, 0, ',', '.') }}₫)
+                                                            @endif
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        
+                                            {{-- Màu --}}
+                                            <div class="color-option mb-3">
+                                                <h6 class="option-title">Màu :</h6>
+                                            
+                                                @if(!empty($groupedVariants['Màu']))
+                                                    <div class="d-flex flex-wrap gap-3">
+                                                        @foreach($groupedVariants['Màu'] as $variant)
+                                                            <label class="d-flex align-items-center gap-1" style="cursor: pointer;">
+                                                                <input type="radio" 
+                                                                       name="variants[màu]" 
+                                                                       value="{{ $variant->variant_value }}" 
+                                                                       data-extra="{{ $variant->extra_price }}"
+                                                                       required>
+                                                                <span>{{ $variant->variant_value }}</span>
+                                                                @if($variant->extra_price > 0)
+                                                                    <small class="text-muted">
+                                                                        (+{{ number_format($variant->extra_price, 0, ',', '.') }}₫)
+                                                                    </small>
                                                                 @endif
                                                             </label>
                                                         @endforeach
                                                     </div>
-                                                @endforeach
+                                                @else
+                                                    <p class="text-muted">Không có biến thể màu cho sản phẩm này.</p>
+                                                @endif
                                             </div>
-                                        @endif
+                                            
+                                        
+                                            <div class="mt-3">
+                                                <label class="fw-bold">Số lượng:</label>
+                                                <input type="number" name="quantity" value="1" min="1" class="form-control w-25 d-inline-block">
+                                            </div>
+                                        
+                                            <button type="submit" class="btn btn-primary mt-4">
+                                                <i class="fa fa-cart-plus"></i> Thêm vào giỏ hàng
+                                            </button>
+                                        </form>                                        
 
                                         <div class="useful-links">
                                             <a href="#" data-bs-toggle="tooltip" title="Compare"><i
@@ -378,7 +406,7 @@
     <!-- Scroll to Top End -->
 
     <!-- Quick view modal start -->
-    <div class="modal" id="quick_view">
+    {{-- <div class="modal" id="quick_view">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -452,19 +480,22 @@
                                     </div>
                                     <p class="pro-desc">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
                                         nonumy eirmod tempor invidunt ut labore et dolore magna.</p>
-                                    <form action="{{ route('client.pages.cart.add') }}" method="post">
-                                        @csrf
-                                        <div class="quantity-cart-box d-flex align-items-center">
-                                            <h6 class="option-title">qty:</h6>
-                                            <div class="quantity">
-                                                <div class="pro-qty"><input type="text" value="1" name="quantity" id="quantityInput"></div>
-                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <form action="{{ route('client.pages.cart.store') }}" method="POST" id="add-to-cart-form">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <input type="hidden" name="variant_id" id="variant-id-input">
+                                            <input type="hidden" name="price" id="price-input" value="{{ $product->price }}">
+                                        
+                                            <div class="mt-3">
+                                                <label for="quantity" class="fw-bold">Số lượng:</label>
+                                                <input type="number" name="quantity" id="quantity" value="1" min="1" class="form-control w-25 d-inline-block">
                                             </div>
-                                            <div class="action_link">
-                                                <button type="submit" class="btn btn-cart2">Add to cart</button>
-                                            </div>
-                                        </div>
-                                    </form>
+                                        
+                                            <button type="submit" class="btn btn-primary mt-4">
+                                                <i class="fa fa-cart-plus"></i> Thêm vào giỏ hàng
+                                            </button>
+                                        </form>
+                                        
                                     <div class="useful-links">
                                         <a href="#" data-bs-toggle="tooltip" title="Compare"><i
                                                 class="pe-7s-refresh-2"></i>compare</a>
@@ -484,11 +515,11 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- Quick view modal end -->
 
     <!-- offcanvas mini cart start -->
-    <div class="offcanvas-minicart-wrapper">
+    {{-- <div class="offcanvas-minicart-wrapper">
         <div class="minicart-inner">
             <div class="offcanvas-overlay"></div>
             <div class="minicart-inner-content">
@@ -563,37 +594,44 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- offcanvas mini cart end -->
 @endsection
 @section('js')
-<script>
-    $('.pro-qty').prepend('<span class="dec qtybtn">-</span>');
-    $('.pro-qty').append('<span class="inc qtybtn">+</span>');
-    $('.qtybtn').on('click', function () {
-        var $button = $(this);
-        var $input = $button.parent().find('input')
-        var oldValue = parseFloat($input.val());
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const basePrice = parseInt(document.getElementById('price-input').value);
+            const priceDisplay = document.getElementById('product-price');
+            const priceInput = document.getElementById('price-input');
 
-        if ($button.hasClass('inc')) {
-            var newVal = oldValue + 1;
-        } else {
-            if (oldValue > 1) {
-                var newVal = oldValue -1;
-            } else {
-                var newVal = 1;
+            // Hàm cập nhật giá khi chọn biến thể
+            function updatePrice() {
+                let totalExtra = 0;
+
+                // Size
+                document.querySelectorAll('.variant-select').forEach(select => {
+                    const selected = select.options[select.selectedIndex];
+                    if (selected && selected.dataset.extra) {
+                        totalExtra += parseInt(selected.dataset.extra);
+                    }
+                });
+
+                // Màu (radio)
+                document.querySelectorAll('input[name^="variants[màu]"]').forEach(radio => {
+                    if (radio.checked && radio.dataset.extra) {
+                        totalExtra += parseInt(radio.dataset.extra);
+                    }
+                });
+
+                const newPrice = basePrice + totalExtra;
+                priceDisplay.innerText = newPrice.toLocaleString('vi-VN') + '₫';
+                priceInput.value = newPrice; // cập nhật giá để form gửi đi đúng
             }
-        }
-        $input.val(newVal);
-	});
 
-    $('#quantityInput').on('change', function () {
-        var value = parseInt($(this).val(), 10);
-
-        if (isNaN(value) || value < 1) {
-            alert('So luong phai lon hon hoac bang 1')
-            $(this).val(1)
-        }
-    })
-</script>
+            // Khi chọn size
+            document.querySelectorAll('.variant-select').forEach(select => {
+                select.addEventListener('change', updatePrice);
+            });
+        });
+    </script>
 @endsection

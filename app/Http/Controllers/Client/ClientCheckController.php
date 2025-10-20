@@ -9,6 +9,6 @@ class ClientCheckController extends Controller
 {
     Public function index()
     {
-        return view('client.pages.checkout.index');
+        return view('client.pages.checkout.login_checkout');
     }
 }

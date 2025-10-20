@@ -1,8 +1,8 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
+<h3>Danh sách giỏ hàng</h3>
 <div class="container mt-4 card">
-    <h3>Danh sách giỏ hàng</h3>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -39,6 +39,6 @@
         </tbody>
     </table>
 
-    {{ $carts->links() }}
+    {{-- {{ $carts->links() }} --}}
 </div>
 @endsection
