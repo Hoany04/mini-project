@@ -28,16 +28,30 @@ class CartRepository
 
     public function addItem(Cart $cart, array $data)
     {
-        $item = $cart->items()
-            ->where('product_id', $data['product_id'])
-            ->where('variant_text', $data['variant_text'])
-            ->first();
+        $itemQuery = $cart->items()
+            ->where('product_id', $data['product_id']);
+
+        // Nếu có variant_id thì thêm điều kiện
+        if (!empty($data['variant_id'])) {
+            $itemQuery->where('variant_id', $data['variant_id']);
+        } else {
+            $itemQuery->whereNull('variant_id');
+        }
+
+        // Nếu có text (ví dụ "Size: L, Màu: Đỏ") thì cũng so sánh
+        if (!empty($data['variant_text'])) {
+            $itemQuery->where('variant_text', $data['variant_text']);
+        }
+
+        $item = $itemQuery->first();
 
         if ($item) {
             $item->quantity += $data['quantity'];
             $item->save();
         } else {
-            $item = $cart->items()->create($data);
+            // Bảo đảm có cart_id để tạo item đúng
+            $data['cart_id'] = $cart->id;
+            $item = CartItem::create($data);
         }
 
         return $item;

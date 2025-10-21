@@ -28,11 +28,11 @@ class ClientCartController extends Controller
             'product_id' => 'required|exists:products,id',
             'variant_id' => 'nullable|exists:product_variants,id',
             'quantity' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0'
+            'price' => 'required|numeric|min:0',
         ]);
-    
+
         $variantText = '';
-    
+
         if ($request->has('variants') && is_array($request->variants)) {
             $variantPairs = [];
             foreach ($request->variants as $name => $value) {
@@ -40,27 +40,13 @@ class ClientCartController extends Controller
             }
             $variantText = implode(', ', $variantPairs);
         }
-    
-        $cart = session()->get('cart', []);
-        $productId = $data['product_id'];
-    
-        // Nếu sản phẩm đã có trong giỏ => tăng số lượng
-        if (isset($cart[$productId])) {
-            $cart[$productId]['quantity'] += $data['quantity'];
-        } else {
-            $cart[$productId] = [
-                'product_id' => $productId,
-                'variant_id' => $data['variant_id'],
-                'variant_text' => $variantText,
-                'price' => $data['price'],
-                'quantity' => $data['quantity'],
-            ];
-        }
-    
-        session()->put('cart', $cart);
-    
+
+        $data['variant_text'] = $variantText;
+
+        $this->cartService->addToCart(auth()->id(), $data);
+
         return redirect()->route('client.pages.cart.index')
-                         ->with('success', 'Đã thêm vào giỏ hàng');
+                        ->with('success', 'Đã thêm vào giỏ hàng');
     }
 
     // Cập nhật số lượng
@@ -68,6 +54,46 @@ class ClientCartController extends Controller
     {
         $this->cartService->updateQuantity($itemId, $request->quantity);
         return back()->with('success', 'Cập nhật giỏ hàng thành công');
+    }
+
+    public function updateAjax(Request $request)
+    {
+        $request->validate([
+            'item_id' => 'required|integer',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        // Cập nhật số lượng sản phẩm trong DB
+        $this->cartService->updateQuantity($request->item_id, $request->quantity);
+
+        // Lấy lại giỏ hàng mới
+        $cart = $this->cartService->getCart(auth()->id());
+        $cartTotal = $cart->items->sum(fn($i) => $i->price * $i->quantity);
+
+        // Nếu có mã giảm giá thì tính lại giảm
+        $discount = 0;
+        if (session('coupon')) {
+            $coupon = session('coupon');
+        
+            if ($coupon['discount_type'] === 'percent') {
+                // Giảm động
+                $discount = $cartTotal * ($coupon['discount_value'] / 100);
+            } else {
+                // Giảm cố định
+                $discount = $coupon['discount_amount'] ?? $coupon['discount_value'];
+            }
+        }
+        
+
+        $finalTotal = $cartTotal - $discount;
+
+        // Trả dữ liệu JSON cho JS
+        return response()->json([
+            'success' => true,
+            'cart_total' => number_format($cartTotal, 0, ',', '.'),
+            'discount' => number_format($discount, 0, ',', '.'),
+            'final_total' => number_format($finalTotal, 0, ',', '.'),
+        ]);
     }
 
     // Xóa sản phẩm

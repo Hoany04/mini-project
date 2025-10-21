@@ -1,9 +1,7 @@
 @extends('layouts.ClientLayout')
 
 @section('content')
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    
 <main>
     <!-- breadcrumb area start -->
     <div class="breadcrumb-area">
@@ -24,7 +22,9 @@
         </div>
     </div>
     <!-- breadcrumb area end -->
-
+    @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
     <div class="container py-5">
         <h2 class="mb-4">Giỏ hàng</h2>
         @if($cart && $cart->items->count())
@@ -56,7 +56,8 @@
                         <td>
                             <form action="{{ route('client.pages.cart.update', $item->id) }}" method="POST" class="d-flex">
                                 @csrf @method('PUT')
-                                <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" class="form-control w-50 me-2">
+                                <input type="number" name="quantity" class="form-control text-center cart-quantity" 
+                                data-item-id="{{ $item->id }}" value="{{ $item->quantity }}" min="1" class="form-control w-50 me-2">
                                 <button class="btn btn-sm btn-outline-success">Cập nhật</button>
                             </form>
                         </td>
@@ -101,7 +102,7 @@
                     <table class="table">
                         <tr>
                             <td>Tổng tiền sản phẩm:</td>
-                            <td class="text-end">{{ number_format($cart->items->sum(fn($i) => $i->price * $i->quantity)) }}đ</td>
+                            <td id="cart-total" class="text-end">{{ number_format($cart->items->sum(fn($i) => $i->price * $i->quantity)) }}đ</td>
                         </tr>
                 
                         @if($cart->coupon)
@@ -111,17 +112,17 @@
                             </tr>
                             <tr>
                                 <td>Giảm giá:</td>
-                                <td class="text-end text-danger">-{{ number_format($cart->discount) }}đ</td>
+                                <td id="discount" class="text-end text-danger">-{{ number_format($cart->discount) }}đ</td>
                             </tr>
                         @endif
                 
                         <tr class="fw-bold border-top">
                             <td>Tổng thanh toán:</td>
-                            <td class="text-end text-danger fs-5">{{ number_format($cart->total_price) }}đ</td>
+                            <td id="final-total" class="text-end text-danger fs-5">{{ number_format($cart->total_price) }}đ</td>
                         </tr>
                     </table>
                 
-                    <a href="{{ route('client.pages.checkout.login_checkout') }}" class="btn btn-danger w-100">Tiến hành thanh toán</a>
+                    <a href="{{ route('client.pages.checkout.index') }}" class="btn btn-danger w-100">Tiến hành thanh toán</a>
                 </div>
         @else
             <p>Giỏ hàng của bạn đang trống.</p>
@@ -295,4 +296,35 @@
 </div> --}}
 <!-- offcanvas mini cart end -->
 
+@endsection
+@section('js')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const quantityInputs = document.querySelectorAll(".cart-quantity");
+    
+        quantityInputs.forEach(input => {
+            input.addEventListener("change", function() {
+                const itemId = this.dataset.itemId;
+                const quantity = this.value;
+    
+                fetch("{{ route('client.pages.cart.updateAjax') }}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ item_id: itemId, quantity: quantity })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        document.querySelector("#cart-total").innerText = data.cart_total + "đ";
+                        document.querySelector("#discount").innerText = "-" + data.discount + "đ";
+                        document.querySelector("#final-total").innerText = data.final_total + "đ";
+                    }
+                });
+            });
+        });
+    });
+    </script>    
 @endsection

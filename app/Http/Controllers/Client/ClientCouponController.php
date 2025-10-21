@@ -17,6 +17,12 @@ class ClientCouponController extends Controller
 
     public function apply(Request $request)
     {
+        $request->validate([
+            'coupon' => 'required|string',
+        ], [
+            'coupon.required' => 'Vui lòng nhập mã giảm giá trước khi áp dụng!',
+        ]);
+        
         try {
             $userId = auth()->id();
             $couponCode = $request->input('coupon');
@@ -29,5 +35,11 @@ class ClientCouponController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['coupon' => 'Có lỗi xảy ra khi áp dụng mã.']);
         }
+    }
+
+    public function remove(Request $request)
+    {
+        session()->forget('coupon');
+        return back()->with('success', 'Đã hủy mã giảm giá');
     }
 }

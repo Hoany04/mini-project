@@ -26,6 +26,19 @@ class OrderRepository
         return $query->orderByDesc('id')->paginate(10);
     }
 
+    public function create(array $data)
+    {
+        return Order::create($data);
+    }
+
+    public function findByUser($userId)
+    {
+        return Order::where('user_id', $userId)
+            ->orderByDesc('created_at')
+            ->with('items.product', 'coupon')
+            ->get();
+    }
+
     public function findById($id)
     {
         return Order::with('user', 'coupon', 'items.product')->findOrFail($id);
