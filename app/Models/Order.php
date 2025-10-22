@@ -29,7 +29,7 @@ class Order extends Model
     }
 
     public function paymentTransactions(){
-        return $this->hasMany(PaymentTransaction::class);
+        return $this->hasMany(PaymentTransaction::class, 'order_id');
     }
 
     public function shipping() {

@@ -68,4 +68,17 @@ class CartRepository
     {
         return CartItem::findOrFail($itemId)->delete();
     }
+
+    public function clearCart($cartId)
+    {
+        $cart = Cart::findOrFail($cartId);
+
+        // Xóa các sản phẩm trong giỏ
+        $cart->items()->delete();
+
+        // Đặt lại tổng giá trị giỏ
+        $cart->update(['total_price' => 0]);
+
+        return true;
+    }
 }

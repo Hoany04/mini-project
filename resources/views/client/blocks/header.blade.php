@@ -215,7 +215,7 @@
                                         <ul class="dropdown-list">
                                             <li><a href="login-register.html">login</a></li>
                                             <li><a href="login-register.html">register</a></li>
-                                            <li><a href="my-account.html">my account</a></li>
+                                            <li><a href="{{ route('client.pages.account.index') }}">my account</a></li>
                                         </ul>
                                     </li>
                                     <li>

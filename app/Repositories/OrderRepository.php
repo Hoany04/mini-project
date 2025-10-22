@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Order;
-
+use App\Models\OrderItem;
 class OrderRepository
 {
     /**
@@ -28,31 +28,63 @@ class OrderRepository
 
     public function create(array $data)
     {
-        return Order::create($data);
+        return Order::create([
+            'user_id' => $data['user_id'],
+            'coupon_id' => $data['coupon_id'] ?? null,
+            'total_amount' => $data['total_amount'],
+            'status' => $data['status'] ?? 'pending',
+        ]);
     }
 
+    /**
+     * Lấy danh sách đơn hàng của user
+     */
     public function findByUser($userId)
     {
         return Order::where('user_id', $userId)
+            ->with([
+                'items.product',
+                'items.variant',
+                'coupon',
+                'paymentTransactions.paymentMethod'
+            ])
             ->orderByDesc('created_at')
-            ->with('items.product', 'coupon')
             ->get();
     }
 
-    public function findById($id)
+    /**
+     * Lấy chi tiết một đơn hàng cụ thể
+     */
+    public function findById($orderId)
     {
-        return Order::with('user', 'coupon', 'items.product')->findOrFail($id);
+        return Order::with([
+            'items.product',
+            'items.variant',
+            'coupon',
+            'paymentTransactions.paymentMethod'
+        ])->findOrFail($orderId);
     }
 
-    public function updateStatus($id, $status)
+    /**
+     * Cập nhật trạng thái đơn hàng (pending, paid, shipped, completed, canceled)
+     */
+    public function updateStatus($orderId, $status)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::findOrFail($orderId);
         $order->update(['status' => $status]);
         return $order;
     }
 
-    public function deleteOrder($id)
+    /**
+     * Xóa đơn hàng
+     */
+    public function delete($orderId)
     {
-        return Order::findOrFail($id)->delete();
+        return Order::where('id', $orderId)->delete();
+    }
+
+    public function findWithRelations($id)
+    {
+        return Order::with(['items.product', 'paymentTransactions.paymentMethod'])->findOrFail($id);
     }
 }

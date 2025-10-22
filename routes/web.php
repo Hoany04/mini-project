@@ -20,6 +20,7 @@ use App\Http\Controllers\Client\ClientProductController;
 use App\Http\Controllers\Client\ClientCartController;
 use App\Http\Controllers\Client\ClientOrderController;
 use App\Http\Controllers\Client\ClientCouponController;
+use App\Http\Controllers\Client\AccountController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -172,16 +173,27 @@ Route::middleware(['auth'])
     ->as('client.')
     ->group(function () {
         Route::get('/home', [HomeController::class, 'index'])->name('home');
+        //
+        Route::get('/account', [AccountController::class, 'index'])->name('pages.account.index');
+        //
         Route::get('/products', [ClientProductController::class, 'index'])->name('pages.products.index');
         Route::get('/products/{id}', [ClientProductController::class, 'show'])->name('pages.products.detail');
+        //
         Route::get('/cart', [ClientCartController::class, 'index'])->name('pages.cart.index');
         Route::post('/cart', [ClientCartController::class, 'store'])->name('pages.cart.store');
         Route::put('/cart/{itemId}', [ClientCartController::class, 'update'])->name('pages.cart.update');
         Route::delete('/cart/{itemId}', [ClientCartController::class, 'destroy'])->name('pages.cart.destroy');
         Route::post('/cart/update-ajax', [ClientCartController::class, 'updateAjax'])->name('pages.cart.updateAjax');
-        Route::get('/checkout', [ClientOrderController::class, 'index'])->name('pages.checkout.index');
-        Route::post('/checkout', [ClientOrderController::class, 'store'])->name('pages.checkout.store');
+        //
+        Route::get('/', [ClientOrderController::class, 'index'])->name('pages.checkout.index');
+        Route::get('/create', [ClientOrderController::class, 'create'])->name('pages.checkout.order');
+        Route::get('/{id}', [ClientOrderController::class, 'show'])->name('pages.checkout.show');
+        Route::post('/store', [ClientOrderController::class, 'store'])->name('pages.checkout.store');
+        Route::get('/success/{id}', [ClientOrderController::class, 'success'])->name('pages.checkout.success');
+        //
         Route::post('/apply-coupon', [ClientCouponController::class, 'apply'])->name('pages.coupon.apply');
         Route::delete('/remove-coupon', [ClientCouponController::class, 'remove'])->name('pages.coupon.remove');
+        //
+        
     });
 

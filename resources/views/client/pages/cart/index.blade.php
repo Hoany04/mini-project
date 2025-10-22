@@ -84,7 +84,7 @@
                     <div class="alert alert-success mt-2">
                         Mã <strong>{{ session('coupon.code') }}</strong> được áp dụng! Giảm 
                         <span class="text-danger">{{ number_format(session('coupon.discount'), 0, ',', '.') }}₫</span>
-                        <form action="{{ route('client.coupon.remove') }}" method="POST" class="d-inline">
+                        <form action="{{ route('client.pages.coupon.remove') }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-sm btn-link text-danger">Xóa</button>
@@ -122,7 +122,7 @@
                         </tr>
                     </table>
                 
-                    <a href="{{ route('client.pages.checkout.index') }}" class="btn btn-danger w-100">Tiến hành thanh toán</a>
+                    <a href="{{ route('client.pages.checkout.order') }}" class="btn btn-danger w-100">Tiến hành thanh toán</a>
                 </div>
         @else
             <p>Giỏ hàng của bạn đang trống.</p>

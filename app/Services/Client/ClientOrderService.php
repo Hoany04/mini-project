@@ -3,83 +3,77 @@ namespace App\Services\Client;
 
 use App\Repositories\OrderRepository;
 use App\Repositories\OrderItemRepository;
-use App\Services\Client\ClientCartService;
-use App\Services\Client\ClientCouponService;
+use App\Repositories\CartRepository;
+use App\Repositories\PaymentTransactionRepository;
 use Illuminate\Support\Facades\DB;
 
 class ClientOrderService
 {
     protected $orderRepo;
     protected $orderItemRepo;
-    protected $cartService;
-    protected $couponService;
+    protected $cartRepo;
+    protected $paymentTransactionRepo;
 
     public function __construct(
         OrderRepository $orderRepo,
         OrderItemRepository $orderItemRepo,
-        ClientCartService $cartService,
-        ClientCouponService $couponService
+        CartRepository $cartRepo,
+        PaymentTransactionRepository $paymentTransactionRepo
     ) {
         $this->orderRepo = $orderRepo;
         $this->orderItemRepo = $orderItemRepo;
-        $this->cartService = $cartService;
-        $this->couponService = $couponService;
+        $this->cartRepo = $cartRepo;
+        $this->paymentTransactionRepo = $paymentTransactionRepo;
     }
 
-    public function placeOrder($user, $couponCode = null)
+    public function findWithRelations($id)
     {
-        $cart = $this->cartService->getCart($user->id);
+        return $this->orderRepo->findWithRelations($id);
+    }
 
-        if (!$cart || $cart->items->isEmpty()) {
-            throw new \Exception('Gio hang cua ban dang trong.');
-        }
-
-        DB::beginTransaction();
-
-        try {
-            $coupon = null;
-            $discountAmount = 0;
-
-            if ($couponCode) {
-                $coupon = $this->couponService->validateCoupon($couponCode, $cart->total_price);
-                $discountAmount = $coupon ? $this->couponService->calculateDiscount($coupon, $cart->total_price) : 0;
+    public function create($userId, $data)
+    {
+        return DB::transaction(function () use ($userId, $data) {
+            // 1. Lấy giỏ hàng hiện tại
+            $cart = $this->cartRepo->getUserCart($userId);
+            if (!$cart || $cart->items->isEmpty()) {
+                throw new \Exception('Giỏ hàng trống');
             }
 
-            $totalAmount = $cart->total_price - $discountAmount;
-
+            // 2. Tạo đơn hàng
             $order = $this->orderRepo->create([
-                'user_id' => $user->id,
-                'coupon_id' => $coupon?->id,
-                'total_amount' => $totalAmount,
+                'user_id' => $userId,
+                'coupon_id' => $data['coupon_id'] ?? null,
+                'total_amount' => $cart->total_price,
                 'status' => 'pending',
             ]);
 
-            $orderItems = [];
+            // 3. Tạo chi tiết đơn hàng
             foreach ($cart->items as $item) {
-                $orderItems[] = [
+                $this->orderItemRepo->create([
                     'order_id' => $order->id,
                     'product_id' => $item->product_id,
-                    'variant_id' => $item->variant_id,
+                    'variant_id' => $item->variant_id ?? null,
+                    'variant_text' => $item->variant_text,
                     'quantity' => $item->quantity,
                     'price' => $item->price,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
+                ]);
             }
 
-            $this->orderItemRepo->bulkCreate($orderItems);
+            // 4. Tạo bản ghi thanh toán
+            $this->paymentTransactionRepo->create([
+                'order_id' => $order->id,
+                'payment_method_id' => $data['payment_method_id'], // map theo bảng payment_methods
+                'amount' => $cart->total_price,
+                'transaction_code' => strtoupper(uniqid('PAY_')),
+                'status' => 'pending',
+            ]);
 
-            // Dọn giỏ hàng
-            $cart->items()->delete();
-            $cart->update(['total_price' => 0]);
-
-            DB::commit();
+            // 5. Xóa giỏ hàng
+            $this->cartRepo->clearCart($cart->id);
 
             return $order;
-        } catch (\Throwable $e) {
-            DB::rollBack();
-            throw new \Exception('Lỗi khi tạo đơn hàng: ' . $e->getMessage());
-        }
+        });
     }
 }
 ?>

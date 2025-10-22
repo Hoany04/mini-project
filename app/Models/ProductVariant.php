@@ -23,7 +23,6 @@ class ProductVariant extends Model
         return $this->belongsTo(Product::class);
     }
 
-    // ✅ Tự động cập nhật tồn kho sản phẩm khi variant thay đổi
     protected static function booted()
     {
         static::saved(function ($variant) {
