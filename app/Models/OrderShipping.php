@@ -9,6 +9,8 @@ class OrderShipping extends Model
 {
     use HasFactory;
 
+    protected $table = 'order_shipping';
+
     protected $fillable = [
         'order_id',
         'shipping_method_id',

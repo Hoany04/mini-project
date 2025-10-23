@@ -36,6 +36,24 @@ class OrderRepository
         ]);
     }
 
+    //
+    public function createShipping($orderId, array $data)
+    {
+        $shippingMethod = \App\Models\ShippingMethod::find($data['shipping_method_id']);
+        $fee = $shippingMethod ? $shippingMethod->fee : 0;
+
+        return OrderShipping::create([
+            'order_id' => $orderId,
+            'shipping_method_id' => $data['shipping_method_id'] ?? null,
+            'shipping_address_id' => $data['shipping_address_id'] ?? null,
+            'shipping_fee' => $data['shipping_fee'] ?? 0,
+            'tracking_number' => $data['tracking_number'] ?? null,
+            'delivery_note' => $data['delivery_note'] ?? null,
+            'status' => 'pending',
+        ]);
+    }
+
+
     /**
      * Lấy danh sách đơn hàng của user
      */

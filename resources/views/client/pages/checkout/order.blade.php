@@ -105,7 +105,7 @@
                     <!-- Checkout Login Coupon Accordion End -->
                 </div>
             </div>
-            <form action="{{ route('client.pages.checkout.store') }}" method="POST">
+        <form action="{{ route('client.pages.checkout.store') }}" method="POST">
                 @csrf
             <div class="row">
                 <!-- Checkout Billing Details -->
@@ -113,7 +113,7 @@
                     <div class="checkout-billing-details-wrap">
                         <h5 class="checkout-title">Billing Details</h5>
                         <div class="billing-form-wrap">
-                            
+                            {{-- <div>
                                 <div class="row">
                                     
                                     <div class="single-input-item">
@@ -160,13 +160,50 @@
                                         placeholder="City / Town" required />
                                 </div>
                     
-                                {{-- <div class="single-input-item">
-                                    <label for="postcode" class="required">Postcode / ZIP</label>
-                                    <input type="text" id="postcode" name="zipcode"
-                                        value="{{ old('zipcode', $user->profile->zipcode ?? '') }}"
-                                        placeholder="Postcode / ZIP" required />
-                                </div> --}}
-                            </form>
+                                <div class="checkout-billing-details-wrap">
+                                    <h5 class="checkout-title">Địa chỉ giao hàng</h5>
+                            </div>     --}}
+                                    {{-- Hiển thị địa chỉ mặc định --}}
+                                    @if($defaultAddress)
+                                        <div class="default-address mb-3 p-3 border rounded">
+                                            <strong>{{ $defaultAddress->full_name }}</strong> - {{ $defaultAddress->phone }}<br>
+                                            {{ $defaultAddress->address_detail }}, {{ $defaultAddress->ward }},
+                                            {{ $defaultAddress->district }}, {{ $defaultAddress->province }}
+                                        </div>
+                                    @else
+                                        <p>Chưa có địa chỉ mặc định. Hãy thêm địa chỉ giao hàng.</p>
+                                    @endif
+                                
+                                    {{-- Chọn địa chỉ khác --}}
+                                    <div class="mb-3">
+                                        <label class="form-label">Chọn địa chỉ giao hàng</label>
+                                        @foreach($addresses as $address)
+                                            <div class="form-check">
+                                                <input type="radio"
+                                                       name="shipping_address_id"
+                                                       id="address_{{ $address->id }}"
+                                                       value="{{ $address->id }}"
+                                                       class="form-check-input"
+                                                       {{ $address->is_default ? 'checked' : '' }}>
+                                                <label for="address_{{ $address->id }}" class="form-check-label">
+                                                    <strong>{{ $address->full_name }}</strong> - {{ $address->phone }}<br>
+                                                    <small>{{ $address->address_detail }}, {{ $address->ward }}, {{ $address->district }}, {{ $address->province }}</small>
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                      </div>
+                                      
+                                      <div class="mb-3">
+                                        <label for="delivery_note" class="form-label">Ghi chú giao hàng (tuỳ chọn)</label>
+                                        <textarea name="delivery_note" id="delivery_note" class="form-control" rows="3"
+                                                  placeholder="Ví dụ: Giao hàng trong giờ hành chính, gọi trước khi giao..."></textarea>
+                                    </div>
+                                
+                                    {{-- Nút mở modal thêm địa chỉ --}}
+                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+                                        + Thêm địa chỉ mới
+                                    </button>
+                                {{-- </div> --}}
                         </div>
                     </div>
                     
@@ -207,6 +244,31 @@
                 
                             {{-- Chọn phương thức thanh toán --}}
                             <div class="order-payment-method">
+
+                                <tr>
+                                    <td>Phương thức giao hàng</td>
+                                    <td class="d-flex justify-content-center">
+                                        <ul class="shipping-type">
+                                            @foreach ($methods as $method)
+                                                <li>
+                                                    <div class="custom-control custom-radio">
+                                                        <input type="radio"
+                                                            id="shipping_{{ $method->id }}"
+                                                            name="shipping_method_id"
+                                                            value="{{ $method->id }}"
+                                                            class="custom-control-input"
+                                                            {{ $loop->first ? 'checked' : '' }} />
+                                                        <label class="custom-control-label" for="shipping_{{ $method->id }}">
+                                                            {{ $method->name }}:
+                                                            {{ number_format($method->fee) }}đ
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </td>
+                                </tr><br>
+
                                 <div class="custom-control custom-radio">
                                     <input type="radio" id="cashon" name="paymentmethod" value="cash" class="custom-control-input" checked>
                                     <label class="custom-control-label" for="cashon">Thanh toán khi nhận hàng</label> <br>
@@ -221,7 +283,7 @@
                                         <label class="custom-control-label" for="terms">I have read and agree to
                                             the website terms and conditions.</label>
                                     </div>
-                
+                                    
                                 <div class="summary-footer-area">
                                     <button type="submit" class="btn btn-sqr">Đặt hàng</button>
                                 </div>
@@ -231,6 +293,55 @@
                 </div>
             </div>
         </form>
+
+        <!-- Modal thêm địa chỉ -->
+        <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="{{ route('client.pages.addresses.store') }}" method="POST">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addAddressModalLabel">Thêm địa chỉ giao hàng</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-2">
+                                <label>Họ tên</label>
+                                <input type="text" name="full_name" class="form-control" required>
+                            </div>
+                            <div class="mb-2">
+                                <label>Số điện thoại</label>
+                                <input type="text" name="phone" class="form-control" required>
+                            </div>
+                            <div class="mb-2">
+                                <label>Tỉnh/Thành phố</label>
+                                <input type="text" name="province" class="form-control" required>
+                            </div>
+                            <div class="mb-2">
+                                <label>Quận/Huyện</label>
+                                <input type="text" name="district" class="form-control" required>
+                            </div>
+                            <div class="mb-2">
+                                <label>Phường/Xã</label>
+                                <input type="text" name="ward" class="form-control" required>
+                            </div>
+                            <div class="mb-2">
+                                <label>Địa chỉ chi tiết</label>
+                                <input type="text" name="address_detail" class="form-control" required>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input type="checkbox" name="is_default" class="form-check-input" id="is_default" value="1">
+                                <label class="form-check-label" for="is_default">Đặt làm mặc định</label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-primary">Lưu địa chỉ</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- checkout main wrapper end -->
 </main>

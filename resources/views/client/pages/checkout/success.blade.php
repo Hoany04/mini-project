@@ -11,22 +11,21 @@
 
     <!-- Thông tin người đặt -->
     <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-primary text-white">Thông tin người đặt</div>
+        <div class="card-header bg-dark text-white">Địa chỉ giao hàng</div>
         <div class="card-body">
-            @php
-                $profile = $order->user->profile ?? null;
-                $user = $order->user;
-            @endphp
-
-            <p><strong>Tên:</strong> {{ $profile->first_name ?? $user->username }} {{ $profile->last_name ?? '' }}</p>
-            <p><strong>Email:</strong> {{ $user->email }}</p>
-            <p><strong>Số điện thoại:</strong> {{ $profile->phone ?? '-' }}</p>
-            <p><strong>Địa chỉ:</strong> {{ $profile->address ?? '-' }}</p>
-            <p><strong>Thành phố:</strong> {{ $profile->city ?? '-' }}</p>
-            <p><strong>Quốc gia:</strong> {{ $profile->country ?? 'Việt Nam' }}</p>
-
+            <p><strong>Người nhận:</strong> {{ $order->shipping->address->full_name ?? 'N/A' }}</p>
+            <p><strong>Số điện thoại:</strong> {{ $order->shipping->address->phone ?? '-' }}</p>
+            <p><strong>Địa chỉ:</strong> 
+                {{ $order->shipping->address->address_detail ?? '' }},
+                {{ $order->shipping->address->ward ?? '' }},
+                {{ $order->shipping->address->district ?? '' }},
+                {{ $order->shipping->address->province ?? '' }}
+            </p>
+            <p><strong>Ghi chú giao hàng:</strong> {{ $order->shipping->delivery_note ?? '-' }}</p>
+            <p><strong>Phương thức vận chuyển:</strong> {{ $order->shipping->method->name ?? '-' }}</p>
         </div>
     </div>
+    
 
     <!-- Danh sách sản phẩm -->
     <div class="card mb-4 shadow-sm">
@@ -72,6 +71,10 @@
                         <th>-{{ $order->coupon->discount_value }}%</th>
                     </tr>
                     @endif
+                    <tr>
+                        <th colspan="4" class="text-end">Phí vận chuyển</th>
+                        <th>{{ number_format($order->shipping->method->fee ?? 0) }}₫</th>
+                    </tr>
                     <tr>
                         <th colspan="4" class="text-end">Tổng thanh toán:</th>
                         <th>{{ number_format($order->total_amount, 0, ',', '.') }}₫</th>

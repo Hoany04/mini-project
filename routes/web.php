@@ -20,6 +20,8 @@ use App\Http\Controllers\Client\ClientProductController;
 use App\Http\Controllers\Client\ClientCartController;
 use App\Http\Controllers\Client\ClientOrderController;
 use App\Http\Controllers\Client\ClientCouponController;
+use App\Http\Controllers\Client\ClientShippingAddressController;
+use App\Http\Controllers\Client\ClientShippingController;
 use App\Http\Controllers\Client\AccountController;
 
 Route::get('/', function () {
@@ -194,6 +196,18 @@ Route::middleware(['auth'])
         Route::post('/apply-coupon', [ClientCouponController::class, 'apply'])->name('pages.coupon.apply');
         Route::delete('/remove-coupon', [ClientCouponController::class, 'remove'])->name('pages.coupon.remove');
         //
-        
+        Route::get('/checkout', [ClientShippingAddressController::class, 'index'])->name('pages.checkout.index');
+        Route::post('/checkout/address', [ClientShippingAddressController::class, 'store'])->name('pages.checkout.store');
+        // routes/client.php
+        Route::post('/addresses/store', [ClientShippingAddressController::class, 'store'])
+        ->name('pages.addresses.store');
+
+        //
+        Route::get('/checkout', [ClientShippingController::class, 'index'])->name('client.pages.checkout.order');
     });
 
+    Route::middleware('auth')->prefix('payment')->name('payment.')->group(function () {
+        Route::get('/checkout/{orderId}', [ClientPaymentController::class, 'checkout'])->name('checkout');
+        Route::post('/process', [ClientPaymentController::class, 'process'])->name('process');
+    });
+    

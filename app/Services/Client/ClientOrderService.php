@@ -1,6 +1,8 @@
 <?php
 namespace App\Services\Client;
 
+use App\Models\OrderShipping;
+use App\Models\ShippingMethod;
 use App\Repositories\OrderRepository;
 use App\Repositories\OrderItemRepository;
 use App\Repositories\CartRepository;
@@ -34,21 +36,34 @@ class ClientOrderService
     public function create($userId, $data)
     {
         return DB::transaction(function () use ($userId, $data) {
-            // 1. Lấy giỏ hàng hiện tại
+            // Lấy giỏ hàng hiện tại
             $cart = $this->cartRepo->getUserCart($userId);
             if (!$cart || $cart->items->isEmpty()) {
-                throw new \Exception('Giỏ hàng trống');
+                throw new \Exception('Giỏ hàng trống!');
             }
 
-            // 2. Tạo đơn hàng
+            // Tính tổng giá trị giỏ hàng
+            $cartTotal = $cart->total_price;
+
+            // Lấy phương thức vận chuyển và phí ship
+            $shippingMethod = ShippingMethod::find($data['shipping_method_id'] ?? null);
+            $shippingFee = $shippingMethod ? $shippingMethod->fee : 0;
+
+            // Giảm giá (nếu có)
+            $discount = $data['discount'] ?? 0;
+
+            // Tính tổng tiền cuối cùng (có cộng phí vận chuyển)
+            $totalAmount = $cartTotal - $discount + $shippingFee;
+
+            // Tạo đơn hàng
             $order = $this->orderRepo->create([
                 'user_id' => $userId,
                 'coupon_id' => $data['coupon_id'] ?? null,
-                'total_amount' => $cart->total_price,
+                'total_amount' => $totalAmount,
                 'status' => 'pending',
             ]);
 
-            // 3. Tạo chi tiết đơn hàng
+            // Tạo chi tiết đơn hàng
             foreach ($cart->items as $item) {
                 $this->orderItemRepo->create([
                     'order_id' => $order->id,
@@ -60,16 +75,27 @@ class ClientOrderService
                 ]);
             }
 
-            // 4. Tạo bản ghi thanh toán
+            // Tạo thông tin vận chuyển (nếu có)
+            if (!empty($data['shipping_address_id']) && !empty($data['shipping_method_id'])) {
+                OrderShipping::create([
+                    'order_id' => $order->id,
+                    'shipping_method_id' => $data['shipping_method_id'],
+                    'shipping_address_id' => $data['shipping_address_id'],
+                    'delivery_note' => $data['delivery_note'] ?? null,
+                    'status' => 'pending',
+                ]);
+            }
+
+            // Tạo bản ghi thanh toán
             $this->paymentTransactionRepo->create([
                 'order_id' => $order->id,
                 'payment_method_id' => $data['payment_method_id'], // map theo bảng payment_methods
-                'amount' => $cart->total_price,
+                'amount' => $totalAmount,
                 'transaction_code' => strtoupper(uniqid('PAY_')),
                 'status' => 'pending',
             ]);
 
-            // 5. Xóa giỏ hàng
+            // Xóa giỏ hàng
             $this->cartRepo->clearCart($cart->id);
 
             return $order;

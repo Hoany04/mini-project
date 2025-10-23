@@ -14,6 +14,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/client/img/favicon.ico') }}">
 
+    @yield('css')
     <!-- CSS
  ============================================ -->
     <!-- google fonts -->

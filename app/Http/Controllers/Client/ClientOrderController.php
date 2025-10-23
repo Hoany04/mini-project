@@ -5,16 +5,26 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Services\Client\ClientOrderService;
 use App\Services\OrderService;
+use App\Services\Client\ClientShippingService;
+use App\Services\Client\ShippingAddressService;
 use App\Repositories\OrderRepository;
 use Illuminate\Http\Request;
 
 class ClientOrderController extends Controller
 {
     protected $orderService;
+    protected $shippingService;
+    protected $addressService;
 
-    public function __construct(ClientOrderService $orderService)
+    public function __construct(
+        ClientOrderService $orderService, 
+        ClientShippingService $shippingService,
+        ShippingAddressService $addressService,
+        )
     {
         $this->orderService = $orderService;
+        $this->shippingService = $shippingService;
+        $this->addressService = $addressService;
     }
 
     public function index()
@@ -43,10 +53,16 @@ public function show($id)
 
     public function create()
     {
+        $userId = auth()->id();
+
+        $addresses = $this->addressService->getAddresses($userId);
+        $defaultAddress = $this->addressService->getDefaultAddress($userId);
+
+        $methods = $this->shippingService->getAvailableMethods();
         $user = auth()->user()->load('profile');
         $cart = app(\App\Services\Client\ClientCartService::class)
                 ->getCart(auth()->id());
-        return view('client.pages.checkout.order', compact('cart', 'user'));
+        return view('client.pages.checkout.order', compact('cart', 'user', 'methods', 'addresses', 'defaultAddress'));
     }
 
     public function success($id)
@@ -59,12 +75,18 @@ public function show($id)
     {
         $data = $request->validate([
             'paymentmethod' => 'required|string',
+            'shipping_address_id' => 'required|integer',
+            'shipping_method_id' => 'required|integer',
+            'delivery_note' => 'nullable|string|max:255',
         ]);
 
         $paymentMethod = \App\Models\PaymentMethod::where('name', $data['paymentmethod'])->first();
 
         $order = $this->orderService->create(auth()->id(), [
             'payment_method_id' => $paymentMethod->id ?? 1,
+            'shipping_address_id' => $data['shipping_address_id'],
+            'shipping_method_id' => $data['shipping_method_id'],
+            'delivery_note' => $data['delivery_note'] ?? null,
         ]);
 
         return redirect()->route('client.pages.checkout.success', $order->id)
