@@ -13,7 +13,7 @@ class ClientCouponService
      */
     public function applyCoupon($userId, string $couponCode)
     {
-        // 1. Lấy mã giảm giá
+        // Lấy mã giảm giá
         $coupon = Coupon::where('code', $couponCode)->first();
 
         if (!$coupon) {
@@ -22,27 +22,34 @@ class ClientCouponService
             ]);
         }
 
-        // 2. Kiểm tra trạng thái mã
+        // Kiểm tra trạng thái mã
         if ($coupon->status !== 'active') {
             throw ValidationException::withMessages([
                 'coupon' => 'Mã giảm giá không còn hiệu lực.',
             ]);
         }
 
-        // 3. Kiểm tra thời gian hiệu lực
+        // Kiểm tra thời gian hiệu lực
         $now = now();
         if ($coupon->start_date && $now->lt($coupon->start_date)) {
             throw ValidationException::withMessages([
                 'coupon' => 'Mã giảm giá chưa đến thời gian sử dụng.',
             ]);
         }
+        // 
+        if ($coupon->usage_limit !== null && $coupon->used_count >= $coupon->usage_limit) {
+            throw ValidationException::withMessages([
+                'coupon' => 'Mã giảm giá đã hết lượt sử dụng.',
+            ]);
+        }
+
         if ($coupon->end_date && $now->gt($coupon->end_date)) {
             throw ValidationException::withMessages([
                 'coupon' => 'Mã giảm giá đã hết hạn.',
             ]);
         }
 
-        // 4. Lấy giỏ hàng người dùng
+        // Lấy giỏ hàng người dùng
         $cart = Cart::with('items')->where('user_id', $userId)->first();
 
         if (!$cart || $cart->items->isEmpty()) {
@@ -51,17 +58,17 @@ class ClientCouponService
             ]);
         }
 
-        // 5. Tính tổng tiền giỏ hàng
+        // Tính tổng tiền giỏ hàng
         $cartTotal = $cart->items->sum(fn($item) => $item->price * $item->quantity);
 
-        // 6. Kiểm tra giá trị tối thiểu
+        // Kiểm tra giá trị tối thiểu
         if ($cartTotal < $coupon->min_order_value) {
             throw ValidationException::withMessages([
                 'coupon' => 'Giá trị đơn hàng chưa đủ điều kiện để áp dụng mã.',
             ]);
         }
 
-        // 7. Tính giảm giá
+        // Tính giảm giá
         $discount = 0;
         if ($coupon->discount_type === 'percent') {
             $discount = $cartTotal * ($coupon->discount_value / 100);
@@ -69,19 +76,19 @@ class ClientCouponService
             $discount = $coupon->discount_value;
         }
 
-        // 8. Giới hạn giảm tối đa
+        // Giới hạn giảm tối đa
         if ($coupon->max_discount && $discount > $coupon->max_discount) {
             $discount = $coupon->max_discount;
         }
 
-        // 9. Cập nhật giỏ hàng
+        // Cập nhật giỏ hàng
         $cart->update([
             'coupon_id' => $coupon->id,
             'discount' => $discount,
             'total_price' => $cartTotal - $discount,
         ]);
 
-        // 10. Tăng số lần sử dụng mã
+        //  Tăng số lần sử dụng mã
         $coupon->increment('used_count');
 
         return [
@@ -89,6 +96,7 @@ class ClientCouponService
             'message' => "Áp dụng mã {$coupon->code} thành công, giảm " . number_format($discount) . "đ!",
             'discount' => $discount,
             'new_total' => $cart->total_price,
+            'coupon' => $coupon,
         ];
     }
 }

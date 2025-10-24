@@ -16,12 +16,14 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\ClientProfileController;
 use App\Http\Controllers\Client\ClientProductController;
 use App\Http\Controllers\Client\ClientCartController;
 use App\Http\Controllers\Client\ClientOrderController;
 use App\Http\Controllers\Client\ClientCouponController;
 use App\Http\Controllers\Client\ClientShippingAddressController;
 use App\Http\Controllers\Client\ClientShippingController;
+use App\Http\Controllers\Client\StripePaymentController;
 use App\Http\Controllers\Client\AccountController;
 
 Route::get('/', function () {
@@ -178,6 +180,9 @@ Route::middleware(['auth'])
         //
         Route::get('/account', [AccountController::class, 'index'])->name('pages.account.index');
         //
+        Route::post('/account/profile/update', [ClientProfileController::class, 'update'])
+        ->name('pages.profile.update');
+        //
         Route::get('/products', [ClientProductController::class, 'index'])->name('pages.products.index');
         Route::get('/products/{id}', [ClientProductController::class, 'show'])->name('pages.products.detail');
         //
@@ -201,13 +206,11 @@ Route::middleware(['auth'])
         // routes/client.php
         Route::post('/addresses/store', [ClientShippingAddressController::class, 'store'])
         ->name('pages.addresses.store');
+        //
+        Route::get('/stripe/{order}', [StripePaymentController::class, 'create'])->name('pages.payment.create');
+        Route::post('/stripe/{order}', [StripePaymentController::class, 'store'])->name('pages.payment.store');
 
         //
-        Route::get('/checkout', [ClientShippingController::class, 'index'])->name('client.pages.checkout.order');
-    });
-
-    Route::middleware('auth')->prefix('payment')->name('payment.')->group(function () {
-        Route::get('/checkout/{orderId}', [ClientPaymentController::class, 'checkout'])->name('checkout');
-        Route::post('/process', [ClientPaymentController::class, 'process'])->name('process');
+        Route::get('/checkout', [ClientShippingController::class, 'index'])->name('pages.checkout.order');
     });
     

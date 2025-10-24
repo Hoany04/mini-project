@@ -275,8 +275,25 @@
                                 </div>
                                 <div class="custom-control custom-radio">
                                     <input type="radio" id="paypalpayment" name="paymentmethod" value="paypal" class="custom-control-input">
-                                    <label class="custom-control-label" for="paypalpayment">PayPal</label> <br>
+                                    <label class="custom-control-label" for="paypalpayment">Thanh toán qua ví điện tử</label> <br>
                                 </div>
+
+                                <div class="single-payment-method">
+                                    <div class="payment-method-name">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="stripe" name="paymentmethod" value="stripe" class="custom-control-input" />
+                                            <label class="custom-control-label" for="stripe">
+                                                Thanh toán qua Stripe 
+                                                <img src="{https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Stripe_logo%2C_revised_2016.svg/2560px-Stripe_logo%2C_revised_2016.svg.png}" 
+                                                     alt="Stripe" style="width:60px; margin-left:5px;">
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="payment-method-details" data-method="stripe">
+                                        <p>Thanh toán an toàn bằng thẻ Visa, Mastercard qua Stripe.</p>
+                                    </div>
+                                </div>
+                                
                                 
                                     <div class="custom-control custom-checkbox mb-20">
                                         <input type="checkbox" class="custom-control-input" id="terms" required />

@@ -29,9 +29,10 @@ class ClientCouponController extends Controller
 
         $result = $this->couponService->applyCoupon($userId, $couponCode);
 
-        // ✅ Lưu thông tin coupon vào session để hiển thị trên giao diện
+        // Lưu thông tin coupon vào session để hiển thị trên giao diện
         session([
             'coupon' => [
+                'id' => $result['coupon']->id ?? null,
                 'code' => $couponCode,
                 'discount' => $result['discount'],
                 'new_total' => $result['new_total'],

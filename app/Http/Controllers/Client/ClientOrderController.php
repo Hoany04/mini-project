@@ -82,12 +82,36 @@ public function show($id)
 
         $paymentMethod = \App\Models\PaymentMethod::where('name', $data['paymentmethod'])->first();
 
+        $coupon = session('coupon');
+
+        $cartService = app(\App\Services\Client\ClientCartService::class);
+        $cart = $cartService->getCart(auth()->id());
+        $cartTotal = $cart->items->sum(fn($item) => $item->price * $item->quantity);
+
+        // 
+        $shippingMethod = \App\Models\ShippingMethod::find($data['shipping_method_id']);
+        $shippingFee = $shippingMethod->fee ?? 0;
+
+        // 
+        $discountPercent = $coupon['discount_value'] ?? 0;
+        $discountAmount = $cartTotal * ($discountPercent / 100);
+        $finalTotal = $cartTotal - $discountAmount + $shippingFee;
+
+        $couponId = session('coupon.id') ?? null;
+
         $order = $this->orderService->create(auth()->id(), [
             'payment_method_id' => $paymentMethod->id ?? 1,
             'shipping_address_id' => $data['shipping_address_id'],
             'shipping_method_id' => $data['shipping_method_id'],
             'delivery_note' => $data['delivery_note'] ?? null,
+            'coupon_id' => $couponId,
         ]);
+
+        if ($data['paymentmethod'] === 'stripe') {
+            return redirect()->route('client.pages.payment.create', $order->id);
+        }
+
+        session()->forget('coupon');
 
         return redirect()->route('client.pages.checkout.success', $order->id)
                         ->with('success', 'Đơn hàng đã được đặt thành công');

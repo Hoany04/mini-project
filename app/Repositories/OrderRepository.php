@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\OrderShipping;
 class OrderRepository
 {
     /**
@@ -64,7 +65,9 @@ class OrderRepository
                 'items.product',
                 'items.variant',
                 'coupon',
-                'paymentTransactions.paymentMethod'
+                'paymentTransactions.paymentMethod',
+                'shipping.method',
+                'shipping.address'
             ])
             ->orderByDesc('created_at')
             ->get();
@@ -79,7 +82,9 @@ class OrderRepository
             'items.product',
             'items.variant',
             'coupon',
-            'paymentTransactions.paymentMethod'
+            'paymentTransactions.paymentMethod',
+            'shipping.method',
+            'shipping.address'
         ])->findOrFail($orderId);
     }
 
@@ -103,6 +108,13 @@ class OrderRepository
 
     public function findWithRelations($id)
     {
-        return Order::with(['items.product', 'paymentTransactions.paymentMethod'])->findOrFail($id);
+        return Order::with([
+            'items.product',
+            'items.variant',
+            'coupon',
+            'shipping.method',
+            'shipping.address',
+            'paymentTransactions.paymentMethod'
+        ])->findOrFail($id);
     }
 }

@@ -34,19 +34,25 @@
                         <div class="product-details-inner">
                             <div class="row">
                                 <div class="col-lg-5">
+                                    {{-- Ảnh lớn (slider chính) --}}
                                     <div class="product-large-slider">
-                                        <div class="pro-large-img img-zoom">
-                                            <img src="{{ asset('storage/' . $product->images->first()->image_url) }}"
-                                                alt="product-details" />
-                                        </div>
+                                        @foreach ($product->images as $image)
+                                            <div class="pro-large-img img-zoom">
+                                                <img src="{{ asset('storage/' . $image->image_url) }}" alt="product-details" />
+                                            </div>
+                                        @endforeach
                                     </div>
+                                
+                                    {{-- Ảnh nhỏ bên dưới (thumbnail navigation) --}}
                                     <div class="pro-nav slick-row-10 slick-arrow-style">
-                                        <div class="pro-nav-thumb">
-                                            <img src="{{ asset('storage/' . $product->images->first()->image_url) }}"
-                                                alt="product-details" />
-                                        </div>
+                                        @foreach ($product->images as $image)
+                                            <div class="pro-nav-thumb">
+                                                <img src="{{ asset('storage/' . $image->image_url) }}" alt="product-thumbnail" />
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
+                                
                                 <div class="col-lg-7">
                                     <div class="product-details-des">
                                         <div class="manufacturer-name">

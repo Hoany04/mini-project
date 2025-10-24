@@ -50,6 +50,7 @@
             @if($order->coupon)
                 <p><strong>Giảm giá ({{ $order->coupon->code }}):</strong> -{{ $order->coupon->discount_value }}%</p>
             @endif
+            <p><strong>Phí vận chuyển:</strong>{{ number_format($order->shipping->method->fee ?? 0) }}đ</p>
             <p><strong>Tổng thanh toán:</strong> {{ number_format($order->total_amount, 0, ',', '.') }}₫</p>
         </div>
     </div>

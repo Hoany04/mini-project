@@ -68,7 +68,7 @@
                     @if ($order->coupon)
                     <tr>
                         <th colspan="4" class="text-end">Giảm giá ({{ $order->coupon->code }}):</th>
-                        <th>-{{ $order->coupon->discount_value }}%</th>
+                        <th>-{{ $order->coupon->discount_value }}đ</th>
                     </tr>
                     @endif
                     <tr>

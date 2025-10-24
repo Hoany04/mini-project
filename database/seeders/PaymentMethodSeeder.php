@@ -12,6 +12,7 @@ class PaymentMethodSeeder extends Seeder
         DB::table('payment_methods')->insert([
             ['name' => 'COD (Thanh toán khi nhận hàng)', 'status' => 'active', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Chuyển khoản ngân hàng', 'status' => 'active', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'stripe', 'status' => 'active', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Ví Momo', 'status' => 'active', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }

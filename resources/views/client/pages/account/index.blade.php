@@ -38,9 +38,8 @@
                                             Orders</a>
                                         <a href="#download" data-bs-toggle="tab"><i class="fa fa-cloud-download"></i>
                                             Download</a>
-                                        <a href="#payment-method" data-bs-toggle="tab"><i class="fa fa-credit-card"></i>
-                                            Payment
-                                            Method</a>
+                                        <a href="#Edit-Profile" data-bs-toggle="tab"><i class="fa fa-credit-card"></i>
+                                            Profile</a>
                                         <a href="#address-edit" data-bs-toggle="tab"><i class="fa fa-map-marker"></i>
                                             address</a>
                                         <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i> Account
@@ -172,10 +171,61 @@
                                         <!-- Single Tab Content End -->
 
                                         <!-- Single Tab Content Start -->
-                                        <div class="tab-pane fade" id="payment-method" role="tabpanel">
+                                        {{-- <div class="tab-pane fade" id="payment-method" role="tabpanel">
                                             <div class="myaccount-content">
                                                 <h5>Payment Method</h5>
                                                 <p class="saved-message">You Can't Saved Your Payment Method yet.</p>
+                                            </div>
+                                        </div> --}}
+                                        <div class="tab-pane fade" id="Edit-Profile" role="tabpanel">
+                                            <div class="myaccount-content">
+                                                <h5>Edit Profile</h5>
+                                                {{-- <div class="tab-pane fade" id="payment-method" role="tabpanel"> --}}
+                                                    <div class="container mt-5">
+                                                        <h3 class="mb-4">Cập nhật hồ sơ cá nhân</h3>
+                                                
+                                                        @if(session('success'))
+                                                            <div class="alert alert-success">{{ session('success') }}</div>
+                                                        @endif
+                                                
+                                                        <form action="{{ route('client.pages.profile.update') }}" method="POST" enctype="multipart/form-data">
+                                                            @csrf
+                                                
+                                                            <div class="mb-3">
+                                                                <label for="phone" class="form-label">Số điện thoại</label>
+                                                                <input type="text" name="phone" id="phone" value="{{ old('phone', $profile->phone) }}" class="form-control">
+                                                            </div>
+                                                
+                                                            <div class="mb-3">
+                                                                <label for="address" class="form-label">Địa chỉ</label>
+                                                                <input type="text" name="address" id="address" value="{{ old('address', $profile->address) }}" class="form-control">
+                                                            </div>
+                                                
+                                                            <div class="mb-3">
+                                                                <label for="city" class="form-label">Thành phố</label>
+                                                                <input type="text" name="city" id="city" value="{{ old('city', $profile->city) }}" class="form-control">
+                                                            </div>
+                                                
+                                                            <div class="mb-3">
+                                                                <label for="country" class="form-label">Quốc gia</label>
+                                                                <input type="text" name="country" id="country" value="{{ old('country', $profile->country) }}" class="form-control">
+                                                            </div>
+                                                
+                                                            <div class="mb-3">
+                                                                <label for="avatar" class="form-label">Ảnh đại diện</label>
+                                                                <input type="file" name="avatar" id="avatar" class="form-control">
+                                                                @if($profile->avatar)
+                                                                    <img src="{{ asset('storage/' . $profile->avatar) }}" alt="Avatar" width="80" class="mt-2 rounded-circle">
+                                                                @endif
+                                                            </div>
+                                                
+                                                            <button type="submit" class="btn btn-primary">
+                                                                {{ $profile->exists ? 'Lưu thay đổi' : 'Tạo hồ sơ' }}
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                {{-- </div> --}}
+                                                
                                             </div>
                                         </div>
                                         <!-- Single Tab Content End -->
@@ -190,7 +240,7 @@
                                                     ,{{ old('city', $user->profile->city ?? '') }}</p>
                                                     <p>Mobile: {{ old('phone', $user->profile->phone ?? '') }}</p>
                                                 </address>
-                                                <a href="#" class="btn btn-sqr"><i class="fa fa-edit"></i>
+                                                <a href="" class="btn btn-sqr"><i class="fa fa-edit"></i>
                                                     Edit Address</a>
                                             </div>
                                         </div>
