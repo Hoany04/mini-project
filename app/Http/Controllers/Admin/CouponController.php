@@ -38,6 +38,10 @@ class CouponController extends Controller
     public function edit($id)
     {
         $coupon = $this->couponService->getCouponById($id);
+
+        if (!$coupon) {
+            return redirect()->route('admin.coupons.index')->with('error', 'Ma giam gia khong ton tai');
+        }
         return view('admin.coupons.edit', compact('coupon'));
     }
 

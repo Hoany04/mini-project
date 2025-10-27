@@ -2,6 +2,9 @@
 
 @section('content')
 <div class="container py-5">
+    @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
     <div class="text-center mb-5">
         <h2 class="text-success">🎉 Đặt hàng thành công!</h2>
         <p>Cảm ơn bạn đã mua hàng cùng chúng tôi.</p>

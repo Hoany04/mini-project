@@ -28,26 +28,26 @@ class ClientOrderController extends Controller
     }
 
     public function index()
-{
-    $orders = \App\Models\Order::where('user_id', auth()->id())
-        ->with(['items.product.images', 'paymentTransactions.paymentMethod', 'coupon'])
-        ->orderByDesc('created_at')
-        ->get();
+    {
+        $orders = \App\Models\Order::where('user_id', auth()->id())
+            ->with(['items.product.images', 'paymentTransactions.paymentMethod', 'coupon'])
+            ->orderByDesc('created_at')
+            ->get();
 
-    return view('client.pages.checkout.index', compact('orders'));
-}
+        return view('client.pages.checkout.index', compact('orders'));
+    }
 
-public function show($id)
-{
-    $order = \App\Models\Order::with([
-        'items.product.images',
-        'items.variant',
-        'paymentTransactions.paymentMethod',
-        'coupon'
-    ])->where('user_id', auth()->id())->findOrFail($id);
+    public function show($id)
+    {
+        $order = \App\Models\Order::with([
+            'items.product.images',
+            'items.variant',
+            'paymentTransactions.paymentMethod',
+            'coupon'
+        ])->where('user_id', auth()->id())->findOrFail($id);
 
-    return view('client.pages.checkout.show', compact('order'));
-}
+        return view('client.pages.checkout.show', compact('order'));
+    }
 
 
 
@@ -68,6 +68,10 @@ public function show($id)
     public function success($id)
     {
         $order = $this->orderService->findWithRelations($id);
+        
+        if(!$order) {
+            return redirect()->route('client.pages.checkout.index')->with('error', 'Don hang khong ton tai');
+        }
         return view('client.pages.checkout.success', compact('order'));
     }
 
@@ -109,6 +113,10 @@ public function show($id)
 
         if ($data['paymentmethod'] === 'stripe') {
             return redirect()->route('client.pages.payment.create', $order->id);
+        }
+
+        if ($order instanceof \Illuminate\Http\RedirectResponse) {
+            return $order;
         }
 
         session()->forget('coupon');

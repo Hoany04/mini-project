@@ -60,6 +60,10 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = $this->categoryService->getCategoryById($id);
+
+        if(!$category) {
+            return redirect()->route('admin.categorys.index')->with('error', 'Danh muc khong ton tai');
+        }
         $parentCategories = $this->categoryService->getParentCategories();
         return view('admin.categorys.edit', compact('parentCategories', 'category'));
     }

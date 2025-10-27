@@ -23,7 +23,11 @@ class ClientProductController extends Controller
     {
         $product = Product::with(['images', 'variants', 'reviews.user'])
         ->where('status', 'active')
-        ->findOrFail($id);
+        ->find($id);
+
+        if (!$product) {
+            return redirect()->route('client.pages.products.index')->with('error', 'San pham khong ton tai');
+        }
 
     // Gom nhóm biến thể theo tên (vd: màu sắc, kích thước)
         $groupedVariants = $product->variants->groupBy('variant_name');

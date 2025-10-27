@@ -4,6 +4,10 @@
     <div class="container mt-4 card">
         <h2>List Category</h2>
 
+        @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+
         <form method="GET" action="{{ route('admin.categorys.index') }}" class="row g-2 mb-3">
             <div class="col-md-4">
                 <input type="text" name="search" class="form-control" placeholder="Tìm theo tên..."

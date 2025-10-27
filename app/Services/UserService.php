@@ -59,6 +59,6 @@ class UserService
     // Lấy user chi tiết
     public function getUserById($id)
     {
-        return $this->userRepo->findById($id);
+        return $this->userRepo->findById($id, false);
     }
 }

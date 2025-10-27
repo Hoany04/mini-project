@@ -62,6 +62,10 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = $this->userService->getUserById($id);
+
+        if(!$user) {
+            return redirect()->route('admin.users.index')->with('error', 'User không tồn tại!');
+        }
         $roles = Role::all();
         return view('admin.users.edit', compact('user', 'roles'));
     }

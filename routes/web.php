@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Admin\AccessLogController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserProfileController;
@@ -30,26 +31,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/admin/home', function () {
-//     return view('admin.home');
-// })->middleware('auth');
-
-// Route::get('/user', function() {
-//     return 'Day la trang nguoi dung';
-// })->middleware(['auth', 'auth.user']);
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/admin/home', function() {
-//         return view('admin.home');
-//     });
-
-//     Route::middleware('auth.user')->group(function () {
-//         Route::get('/client/home', function() {
-//             return view('client.home');
-//         });
-//     });
-// });
-
 Route::prefix('admin')->group(function () {
     Route::resource('roles', RoleController::class);
     // Route::resource('users', UserController::class);
@@ -77,6 +58,8 @@ Route::middleware(['auth'])->prefix('admin')
 ->group(function () {
     Route::get('/home', fn() => view('admin.home'))
     ->name('home');
+
+    Route::get('access-logs', [AccessLogController::class, 'index'])->name('access-logs.index');
 
     Route::prefix('users')
     ->as('users.')

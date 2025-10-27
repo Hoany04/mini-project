@@ -23,7 +23,7 @@ class ProductService
 
     public function getProductById($id)
     {
-        return $this->productRepo->findById($id);
+        return $this->productRepo->findById($id, false);
     }
 
     public function createProduct(array $data) 

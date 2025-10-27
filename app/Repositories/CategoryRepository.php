@@ -20,9 +20,10 @@ class CategoryRepository
         return $query->orderBy('id', 'desc')->paginate(10);
     }
 
-    public function findById($id) 
+    public function findById($id, $throw = true) 
     {
-        return Category::findOrFail($id);
+        $query = Category::query();
+        return $throw ? $query->findOrFail($id) : $query->find($id);
     }
 
     public function create(array $data)

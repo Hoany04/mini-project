@@ -27,9 +27,10 @@ class ProductRepository
         return $query->paginate(10);
     }
 
-    public function findById($id) 
+    public function findById($id, $throw = true) 
     {
-        return Product::findOrFail($id);
+        $query = Product::with(['category', 'user', 'mainImage']);
+        return $throw ? $query->findOrFail($id) : $query->find($id);
     }
 
     public function create(array $data)

@@ -4,6 +4,10 @@
 <div class="container py-5">
     <h2 class="mb-4">🧾 Lịch sử đơn hàng</h2>
 
+    @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+    
     @if($orders->isEmpty())
         <div class="alert alert-info text-center">
             Bạn chưa có đơn hàng nào.

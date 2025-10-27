@@ -1,6 +1,7 @@
 <?php
 namespace App\Services\Client;
 
+use App\Models\OrderItem;
 use App\Models\OrderShipping;
 use App\Models\ShippingMethod;
 use App\Repositories\OrderRepository;
@@ -30,7 +31,7 @@ class ClientOrderService
 
     public function findWithRelations($id)
     {
-        return $this->orderRepo->findWithRelations($id);
+        return $this->orderRepo->findWithRelations($id, false);
     }
 
     public function create($userId, $data)
@@ -39,7 +40,9 @@ class ClientOrderService
             // Lấy giỏ hàng hiện tại
             $cart = $this->cartRepo->getUserCart($userId);
             if (!$cart || $cart->items->isEmpty()) {
-                throw new \Exception('Giỏ hàng trống!');
+                return redirect()
+                    ->route('client.pages.cart.index')
+                    ->with('error', 'Giỏ hàng trống, vui lòng thêm sản phẩm trước khi thanh toán!');
             }
 
             // Tính tổng giá trị giỏ hàng
@@ -64,16 +67,20 @@ class ClientOrderService
             ]);
 
             // Tạo chi tiết đơn hàng
+            $orderItems = [];
+
             foreach ($cart->items as $item) {
-                $this->orderItemRepo->create([
+                $orderItems[] = [
                     'order_id' => $order->id,
                     'product_id' => $item->product_id,
                     'variant_id' => $item->variant_id ?? null,
                     'variant_text' => $item->variant_text,
                     'quantity' => $item->quantity,
                     'price' => $item->price,
-                ]);
+                ];
             }
+
+            OrderItem::insert($orderItems);
 
             // Tạo thông tin vận chuyển (nếu có)
             if (!empty($data['shipping_address_id']) && !empty($data['shipping_method_id'])) {

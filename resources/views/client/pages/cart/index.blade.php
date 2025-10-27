@@ -21,6 +21,10 @@
             </div>
         </div>
     </div>
+    @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+
     <!-- breadcrumb area end -->
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>

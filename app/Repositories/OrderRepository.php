@@ -106,15 +106,16 @@ class OrderRepository
         return Order::where('id', $orderId)->delete();
     }
 
-    public function findWithRelations($id)
+    public function findWithRelations($id, $throw = true)
     {
-        return Order::with([
+        $query = Order::with([
             'items.product',
             'items.variant',
             'coupon',
             'shipping.method',
             'shipping.address',
             'paymentTransactions.paymentMethod'
-        ])->findOrFail($id);
+        ]);
+        return $throw ? $query->findOrFail($id) : $query->find($id);
     }
 }

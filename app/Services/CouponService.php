@@ -24,7 +24,7 @@ class CouponService
 
     public function getCouponById($id)
     {
-        return $this->couponRepo->findById($id);
+        return $this->couponRepo->findById($id, false);
     }
 
     public function createCoupon(array $data)

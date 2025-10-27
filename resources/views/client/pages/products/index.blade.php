@@ -1,7 +1,10 @@
 @extends('layouts.ClientLayout')
 
 @section('content')
-    
+    @if(session('error'))
+    <div class="alert alert-danger">{{ session('error') }}</div>
+@endif
+
 <main>
     <!-- breadcrumb area start -->
     <div class="breadcrumb-area">

@@ -25,9 +25,10 @@ class CouponRepository
         return $query->orderByDesc('id')->paginate(10);
     }
 
-    public function findById($id)
+    public function findById($id, $throw = true)
     {
-        return Coupon::findOrFail($id);
+        $query = Coupon::query();
+        return $throw ? $query->findOrFail($id) : $query->find($id);
     }
 
     public function create(array $data)

@@ -64,6 +64,10 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = $this->productService->getProductById($id);
+
+        if (!$product) {
+            return redirect()->route('admin.products.index')->with('error', 'San pham khong tai');
+        }
         $categories = Category::all();
         return view('admin.products.edit', compact('product', 'categories'));
     }

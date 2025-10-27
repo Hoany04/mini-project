@@ -25,7 +25,7 @@ class CategoryService
 
     public function getCategoryById($id)
     {
-        return $this->categoryRepo->findById($id);
+        return $this->categoryRepo->findById($id, false);
     }
 
     public function createCategory(array $data)

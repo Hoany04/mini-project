@@ -4,6 +4,14 @@
     <div class="container mt-4 card">
         <h2>List users</h2>
 
+        @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+
         <form method="get" action="{{ route('admin.users.index') }}" class="row g-2 mb-3">
             <div class="col-md-4">
                 <input type="text" name="search" value="{{ request('search') }}" class="form-control" placeholder="Tim theo ten hoac email">

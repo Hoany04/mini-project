@@ -55,8 +55,9 @@ class UserRepository
     }
 
     // Lấy user theo ID
-    public function findById($id)
+    public function findById($id, $throw = true)
     {
-        return User::with('role', 'profile')->findOrFail($id);
+        $query =  User::with('role', 'profile');
+        return $throw ? $query->findOrFail($id) : $query->find($id);
     }
 }
