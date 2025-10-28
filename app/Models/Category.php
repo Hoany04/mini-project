@@ -9,7 +9,7 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'parent_id', 'created_by'];
+    protected $fillable = ['name', 'slug', 'description', 'parent_id', 'created_by'];
 
     public function parent(){
         return $this->belongsTo(Category::class, 'parent_id');
@@ -26,5 +26,13 @@ class Category extends Model
 
     public function products(){
         return $this->hasMany(Product::class);
+    }
+    protected static function booted()
+    {
+        static::creating(function ($category) {
+            if (empty($category->slug)) {
+                $category->slug = Str::slug($category->name);
+            }
+        });
     }
 }

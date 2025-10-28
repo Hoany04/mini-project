@@ -71,10 +71,10 @@
                             </span>
                         </td>
                         <td>
-                            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-warning">✏️</a>
                             <form action="{{ route('admin.users.destroy', $user->id) }}" method="post" class="d-inline">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this user?')">Delete</button>
+                                <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this user?')">🗑️</button>
                             </form>
                         </td>
                     </tr>

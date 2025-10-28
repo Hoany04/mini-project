@@ -60,13 +60,28 @@
                                         </div>
                                         <h3 class="product-name">{{ $product->name }}</h3>
                                         <div class="ratings d-flex">
-                                            <span><i class="fa fa-star-o"></i></span>
-                                            <span><i class="fa fa-star-o"></i></span>
-                                            <span><i class="fa fa-star-o"></i></span>
-                                            <span><i class="fa fa-star-o"></i></span>
-                                            <span><i class="fa fa-star-o"></i></span>
+                                            @php
+                                                $avg = $product->average_rating;
+                                                $fullStars = floor($avg);
+                                                $halfStar = ($avg - $fullStars) >= 0.5;
+                                            @endphp
+
+                                           {{-- Sao trung bình --}}
+                                            @for($i = 1; $i <= 5; $i++)
+                                                @if($i <= $fullStars)
+                                                    <span class="good"><i class="fa fa-star"></i></span>
+                                                @elseif($halfStar && $i == $fullStars + 1)
+                                                    <span class="good"><i class="fa fa-star-half-o"></i></span>
+                                                @else
+                                                    <span><i class="fa fa-star-o"></i></span>
+                                                @endif
+                                            @endfor
                                             <div class="pro-review">
-                                                <span>1 Reviews</span>
+                                                {{-- Số điểm & số lượt đánh giá --}}
+                                                <span class="ms-2">
+                                                    <strong>{{ $avg }}</strong> / 5
+                                                    ({{ $product->total_approved_reviews }} đánh giá)
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="price-box">
@@ -144,8 +159,8 @@
                                             </div>
                                         
                                             {{-- Nút thêm --}}
-                                            <button type="submit" class="btn btn-primary mt-4">
-                                                <i class="fa fa-cart-plus"></i> Thêm vào giỏ hàng
+                                            <button type="submit" class="mt-3 action_link">
+                                                <a class="btn btn-cart2">Thêm vào giỏ hàng</a>
                                             </button>
                                         </form>
                                                                                 
@@ -182,7 +197,7 @@
                                                 <a data-bs-toggle="tab" href="#tab_two">information</a>
                                             </li>
                                             <li>
-                                                <a data-bs-toggle="tab" href="#tab_three">reviews (1)</a>
+                                                <a data-bs-toggle="tab" href="#tab_three">reviews {{ $product->reviews->count() }}</a>
                                             </li>
                                         </ul>
                                         <div class="tab-content reviews-tab">
@@ -215,81 +230,81 @@
                                                 </table>
                                             </div>
                                             <div class="tab-pane fade" id="tab_three">
-                                                <form action="#" class="review-form">
-                                                    <h5>1 review for <span>Chaz Kangeroo</span></h5>
-                                                    <div class="total-reviews">
-                                                        <div class="rev-avatar">
-                                                            <img src="assets/img/about/avatar.jpg" alt="">
-                                                        </div>
-                                                        <div class="review-box">
-                                                            <div class="ratings">
-                                                                <span class="good"><i class="fa fa-star"></i></span>
-                                                                <span class="good"><i class="fa fa-star"></i></span>
-                                                                <span class="good"><i class="fa fa-star"></i></span>
-                                                                <span class="good"><i class="fa fa-star"></i></span>
-                                                                <span><i class="fa fa-star"></i></span>
+                                                @if(session('success'))
+                                                    <div class="alert alert-success">{{ session('success') }}</div>
+                                                @endif
+                                                <div class="review-form">
+                                                    <h5>{{ $product->reviews->count() }} đánh giá cho 
+                                                        <span>{{ $product->name }}</span>
+                                                    </h5>
+                                            
+                                                    {{-- Danh sách đánh giá --}}
+                                                    @foreach($product->reviews as $review)
+                                                        <div class="total-reviews mb-4">
+                                                            <div class="rev-avatar">
+                                                                <img src="{{ asset('assets/client/img/about/avatar.jpg') }}" alt="user avatar">
                                                             </div>
-                                                            <div class="post-author">
-                                                                <p><span>admin -</span> 30 Mar, 2019</p>
-                                                            </div>
-                                                            <p>Aliquam fringilla euismod risus ac bibendum. Sed sit
-                                                                amet sem varius ante feugiat lacinia. Nunc ipsum nulla,
-                                                                vulputate ut venenatis vitae, malesuada ut mi. Quisque
-                                                                iaculis, dui congue placerat pretium, augue erat
-                                                                accumsan lacus</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <div class="col">
-                                                            <label class="col-form-label"><span
-                                                                    class="text-danger">*</span>
-                                                                Your Name</label>
-                                                            <input type="text" class="form-control" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <div class="col">
-                                                            <label class="col-form-label"><span
-                                                                    class="text-danger">*</span>
-                                                                Your Email</label>
-                                                            <input type="email" class="form-control" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <div class="col">
-                                                            <label class="col-form-label"><span
-                                                                    class="text-danger">*</span>
-                                                                Your Review</label>
-                                                            <textarea class="form-control" required></textarea>
-                                                            <div class="help-block pt-10"><span
-                                                                    class="text-danger">Note:</span>
-                                                                HTML is not translated!
+                                                            <div class="review-box">
+                                                                <div class="ratings">
+                                                                    @php
+                                                                        $rating = (int) $review->rating; // ép kiểu về integer
+                                                                    @endphp
+                                                                    @for($i = 1; $i <= 5; $i++)
+                                                                        @if($i <= $rating)
+                                                                            <span class="good"><i class="fa fa-star"></i></span>
+                                                                        @else
+                                                                            <span><i class="fa fa-star-o"></i></span>
+                                                                        @endif
+                                                                    @endfor
+                                                                </div>
+                                                                
+                                                                <div class="post-author">
+                                                                    <p>
+                                                                        <span>{{ $review->user->username ?? 'Người dùng' }} -</span>
+                                                                        {{ $review->created_at->format('d M, Y') }}
+                                                                    </p>
+                                                                </div>
+                                                                <p>{{ $review->comment }}</p>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <div class="col">
-                                                            <label class="col-form-label"><span
-                                                                    class="text-danger">*</span>
-                                                                Rating</label>
-                                                            &nbsp;&nbsp;&nbsp; Bad&nbsp;
-                                                            <input type="radio" value="1" name="rating">
-                                                            &nbsp;
-                                                            <input type="radio" value="2" name="rating">
-                                                            &nbsp;
-                                                            <input type="radio" value="3" name="rating">
-                                                            &nbsp;
-                                                            <input type="radio" value="4" name="rating">
-                                                            &nbsp;
-                                                            <input type="radio" value="5" name="rating" checked>
-                                                            &nbsp;Good
-                                                        </div>
-                                                    </div>
-                                                    <div class="buttons">
-                                                        <button class="btn btn-sqr" type="submit">Continue</button>
-                                                    </div>
-                                                </form> <!-- end of review-form -->
+                                                    @endforeach
+                                            
+                                                    {{-- Form thêm đánh giá --}}
+                                                    @auth
+                                                        <form action="{{ route('client.pages.products.reviews.store', $product->id) }}" method="POST">
+                                                            @csrf
+                                                            <div class="form-group row">
+                                                                <div class="col">
+                                                                    <label class="col-form-label"><span class="text-danger">*</span> Đánh giá của bạn</label>
+                                                                    <textarea name="comment" class="form-control" required></textarea>
+                                                                    <div class="help-block pt-10">
+                                                                        <span class="text-danger">Lưu ý:</span> Không hỗ trợ HTML trong nội dung.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                            
+                                                            <div class="form-group row">
+                                                                <div class="col">
+                                                                    <label class="col-form-label"><span class="text-danger">*</span> Điểm đánh giá</label>
+                                                                    &nbsp;&nbsp;&nbsp; Tệ&nbsp;
+                                                                    @for($i = 1; $i <= 5; $i++)
+                                                                        <input type="radio" value="{{ $i }}" name="rating" {{ $i == 5 ? 'checked' : '' }}>
+                                                                        &nbsp;
+                                                                    @endfor
+                                                                    Tốt
+                                                                </div>
+                                                            </div>
+                                            
+                                                            <div class="buttons">
+                                                                <button class="btn btn-sqr" type="submit">Gửi đánh giá</button>
+                                                            </div>
+                                                        </form>
+                                                    @else
+                                                        <p>Bạn cần <a href="{{ route('login') }}">đăng nhập</a> để gửi đánh giá.</p>
+                                                    @endauth
+                                                </div> <!-- end of review-form -->
                                             </div>
+                                            
                                         </div>
                                     </div>
                                 </div>

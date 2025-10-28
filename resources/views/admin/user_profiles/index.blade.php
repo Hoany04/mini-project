@@ -35,8 +35,8 @@
                             @endif
                         </td>
                         <td>
-                            <a href="btn btn-sm btn-waring">Edit</a>
-                            <a href="btn btn-sm btn-danger">Delete</a>
+                            <a href="btn btn-sm btn-waring">✏️</a>
+                            <a href="btn btn-sm btn-danger">🗑️</a>
                         </td>
                     </tr>
                 @endforeach

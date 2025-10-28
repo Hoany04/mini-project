@@ -33,7 +33,7 @@
                         <form action="{{ route('admin.product_reviews.destroy', $review->id) }}" method="POST" onsubmit="return confirm('Bạn chắc muốn xóa đánh giá này?')">
                             @csrf
                             @method('DELETE')
-                            <button class="btn btn-sm btn-danger">Xóa</button>
+                            <button class="btn btn-sm btn-danger">🗑️</button>
                         </form>
                     </td>
                 </tr>

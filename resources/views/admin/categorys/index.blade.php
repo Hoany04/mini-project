@@ -46,11 +46,11 @@
                         <td class="text-start">{{ Str::limit($item->description, 40) }}</td>
                         <td>{{ $item->created_at->format('d/m/Y') }}</td>
                         <td>
-                            <a href="{{ route('admin.categorys.edit', $item->id) }}" class="btn btn-sm btn-warning">Sửa</a>
+                            <a href="{{ route('admin.categorys.edit', $item->id) }}" class="btn btn-sm btn-warning">✏️</a>
                             <form method="POST" action="{{ route('admin.categorys.destroy', $item->id) }}"
                                 class="d-inline" onsubmit="return confirm('Bạn chắc chắn muốn xóa danh mục này?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger">Xóa</button>
+                                <button class="btn btn-sm btn-danger">🗑️</button>
                             </form>
                         </td>
                     </tr>

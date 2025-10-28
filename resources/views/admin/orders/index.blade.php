@@ -20,6 +20,9 @@
                 @endforeach
             </select>
         </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100">Lọc</button>
+        </div>
     </form>
 
     <table class="table table-bordered align-middle">
@@ -53,10 +56,10 @@
                     </td>
                     <td>{{ $order->created_at->format('d/m/Y H:i') }}</td>
                     <td>
-                        <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-sm btn-primary">Xem</a>
+                        <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-sm btn-primary">👁️</a>
                         <form method="POST" action="{{ route('admin.orders.destroy', $order->id) }}" class="d-inline">
                             @csrf @method('DELETE')
-                            <button onclick="return confirm('Xóa đơn hàng này?')" class="btn btn-sm btn-danger">Xóa</button>
+                            <button onclick="return confirm('Xóa đơn hàng này?')" class="btn btn-sm btn-danger">🗑️</button>
                         </form>
                     </td>
                 </tr>

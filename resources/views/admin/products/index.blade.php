@@ -102,14 +102,14 @@
                         <td>{{ $product->user?->username ?? 'N/A' }}</td>
                         <td>
                             <a href="{{ route('admin.product_variants.index', $product->id) }}" class="btn btn-sm btn-info">
-                                Biến thể
+                                👁️
                             </a>
                             <a href="{{ route('admin.products.edit', $product->id) }}"
-                                class="btn btn-sm btn-warning">Sửa</a>
+                                class="btn btn-sm btn-warning">✏️</a>
                             <form method="POST" action="{{ route('admin.products.destroy', $product->id) }}"
                                 class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger">Xóa</button>
+                                <button class="btn btn-sm btn-danger">🗑️</button>
                             </form>
                         </td>
                     </tr>

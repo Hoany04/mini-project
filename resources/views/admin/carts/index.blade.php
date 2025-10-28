@@ -28,10 +28,10 @@
                     <td>{{ number_format($cart->items->sum(fn($i) => $i->price * $i->quantity)) }}₫</td>
                     <td>{{ $cart->updated_at->format('d/m/Y H:i') }}</td>
                     <td>
-                        <a href="{{ route('admin.carts.show', $cart->id) }}" class="btn btn-sm btn-primary">Chi tiết</a>
+                        <a href="{{ route('admin.carts.show', $cart->id) }}" class="btn btn-sm btn-primary">👁️</a>
                         <form method="POST" action="{{ route('admin.carts.destroy', $cart->id) }}" class="d-inline">
                             @csrf @method('DELETE')
-                            <button onclick="return confirm('Xóa giỏ hàng này?')" class="btn btn-sm btn-danger">Xóa</button>
+                            <button onclick="return confirm('Xóa giỏ hàng này?')" class="btn btn-sm btn-danger">🗑️</button>
                         </form>
                     </td>
                 </tr>

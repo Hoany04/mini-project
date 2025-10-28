@@ -25,10 +25,10 @@
                     <td>{{ number_format($v->extra_price) }}₫</td>
                     <td>{{ $v->stock }}</td>
                     <td>
-                        <a href="{{ route('admin.product_variants.edit', [$product->id, $v->id]) }}" class="btn btn-warning btn-sm">Sửa</a>
+                        <a href="{{ route('admin.product_variants.edit', [$product->id, $v->id]) }}" class="btn btn-warning btn-sm">✏️</a>
                         <form action="{{ route('admin.product_variants.destroy', [$product->id, $v->id]) }}" method="POST" style="display:inline">
                             @csrf @method('DELETE')
-                            <button class="btn btn-danger btn-sm" onclick="return confirm('Xóa biến thể này?')">Xóa</button>
+                            <button class="btn btn-danger btn-sm" onclick="return confirm('Xóa biến thể này?')">🗑️</button>
                         </form>
                     </td>
                 </tr>

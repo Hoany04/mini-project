@@ -18,7 +18,9 @@ use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ClientProfileController;
+use App\Http\Controllers\Client\ClientCategoryController;
 use App\Http\Controllers\Client\ClientProductController;
+use App\Http\Controllers\Client\ClientProductReviewController;
 use App\Http\Controllers\Client\ClientCartController;
 use App\Http\Controllers\Client\ClientOrderController;
 use App\Http\Controllers\Client\ClientCouponController;
@@ -166,8 +168,12 @@ Route::middleware(['auth'])
         Route::post('/account/profile/update', [ClientProfileController::class, 'update'])
         ->name('pages.profile.update');
         //
+        Route::get('/category/{slug}', [ClientCategoryController::class, 'show'])->name('pages.category.show');
+        //
         Route::get('/products', [ClientProductController::class, 'index'])->name('pages.products.index');
         Route::get('/products/{id}', [ClientProductController::class, 'show'])->name('pages.products.detail');
+        //
+        Route::post('/products/{id}/reviews', [ClientProductReviewController::class, 'store'])->name('pages.products.reviews.store')->middleware('auth');
         //
         Route::get('/cart', [ClientCartController::class, 'index'])->name('pages.cart.index');
         Route::post('/cart', [ClientCartController::class, 'store'])->name('pages.cart.store');

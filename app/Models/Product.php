@@ -24,6 +24,21 @@ class Product extends Model
         'total_review'
     ];
 
+    public function getAverageRatingAttribute()
+    {
+        if ($this->reviews()->count() == 0) {
+            return 0;
+        }
+
+        return round($this->reviews()
+            ->avg('rating'), 1);
+    }
+
+    public function getTotalApprovedReviewsAttribute()
+    {
+        return $this->reviews()->count();
+    }
+
     public function category() {
         return $this->belongsTo(Category::class);
     }

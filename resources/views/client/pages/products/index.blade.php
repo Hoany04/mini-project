@@ -34,18 +34,39 @@
                     <aside class="sidebar-wrapper">
                         <!-- single sidebar start -->
                         <div class="sidebar-single">
-                            <h5 class="sidebar-title">categories</h5>
+                            <h5 class="sidebar-title">Danh mục</h5>
+                            @if(isset($category))
+                                <div class="mb-3">
+                                    <h4>Sản phẩm thuộc danh mục: <strong>{{ $category->name }}</strong></h4>
+                                </div>
+                            @endif
                             <div class="sidebar-body">
                                 <ul class="shop-categories">
-                                    <li><a href="#">fashionware <span>(10)</span></a></li>
-                                    <li><a href="#">kitchenware <span>(5)</span></a></li>
-                                    <li><a href="#">electronics <span>(8)</span></a></li>
-                                    <li><a href="#">accessories <span>(4)</span></a></li>
-                                    <li><a href="#">shoe <span>(5)</span></a></li>
-                                    <li><a href="#">toys <span>(2)</span></a></li>
+                                    @foreach($categories as $cat)
+                                        <li>
+                                            <a href="{{ route('client.pages.category.show', $cat->slug) }}">
+                                                {{ $cat->name }}
+                                                <span>({{ $cat->products_count }})</span>
+                                            </a>
+                        
+                                            @if($cat->children->count() > 0)
+                                                <ul class="ms-3">
+                                                    @foreach($cat->children as $child)
+                                                        <li>
+                                                            <a href="{{ route('client.pages.category.show', $child->slug) }}">
+                                                                {{ $child->name }}
+                                                                <span>({{ $child->products->count() }})</span>
+                                                            </a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
+                        
                         <!-- single sidebar end -->
 
                         <!-- single sidebar start -->
@@ -243,8 +264,8 @@
                                 <div class="product-item">
                                     <figure class="product-thumb">
                                         <a href="{{ route('client.pages.products.detail', $product->id) }}">
-                                            <img class="pri-img" src="{{ asset('storage/' .$product->images->first()->image_url) }}" alt="product">
-                                            <img class="sec-img" src="{{ asset('storage/' .$product->images->first()->image_url) }}" alt="product">
+                                            <img class="pri-img" src="{{ asset('storage/' .$product->images->first()->image_url) }}" width="80" height="200" alt="product">
+                                            <img class="sec-img" src="{{ asset('storage/' .$product->images->first()->image_url) }}" width="80" height="200" alt="product">
                                         </a>
                                         <div class="product-badge">
                                             <div class="product-label new">
@@ -296,8 +317,8 @@
                                 <div class="product-list-item">
                                     <figure class="product-thumb">
                                         <a href="{{ route('client.pages.products.detail', $product->id) }}">
-                                            <img class="pri-img" src="{{ asset('storage/' .$product->images->first()->image_url) }}" alt="product">
-                                            <img class="sec-img" src="{{ asset('storage/' .$product->images->first()->image_url) }}" alt="product">
+                                            <img class="pri-img" src="{{ asset('storage/' .$product->images->first()->image_url) }}" width="80" height="200" alt="product">
+                                            <img class="sec-img" src="{{ asset('storage/' .$product->images->first()->image_url) }}" width="80" height="200" alt="product">
                                         </a>
                                         <div class="product-badge">
                                             <div class="product-label new">
@@ -482,7 +503,7 @@
 <!-- Quick view modal end -->
 
 <!-- offcanvas mini cart start -->
-<div class="offcanvas-minicart-wrapper">
+{{-- <div class="offcanvas-minicart-wrapper">
     <div class="minicart-inner">
         <div class="offcanvas-overlay"></div>
         <div class="minicart-inner-content">
@@ -557,6 +578,6 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <!-- offcanvas mini cart end -->
 @endsection
