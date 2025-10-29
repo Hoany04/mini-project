@@ -15,6 +15,7 @@ class OrderShipping extends Model
         'order_id',
         'shipping_method_id',
         'shipping_address_id',
+        'shipping_fee',
         'tracking_number',
         'delivery_note',
         'status',
@@ -31,6 +32,16 @@ class OrderShipping extends Model
     }
 
     public function address() {
+        return $this->belongsTo(ShippingAddress::class, 'shipping_address_id');
+    }
+
+    public function shippingMethod()
+    {
+        return $this->belongsTo(ShippingMethod::class, 'shipping_method_id');
+    }
+
+    public function shippingAddress()
+    {
         return $this->belongsTo(ShippingAddress::class, 'shipping_address_id');
     }
 }

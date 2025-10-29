@@ -39,12 +39,14 @@ class ClientProductController extends Controller
 
         $averageRating = $product->reviews->avg('rating') ?? 0;
 
+        $reviews = $product->reviews()->where('is_visible', true)->with('user')->latest()->get();
+
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $id)
             ->where('status', 'active')
             ->take(4)
             ->get();
 
-        return view('client.pages.products.detail', compact('product', 'groupedVariants', 'averageRating', 'relatedProducts'));
+        return view('client.pages.products.detail', compact('product', 'groupedVariants', 'averageRating', 'relatedProducts', 'reviews'));
     }
 }

@@ -242,7 +242,7 @@
       </li>
       <!-- e-commerce-app menu end -->
       <!-- Academy menu start -->
-      <li class="menu-item">
+      {{-- <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class='menu-icon tf-icons bx bx-book-open'></i>
           <div data-i18n="Academy">Academy</div>
@@ -264,9 +264,9 @@
             </a>
           </li>
         </ul>
-      </li>
+      </li> --}}
       <!-- Academy menu end -->
-      <li class="menu-item">
+      {{-- <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class='menu-icon tf-icons bx bx-car'></i>
           <div data-i18n="Logistics">Logistics</div>
@@ -312,7 +312,7 @@
             </a>
           </li>
         </ul>
-      </li>
+      </li> --}}
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-user"></i>
@@ -341,13 +341,13 @@
                 </a>
               </li>
               <li class="menu-item">
-                <a href="app-user-view-billing.html" class="menu-link">
-                  <div data-i18n="Billing & Plans">Billing & Plans</div>
+                <a href="{{ route('admin.access-logs.index') }}" class="menu-link">
+                  <div data-i18n="Ghi Logs">Ghi Logs</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="app-user-view-notifications.html" class="menu-link">
-                  <div data-i18n="Notifications">Notifications</div>
+                <a href="{{ route('admin.shipping_methods.index') }}" class="menu-link">
+                  <div data-i18n="Shipping Method">Shipping Method</div>
                 </a>
               </li>
               <li class="menu-item">
@@ -377,7 +377,7 @@
           </li>
         </ul>
       </li>
-      <li class="menu-item">
+      {{-- <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-dock-top"></i>
           <div data-i18n="Pages">Pages</div>
@@ -480,7 +480,7 @@
             </ul>
           </li>
         </ul>
-      </li>
+      </li> --}}
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-user-check"></i>

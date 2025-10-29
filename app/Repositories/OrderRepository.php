@@ -106,6 +106,11 @@ class OrderRepository
         return Order::where('id', $orderId)->delete();
     }
 
+    public function deleteOrder($id)
+    {
+        return $this->delete($id);
+    }
+
     public function findWithRelations($id, $throw = true)
     {
         $query = Order::with([

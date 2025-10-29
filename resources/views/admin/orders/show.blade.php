@@ -38,6 +38,84 @@
         Tổng cộng: <span class="text-danger fw-bold">{{ number_format($order->total_amount) }}₫</span>
     </h5>
 
+    <div class="card mt-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Thông tin giao hàng</h5>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('admin.orders.updateShipping', $order->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+    
+                <div class="mb-3">
+                    <label>Địa chỉ giao hàng</label>
+                    @if($order->shipping && $order->shipping->shippingAddress)
+                        <input type="hidden" name="shipping_address_id" value="{{ $order->shipping->shippingAddress->id }}">
+                    @endif
+                    @if($order->shipping && $order->shipping->shippingAddress)
+                        <div class="border rounded p-2 bg-light">
+                            <strong>{{ $order->shipping->shippingAddress->full_name }}</strong><br>
+                            {{ $order->shipping->shippingAddress->phone }}<br>
+                            {{ $order->shipping->shippingAddress->address_detail }},
+                            {{ $order->shipping->shippingAddress->ward }},
+                            {{ $order->shipping->shippingAddress->district }},
+                            {{ $order->shipping->shippingAddress->province }}
+                        </div>
+                    @else
+                        <p class="text-muted">Chưa có địa chỉ giao hàng</p>
+                    @endif
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label>Phương thức vận chuyển</label>
+                        <select name="shipping_method_id" class="form-select">
+                            @foreach($shippingMethods as $method)
+                                <option value="{{ $method->id }}"
+                                    {{ optional($order->shipping)->shipping_method_id == $method->id ? 'selected' : '' }}>
+                                    {{ $method->name }} ({{ number_format($method->fee) }}đ)
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Phí vận chuyển</label>
+                        <input type="number" name="shipping_fee" class="form-control"
+                               value="{{ optional($order->shipping)->shipping_fee }}">
+                    </div>
+                </div>
+    
+                <div class="mb-3">
+                    <label>Mã vận đơn</label>
+                    <input type="text" name="tracking_number" class="form-control"
+                           value="{{ optional($order->shipping)->tracking_number }}">
+                </div>
+    
+                <div class="mb-3">
+                    <label>Ghi chú giao hàng</label>
+                    <textarea name="delivery_note" class="form-control">{{ optional($order->shipping)->delivery_note }}</textarea>
+                </div>
+    
+                <div class="mb-3">
+                    <label>Trạng thái giao hàng</label>
+                    <select name="status" class="form-select">
+                        @php
+                            $statuses = ['pending' => 'Chờ xử lý', 'shipping' => 'Đang giao', 'delivered' => 'Đã giao', 'cancelled' => 'Đã hủy'];
+                        @endphp
+                        @foreach($statuses as $key => $label)
+                            <option value="{{ $key }}"
+                                {{ optional($order->shipping)->status == $key ? 'selected' : '' }}>
+                                {{ $label }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+    
+                <button type="submit" class="btn btn-success">Cập nhật</button>
+            </form>
+        </div>
+    </div>    
+
     <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary mt-3">Quay lại</a>
 </div>
 @endsection

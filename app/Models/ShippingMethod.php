@@ -16,6 +16,11 @@ class ShippingMethod extends Model
         'status'
     ];
 
+    public function getStatusLabelAttribute()
+    {
+        return $this->status === 'active' ? 'Kích hoạt' : 'Tạm ngừng';
+    }
+    
     public function orderShipping() {
         return $this->hasMany(OrderShipping::class);
     }

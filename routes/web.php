@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ProductReviewController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\CartController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ShippingMethodController;
 use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\Client\HomeController;
@@ -118,6 +119,7 @@ Route::middleware(['auth'])->prefix('admin')
     ->as('product_reviews.')
     ->group(function () {
         Route::get('/', [ProductReviewController::class, 'index'])->name('index');
+        Route::post('{id}/toggle', [ProductReviewController::class, 'toggleVisibility'])->name('toggle');
         Route::delete('{id}', [ProductReviewController::class, 'destroy'])->name('destroy');
     });
 
@@ -136,6 +138,8 @@ Route::middleware(['auth'])->prefix('admin')
         Route::get('{id}/show', [OrderController::class, 'show'])->name('show');
         Route::put('{id}/status', [OrderController::class, 'updateStatus'])->name('updateStatus');
         Route::delete('{id}', [OrderController::class, 'destroy'])->name('destroy');
+
+        Route::put('orders/{order}/shipping', [OrderController::class, 'updateShipping'])->name('updateShipping');
     });
 
     Route::prefix('coupons')
@@ -147,6 +151,19 @@ Route::middleware(['auth'])->prefix('admin')
         Route::get('{id}/edit', [CouponController::class, 'edit'])->name('edit');
         Route::put('{id}', [CouponController::class, 'update'])->name('update');
         Route::delete('{id}', [CouponController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('shipping_methods')
+    ->as('shipping_methods.')
+    ->group(function () {
+        Route::get('/', [ShippingMethodController::class, 'index'])->name('index');
+        Route::get('/create', [ShippingMethodController::class, 'create'])->name('create');
+        Route::post('/', [ShippingMethodController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [ShippingMethodController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [ShippingMethodController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ShippingMethodController::class, 'destroy'])->name('destroy');
+
+        Route::post('/{id}/toggle', [ShippingMethodController::class, 'toggleStatus'])->name('toggle');
     });
 });
 

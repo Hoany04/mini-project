@@ -18,6 +18,15 @@ class ProductReviewController extends Controller
         return view('admin.product_reviews.index', compact('reviews'));
     }
 
+    public function toggleVisibility($id)
+    {
+        $review = ProductReview::findOrFail($id);
+        $review->is_visible = !$review->is_visible;
+        $review->save();
+
+        return redirect()->back()->with('success', 'Da cap nhat trang thai hien thi cua danh gia');
+    }
+
     public function destroy($id)
     {
         $review = ProductReview::findOrFail($id);

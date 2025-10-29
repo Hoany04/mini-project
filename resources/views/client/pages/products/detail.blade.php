@@ -261,7 +261,7 @@
                                                                 <div class="post-author">
                                                                     <p>
                                                                         <span>{{ $review->user->username ?? 'Người dùng' }} -</span>
-                                                                        {{ $review->created_at->format('d M, Y') }}
+                                                                        {{ $review->created_at->format('Y, M, d') }}
                                                                     </p>
                                                                 </div>
                                                                 <p>{{ $review->comment }}</p>

@@ -35,4 +35,16 @@ class Order extends Model
     public function shipping() {
         return $this->hasOne(OrderShipping::class);
     }
+
+    public function shippingMethod()
+    {
+        return $this->hasOneThrough(
+            ShippingMethod::class,
+            OrderShipping::class,
+            'order_id',
+            'id',
+            'id',
+            'shipping_method_id'
+        );
+    }
 }

@@ -14,6 +14,7 @@ class ProductReview extends Model
         'user_id',
         'rating',
         'comment',
+        'is_visible',
         'created_at'
     ];
 

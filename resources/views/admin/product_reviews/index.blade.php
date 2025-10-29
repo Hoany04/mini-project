@@ -17,7 +17,8 @@
                 <th>Đánh giá</th>
                 <th>Bình luận</th>
                 <th>Ngày tạo</th>
-                <th>Hành động</th>
+                <th>Ẩn hiện</th>
+                <th>Xóa</th>
             </tr>
         </thead>
         <tbody>
@@ -28,7 +29,15 @@
                     <td>{{ $review->user->username ?? 'Ẩn danh' }}</td>
                     <td>{{ $review->rating }} ⭐</td>
                     <td>{{ $review->comment ?? 'Không có' }}</td>
-                    <td>{{ $review->created_at->format('d/m/Y H:i') }}</td>
+                    <td>{{ $review->created_at->format('Y/m/d H:i') }}</td>
+                    <td>
+                        <form action="{{ route('admin.product_reviews.toggle', $review->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-sm {{ $review->is_visible ? 'btn-success' : 'btn-secondary' }}">
+                                {{ $review->is_visible ? '👁️' : '🙈' }}
+                            </button>
+                        </form>
+                    </td>
                     <td>
                         <form action="{{ route('admin.product_reviews.destroy', $review->id) }}" method="POST" onsubmit="return confirm('Bạn chắc muốn xóa đánh giá này?')">
                             @csrf
