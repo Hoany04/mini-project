@@ -31,6 +31,20 @@
                     <td>{{ number_format($item->price * $item->quantity) }}₫</td>
                 </tr>
             @endforeach
+            <tr>
+                <th colspan="4" class="text-end">Tổng tiền hàng:</th>
+                <th>{{ number_format($order->items->sum(fn($i) => $i->price * $i->quantity), 0, ',', '.') }}₫</th>
+            </tr>
+            @if ($order->coupon)
+                <tr>
+                    <th colspan="4" class="text-end">Giảm giá ({{ $order->coupon->code }}):</th>
+                    <th>-{{ $order->coupon->discount_value }}%</th>
+                </tr>
+            @endif
+            <tr>
+                <th colspan="4" class="text-end">Phí vận chuyển</th>
+                <th>{{ number_format($order->shipping->method->fee ?? 0) }}₫</th>
+            </tr>
         </tbody>
     </table>
 
