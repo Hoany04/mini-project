@@ -47,4 +47,17 @@ class Order extends Model
             'shipping_method_id'
         );
     }
+
+    public function getShippingTimeline()
+    {
+        $timeline = [
+            'pending'   => 1, // Đã đặt
+            'shipped'  => 2, // Đang giao
+            'completed' => 3, // Đã giao
+            'cancelled' => 0,
+        ];
+
+        return $timeline[$this->status] ?? 0;
+    }
+
 }

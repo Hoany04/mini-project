@@ -6063,4 +6063,40 @@ blockquote {
   color: #c29958;
 }
 
+.shipping-timeline .circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #ccc;
+    color: #fff;
+    line-height: 35px;
+    font-weight: bold;
+    margin: 0 auto 6px;
+}
+
+.shipping-timeline .circle.active {
+    background: #007bff;
+}
+
+.shipping-timeline .label {
+    font-size: 13px;
+    color: #888;
+}
+
+.shipping-timeline .label.active {
+    color: #007bff;
+    font-weight: 600;
+}
+
+.shipping-timeline .line {
+    width: 80px;
+    height: 3px;
+    background: #ccc;
+    margin-top: 17px;
+}
+
+.shipping-timeline .line.active {
+    background: #007bff;
+}
+
 /*----- footer area end -----*/

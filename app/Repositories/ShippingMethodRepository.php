@@ -38,5 +38,10 @@ class ShippingMethodRepository
         $methods->save();
         return $methods;
     }
+
+    public function allActive()
+    {
+        return ShippingMethod::where('status', 'active')->get();
+    }
 }
 ?>

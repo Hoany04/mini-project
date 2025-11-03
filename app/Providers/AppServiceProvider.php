@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Providers\EventServiceProvider;
+use App\Models\OrderShipping;
+use App\Observers\OrderShippingObserver;
 use Illuminate\Support\Facades\App;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        App::register(EventServiceProvider::class);
+        // App::register(EventServiceProvider::class);
     }
 
     /**
@@ -21,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        OrderShipping::observe(OrderShippingObserver::class);
     }
 }

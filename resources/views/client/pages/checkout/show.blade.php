@@ -55,6 +55,40 @@
         </div>
     </div>
 
+    <div class="shipping-timeline mt-4">
+        <h5>Trạng thái giao hàng</h5>
+    
+        @php
+            $step = $order->getShippingTimeline();
+        @endphp
+    
+        <div class="timeline-container d-flex justify-content-between">
+            @php
+                $steps = [
+                    1 => 'Đã đặt hàng',
+                    2 => 'Đang vận chuyển',
+                    3 => 'Đã giao hàng'
+                ];
+            @endphp
+    
+            @foreach($steps as $index => $label)
+                <div class="timeline-step text-center">
+                    <div class="circle {{ $step >= $index ? 'active' : '' }}">
+                        {{ $index }}
+                    </div>
+                    <div class="label {{ $step >= $index ? 'active' : '' }}">
+                        {{ $label }}
+                    </div>
+                </div>
+    
+                @if (!$loop->last)
+                    <div class="line {{ $step > $index ? 'active' : '' }}"></div>
+                @endif
+            @endforeach
+        </div>
+    </div>
+    
+
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-dark text-white">Thông tin thanh toán</div>
         <div class="card-body">
