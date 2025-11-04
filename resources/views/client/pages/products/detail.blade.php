@@ -424,7 +424,7 @@
                     totalExtra += parseInt(selected.dataset.extra);
                 }
                 if (selected && selected.dataset.id) {
-                    selectedVariantId = selected.dataset.id; // ✅ lấy id biến thể size
+                    selectedVariantId = selected.dataset.id; // lấy id biến thể size
                 }
             }
     
@@ -433,7 +433,7 @@
             colorRadios.forEach(radio => {
                 if (radio.checked) {
                     if (radio.dataset.extra) totalExtra += parseInt(radio.dataset.extra);
-                    if (radio.dataset.id) selectedVariantId = radio.dataset.id; // ✅ lấy id biến thể màu
+                    if (radio.dataset.id) selectedVariantId = radio.dataset.id; // lấy id biến thể màu
                 }
             });
     
@@ -444,7 +444,7 @@
     
             // --- Ghi variant_id duy nhất ---
             variantIdInput.value = selectedVariantId || '';
-            console.log('variant_id:', variantIdInput.value); // ✅ debug
+            console.log('variant_id:', variantIdInput.value); // debug
         }
     
         // Khi chọn size hoặc màu, cập nhật lại

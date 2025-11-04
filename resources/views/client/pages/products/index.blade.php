@@ -43,8 +43,9 @@
                             <div class="sidebar-body">
                                 <ul class="shop-categories">
                                     @foreach($categories as $cat)
+                                    @if(!empty($cat->slug))
                                         <li>
-                                            <a href="{{ route('client.pages.category.show', $cat->slug) }}">
+                                            <a href="{{ route('client.pages.category.show', ['slug' => $cat->slug]) }}">
                                                 {{ $cat->name }}
                                                 <span>({{ $cat->products_count }})</span>
                                             </a>
@@ -62,6 +63,7 @@
                                                 </ul>
                                             @endif
                                         </li>
+                                        @endif
                                     @endforeach
                                 </ul>
                             </div>
@@ -264,8 +266,8 @@
                                 <div class="product-item">
                                     <figure class="product-thumb">
                                         <a href="{{ route('client.pages.products.detail', $product->id) }}">
-                                            <img class="pri-img" src="{{ asset('storage/' .$product->images->first()->image_url) }}" width="80" height="200" alt="product">
-                                            <img class="sec-img" src="{{ asset('storage/' .$product->images->first()->image_url) }}" width="80" height="200" alt="product">
+                                            <img class="pri-img" src="{{ asset('storage/' . $product->main_image_url) }}" width="80" height="200" alt="product">
+                                            <img class="sec-img" src="{{ asset('storage/' . $product->main_image_url) }}" width="80" height="200" alt="product">
                                         </a>
                                         <div class="product-badge">
                                             <div class="product-label new">
@@ -317,8 +319,8 @@
                                 <div class="product-list-item">
                                     <figure class="product-thumb">
                                         <a href="{{ route('client.pages.products.detail', $product->id) }}">
-                                            <img class="pri-img" src="{{ asset('storage/' .$product->images->first()->image_url) }}" width="80" height="200" alt="product">
-                                            <img class="sec-img" src="{{ asset('storage/' .$product->images->first()->image_url) }}" width="80" height="200" alt="product">
+                                            <img class="pri-img" src="{{ asset('storage/' . $product->main_image_url) }}" width="80" height="200" alt="product">
+                                            <img class="sec-img" src="{{ asset('storage/' . $product->main_image_url) }}" width="80" height="200" alt="product">
                                         </a>
                                         <div class="product-badge">
                                             <div class="product-label new">
@@ -426,23 +428,6 @@
                                     <img src="assets/img/product/product-details-img5.jpg" alt="product-details" />
                                 </div>
                             </div>
-                            {{-- <div class="pro-nav slick-row-10 slick-arrow-style">
-                                <div class="pro-nav-thumb">
-                                    <img src="assets/img/product/product-details-img1.jpg" alt="product-details" />
-                                </div>
-                                <div class="pro-nav-thumb">
-                                    <img src="assets/img/product/product-details-img2.jpg" alt="product-details" />
-                                </div>
-                                <div class="pro-nav-thumb">
-                                    <img src="assets/img/product/product-details-img3.jpg" alt="product-details" />
-                                </div>
-                                <div class="pro-nav-thumb">
-                                    <img src="assets/img/product/product-details-img4.jpg" alt="product-details" />
-                                </div>
-                                <div class="pro-nav-thumb">
-                                    <img src="assets/img/product/product-details-img5.jpg" alt="product-details" />
-                                </div>
-                            </div> --}}
                         </div>
                         <div class="col-lg-7">
                             <div class="product-details-des">
@@ -503,81 +488,5 @@
 <!-- Quick view modal end -->
 
 <!-- offcanvas mini cart start -->
-{{-- <div class="offcanvas-minicart-wrapper">
-    <div class="minicart-inner">
-        <div class="offcanvas-overlay"></div>
-        <div class="minicart-inner-content">
-            <div class="minicart-close">
-                <i class="pe-7s-close"></i>
-            </div>
-            <div class="minicart-content-box">
-                <div class="minicart-item-wrapper">
-                    <ul>
-                        <li class="minicart-item">
-                            <div class="minicart-thumb">
-                                <a href="product-details.html">
-                                    <img src="assets/img/cart/cart-1.jpg" alt="product">
-                                </a>
-                            </div>
-                            <div class="minicart-content">
-                                <h3 class="product-name">
-                                    <a href="product-details.html">Dozen White Botanical Linen Dinner Napkins</a>
-                                </h3>
-                                <p>
-                                    <span class="cart-quantity">1 <strong>&times;</strong></span>
-                                    <span class="cart-price">$100.00</span>
-                                </p>
-                            </div>
-                            <button class="minicart-remove"><i class="pe-7s-close"></i></button>
-                        </li>
-                        <li class="minicart-item">
-                            <div class="minicart-thumb">
-                                <a href="product-details.html">
-                                    <img src="assets/img/cart/cart-2.jpg" alt="product">
-                                </a>
-                            </div>
-                            <div class="minicart-content">
-                                <h3 class="product-name">
-                                    <a href="product-details.html">Dozen White Botanical Linen Dinner Napkins</a>
-                                </h3>
-                                <p>
-                                    <span class="cart-quantity">1 <strong>&times;</strong></span>
-                                    <span class="cart-price">$80.00</span>
-                                </p>
-                            </div>
-                            <button class="minicart-remove"><i class="pe-7s-close"></i></button>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="minicart-pricing-box">
-                    <ul>
-                        <li>
-                            <span>sub-total</span>
-                            <span><strong>$300.00</strong></span>
-                        </li>
-                        <li>
-                            <span>Eco Tax (-2.00)</span>
-                            <span><strong>$10.00</strong></span>
-                        </li>
-                        <li>
-                            <span>VAT (20%)</span>
-                            <span><strong>$60.00</strong></span>
-                        </li>
-                        <li class="total">
-                            <span>total</span>
-                            <span><strong>$370.00</strong></span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="minicart-button">
-                    <a href="cart.html"><i class="fa fa-shopping-cart"></i> View Cart</a>
-                    <a href="cart.html"><i class="fa fa-share"></i> Checkout</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> --}}
 <!-- offcanvas mini cart end -->
 @endsection

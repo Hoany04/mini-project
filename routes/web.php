@@ -15,6 +15,8 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\CartController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ShippingMethodController;
+use App\Http\Controllers\Admin\PaymentTransactionController;
+use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\Client\HomeController;
@@ -56,7 +58,7 @@ Route::get('/reset-password/{token}', [AuthController::class, 'showFormReset'])-
 Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
 // ======================== ADMIN SITE ========================
-Route::middleware(['auth'])->prefix('admin')
+Route::middleware(['auth', 'checkactive'])->prefix('admin')
 ->as('admin.')
 ->group(function () {
     Route::get('/home', fn() => view('admin.home'))
@@ -165,6 +167,24 @@ Route::middleware(['auth'])->prefix('admin')
 
         Route::post('/{id}/toggle', [ShippingMethodController::class, 'toggleStatus'])->name('toggle');
     });
+
+    Route::prefix('payment-transactions')
+    ->as('payment-transactions.')
+    ->group(function () {
+        Route::get('/', [PaymentTransactionController::class, 'index'])->name('index');
+        Route::get('/{id}', [PaymentTransactionController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('payment-methods')
+    ->as('payment-methods.')
+    ->group(function () {
+        Route::get('/', [PaymentMethodController::class, 'index'])->name('index');
+        Route::get('/create', [PaymentMethodController::class, 'create'])->name('create');
+        Route::post('/store', [PaymentMethodController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [PaymentMethodController::class, 'edit'])->name('edit');
+        Route::put('/update/{id}', [PaymentMethodController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [PaymentMethodController::class, 'destroy'])->name('delete');
+    });
 });
 
 
@@ -174,7 +194,7 @@ Route::prefix('client')->name('client.')->group(function () {
 });
 
 
-Route::middleware(['auth'])
+Route::middleware(['auth', 'checkactive'])
     ->prefix('client')
     ->as('client.')
     ->group(function () {

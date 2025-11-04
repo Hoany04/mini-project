@@ -75,7 +75,13 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, $id)
     {
-        $this->userService->updateUser($id, $request->validated());
+        $data = $request->validated();
+
+        if ($data['status'] == 'inactive') {
+            \DB::table('sessions')->where('user_id', $id)->delete();
+        }
+        
+        User::findOrFail($id)->update($data);
 
         return redirect()->route('admin.users.index')->with('success', 'Cap nhat thong tin user thanh cong');
     }

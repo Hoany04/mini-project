@@ -128,4 +128,19 @@ class AuthController extends Controller
 
         return redirect()->route('login')->with('success', 'Đặt lại mật khẩu thành công! Vui lòng đăng nhập lại.');
     }
+
+    public function authenticate(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            if (Auth::user()->status === 'inactive') {
+                Auth::logout();
+                return back()->withErrors(['email' => 'Tài khoản đã bị khóa']);
+            }
+            return redirect()->intended('/');
+        }
+
+        return back()->withErrors(['email' => 'Thông tin không hợp lệ']);
+    }
 }

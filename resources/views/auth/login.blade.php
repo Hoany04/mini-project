@@ -5,6 +5,9 @@
 @endsection
 @section('content')
     <div class="fxt-content">
+        @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
         <h2>Login into your account</h2>
         <div class="fxt-form">
             <form method="POST" action="{{ route('login') }}">

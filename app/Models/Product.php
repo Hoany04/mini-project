@@ -67,4 +67,10 @@ class Product extends Model
     public function orderItems() {
         return $this->hasMany(orderItem::class);
     }
+
+    public function getMainImageUrlAttribute()
+    {
+        return $this->images->first()->image_url ?? 'defaults/no-image.png';
+    }
+
 }
