@@ -2,13 +2,13 @@
 
 namespace App\Models;
 use Laravel\Cashier\Billable;
-
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Billable;
+    use HasApiTokens, HasFactory, Billable;
 
     const ROLE_ADMIN = 'Admin';
 

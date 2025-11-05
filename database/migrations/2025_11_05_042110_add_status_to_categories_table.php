@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('order_shipping', function (Blueprint $table) {
-            $table->decimal('shipping_fee', 12, 0)->default(0)->after('status');
+        Schema::table('categories', function (Blueprint $table) {
+            $table->enum('status', ['active', 'inactive'])->default('active');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('order_shipping', function (Blueprint $table) {
-            $table->dropColumn('shipping_fee');
+        Schema::table('categories', function (Blueprint $table) {
+            $table->dropColumn('status');
         });
     }
 };
