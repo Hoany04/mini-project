@@ -25,6 +25,8 @@ class StoreCartRequest extends FormRequest
             'product_id' => 'required|exists:products,id',
             'variant_id' => 'nullable|exists:product_variants,id',
             'quantity' => 'required|integer|min:1|max:100',
+            'price' => 'required|numeric|min:0',
+            'variants' => 'nullable|array',
         ];
     }
 
@@ -38,6 +40,7 @@ class StoreCartRequest extends FormRequest
             'quantity.integer' => 'Số lượng phải là số nguyên.',
             'quantity.min' => 'Tối thiểu là 1 sản phẩm.',
             'quantity.max' => 'Tối đa là 100 sản phẩm.',
+            'price.required' => 'Giá sản phẩm không hợp lệ',
         ];
     }
 }

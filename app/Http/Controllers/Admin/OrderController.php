@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Services\OrderService;
 use App\Models\Order;
 use App\Models\OrderShipping;
+use App\Http\Requests\UpdateOrderStatusRequest;
+use App\Http\Requests\UpdateOrderShippingRequest;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -34,22 +36,15 @@ class OrderController extends Controller
         return view('admin.orders.show', compact('order', 'shippingMethods', 'addresses'));
     }
 
-    public function updateStatus(Request $request, $id)
+    public function updateStatus(UpdateOrderStatusRequest  $request, $id)
     {
-        $request->validate(['status' => 'required|string']);
         $this->orderService->updateStatus($id, $request->status);
 
         return redirect()->route('admin.orders.index')->with('success', 'Cap nhat trang thai thanh cong');
     }
 
-    public function updateShipping(Request $request, $orderId)
+    public function updateShipping(UpdateOrderShippingRequest $request, $orderId)
     {
-        $request->validate([
-            'shipping_method_id' => 'required|exists:shipping_methods,id',
-            'shipping_address_id' => 'required|exists:shipping_addresses,id',
-            'status' => 'required|in:pending,shipping,delivered,cancelled',
-        ]);
-
         $order = Order::findOrFail($orderId);
 
         $shipping = $order->shipping ?: new \App\Models\OrderShipping(['order_id' => $order->id]);

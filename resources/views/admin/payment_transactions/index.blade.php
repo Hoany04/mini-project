@@ -32,7 +32,7 @@
             <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
             <td>
                 <a href="{{ route('admin.payment-transactions.show', $item->id) }}" class="btn btn-info btn-sm">
-                    Xem
+                    👁️
                 </a>
             </td>
         </tr>

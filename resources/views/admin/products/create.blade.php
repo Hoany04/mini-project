@@ -39,6 +39,9 @@
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Tồn kho</label>
                     <input type="number" name="stock" class="form-control" value="{{ old('stock') }}" >
+                    @error('stock')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div class="col-md-4 mb-3">

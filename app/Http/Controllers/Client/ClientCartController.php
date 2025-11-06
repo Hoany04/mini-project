@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Services\Client\ClientCartService;
+use App\Http\Requests\StoreCartRequest;
+use App\Http\Requests\UpdateCartRequest;
+use App\Http\Requests\CartUpdateAjaxRequest;
 use Illuminate\Http\Request;
 
 class ClientCartController extends Controller
@@ -22,18 +25,13 @@ class ClientCartController extends Controller
     }
 
     // Thêm sản phẩmariant-id-input
-    public function store(Request $request)
+    public function store(StoreCartRequest $request)
     {
-        $data = $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'variant_id' => 'nullable|exists:product_variants,id',
-            'quantity' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
-        ]);
+        $data = $request->validated();
 
+        // Xử lý text hiển thị cho biến thể (VD: "Màu: Đỏ, Size: M")
         $variantText = '';
-
-        if ($request->has('variants') && is_array($request->variants)) {
+        if (!empty($request->variants) && is_array($request->variants)) {
             $variantPairs = [];
             foreach ($request->variants as $name => $value) {
                 $variantPairs[] = ucfirst($name) . ': ' . $value;
@@ -43,26 +41,34 @@ class ClientCartController extends Controller
 
         $data['variant_text'] = $variantText;
 
-        $this->cartService->addToCart(auth()->id(), $data);
+        try {
+            // Gọi service xử lý thêm vào giỏ hàng (có kiểm tra tồn kho và biến thể)
+            $this->cartService->addToCart(auth()->id(), $data);
 
-        return redirect()->route('client.pages.cart.index')
-                        ->with('success', 'Đã thêm vào giỏ hàng');
+            return redirect()
+                ->route('client.pages.cart.index')
+                ->with('success', 'Đã thêm sản phẩm vào giỏ hàng!');
+        } catch (\Exception $e) {
+            // Bắt lỗi và trả lại người dùng
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+        }
     }
 
     // Cập nhật số lượng
-    public function update(Request $request, $itemId)
+    public function update(UpdateCartRequest $request, $itemId)
     {
-        $this->cartService->updateQuantity($itemId, $request->quantity);
-        return back()->with('success', 'Cập nhật giỏ hàng thành công');
+        try {
+            $this->cartService->updateQuantity($itemId, $data['quantity']);
+            return redirect()->route('client.pages.cart.index')->with('success', 'Cập nhật số lượng thành công!');
+        } catch (\Exception $e) {
+            return redirect()->route('client.pages.cart.index')->with('error', $e->getMessage());
+        }
     }
 
-    public function updateAjax(Request $request)
+    public function updateAjax(CartUpdateAjaxRequest  $request)
     {
-        $request->validate([
-            'item_id' => 'required|integer',
-            'quantity' => 'required|integer|min:1',
-        ]);
-
         // Cập nhật số lượng sản phẩm trong DB
         $this->cartService->updateQuantity($request->item_id, $request->quantity);
 

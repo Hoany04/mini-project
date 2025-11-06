@@ -1,5 +1,7 @@
 @extends('layouts.AdminLayout')
-
+<?php
+use Carbon\Carbon;
+?>
 @section('content')
 <div class="container-fluid">
     <h3>Nhật ký truy cập / thay đổi</h3>
@@ -53,7 +55,7 @@
                 <td>{{ $log->record_id }}</td>
                 <td><pre style="max-width:300px;white-space:pre-wrap;">{{ json_encode($log->old_data, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) }}</pre></td>
                 <td><pre style="max-width:300px;white-space:pre-wrap;">{{ json_encode($log->new_data, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) }}</pre></td>
-                {{-- <td>{{ $log->created_at->format('Y-m-d H:i') }}</td> --}}
+                <td>{{ Carbon::parse($log->created_at)->format('Y-m-d H:i') }}</td>
             </tr>
         @endforeach
         </tbody>

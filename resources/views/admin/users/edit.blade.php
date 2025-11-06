@@ -9,11 +9,17 @@
         <div class="mb-3">
             <label>Tên đăng nhập</label>
             <input type="text" name="username" value="{{ $user->username }}" class="form-control" required>
+            @error('username')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="mb-3">
             <label>Email</label>
             <input type="email" name="email" value="{{ $user->email }}" class="form-control" required>
+            @error('email')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="mb-3">
@@ -25,6 +31,9 @@
                   </option>
                 @endforeach
             </select>
+            @error('role_id')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="mb-3">

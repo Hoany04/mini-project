@@ -2,22 +2,16 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Models\UserProfile;
 
 class ClientProfileController extends Controller
 {
-    public function update(Request $request)
+    public function update(UpdateProfileRequest $request)
     {
         $user = auth()->user();
 
-        $validated = $request->validate([
-            'phone' => 'nullable|string|max:15',
-            'address' => 'nullable|string|max:255',
-            'city' => 'nullable|string|max:100',
-            'country' => 'nullable|string|max:100',
-            'avatar' => 'nullable|image|max:2048',
-        ]);
+        $validated = $request->validated();
 
         // Nếu có upload ảnh đại diện
         if ($request->hasFile('avatar')) {

@@ -27,4 +27,12 @@ class StoreCategoryRequest extends FormRequest
             'parent_id' => 'nullable|exists:categories,id',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Tên danh mục là bắt buộc',
+            'description.string' => 'Mô tả phải là chuỗi ký tự.',
+        ];
+    }
 }

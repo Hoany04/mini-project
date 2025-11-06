@@ -8,21 +8,33 @@
         <div class="mb-3">
             <label>Tên đăng nhập</label>
             <input type="text" name="username" class="form-control" required>
+            @error('username')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="mb-3">
             <label>Email</label>
             <input type="email" name="email" class="form-control" required>
+            @error('email')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="mb-3">
             <label>Mật khẩu</label>
             <input type="password" name="password" class="form-control" required>
+            @error('password')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="mb-3">
             <label>Nhập lại mật khẩu</label>
             <input type="password" name="password_confirmation" class="form-control" required>
+            @error('password')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="mb-3">
@@ -32,6 +44,9 @@
                   <option value="{{ $role->id }}">{{ $role->name }}</option>
                 @endforeach
             </select>
+            @error('role_id')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="mb-3">

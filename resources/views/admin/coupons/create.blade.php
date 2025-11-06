@@ -19,38 +19,45 @@
                     <option value="percent" {{ old('discount_type', $coupon->discount_type ?? '') == 'percent' ? 'selected' : '' }}>Phần trăm (%)</option>
                     <option value="fixed" {{ old('discount_type', $coupon->discount_type ?? '') == 'fixed' ? 'selected' : '' }}>Cố định (VNĐ)</option>
                 </select>
+                @error('discount_type') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
         
             <div class="col-md-4 mb-3">
                 <label class="form-label">Giá trị giảm</label>
                 <input type="number" name="discount_value" class="form-control" value="{{ old('discount_value', $coupon->discount_value ?? '') }}">
+                @error('discount_value') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
         
             <div class="col-md-4 mb-3">
                 <label class="form-label">Đơn tối thiểu</label>
                 <input type="number" name="min_order_value" class="form-control" value="{{ old('min_order_value', $coupon->min_order_value ?? '') }}">
+                @error('min_order_value') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
         
             <div class="col-md-4 mb-3">
                 <label class="form-label">Giảm tối đa</label>
                 <input type="number" name="max_discount" class="form-control" value="{{ old('max_discount', $coupon->max_discount ?? '') }}">
+                @error('max_discount') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
         
             <div class="col-md-6 mb-3">
                 <label class="form-label">Ngày bắt đầu</label>
                 <input type="datetime-local" name="start_date" class="form-control"
                     value="{{ old('start_date', isset($coupon->start_date) ? $coupon->start_date->format('Y-m-d\TH:i') : '') }}">
+                    @error('start_date') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
         
             <div class="col-md-6 mb-3">
                 <label class="form-label">Ngày kết thúc</label>
                 <input type="datetime-local" name="end_date" class="form-control"
                     value="{{ old('end_date', isset($coupon->end_date) ? $coupon->end_date->format('Y-m-d\TH:i') : '') }}">
+                    @error('end_date') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
         
             <div class="col-md-6 mb-3">
                 <label class="form-label">Giới hạn sử dụng</label>
                 <input type="number" name="usage_limit" class="form-control" value="{{ old('usage_limit', $coupon->usage_limit ?? '') }}">
+                @error('usage_limit') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
         
             <div class="col-md-6 mb-3">
@@ -60,6 +67,7 @@
                     <option value="inactive" {{ old('status', $coupon->status ?? '') == 'inactive' ? 'selected' : '' }}>Vô hiệu</option>
                     <option value="expired" {{ old('status', $coupon->status ?? '') == 'expired' ? 'selected' : '' }}>Hết hạn</option>
                 </select>
+                @error('status') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
         </div>
         

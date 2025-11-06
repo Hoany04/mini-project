@@ -29,13 +29,13 @@
                 </span>
             </td>            
             <td>
-                <a href="{{ route('admin.payment-methods.edit', $method->id) }}" class="btn btn-warning btn-sm">Sửa</a>
+                <a href="{{ route('admin.payment-methods.edit', $method->id) }}" class="btn btn-warning btn-sm">✏️</a>
 
                 <form action="{{ route('admin.payment-methods.delete', $method->id) }}"
                       method="POST" class="d-inline">
                     @csrf @method('DELETE')
                     <button class="btn btn-danger btn-sm"
-                            onclick="return confirm('Chắc chắn xóa?')">Xóa</button>
+                            onclick="return confirm('Chắc chắn xóa?')">🗑️</button>
                 </form>
             </td>
         </tr>

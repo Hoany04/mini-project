@@ -22,7 +22,14 @@
             </div>
         </div>
         <!-- breadcrumb area end -->
-
+        @if (session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+        
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+    
         <!-- page main wrapper start -->
         <div class="shop-main-wrapper section-padding pb-0">
             <div class="container">
@@ -102,7 +109,7 @@
                                             {{ number_format($product->price, 0, ',', '.') }}₫
                                         </p>
                                         
-                                        <form action="{{ route('client.pages.cart.store') }}" method="POST" id="add-to-cart-form">
+                                        <form action="{{ route('client.pages.cart.store') }}" method="POST" id="addToCartForm">
                                             @csrf
                                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                                             <input type="hidden" name="price" id="price-input" value="{{ $product->price }}">
@@ -156,6 +163,9 @@
                                             <div class="mt-3">
                                                 <label class="fw-bold">Số lượng:</label>
                                                 <input type="number" name="quantity" value="1" min="1" class="form-control w-25 d-inline-block">
+                                                @error('quantity')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
                                             </div>
                                         
                                             {{-- Nút thêm --}}
@@ -203,32 +213,21 @@
                                         <div class="tab-content reviews-tab">
                                             <div class="tab-pane fade show active" id="tab_one">
                                                 <div class="tab-one">
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
-                                                        fringilla augue nec est tristique auctor. Ipsum metus feugiat
-                                                        sem, quis fermentum turpis eros eget velit. Donec ac tempus
-                                                        ante. Fusce ultricies massa massa. Fusce aliquam, purus eget
-                                                        sagittis vulputate, sapien libero hendrerit est, sed commodo
-                                                        augue nisi non neque.Cras neque metus, consequat et blandit et,
-                                                        luctus a nunc. Etiam gravida vehicula tellus, in imperdiet
-                                                        ligula euismod eget. Pellentesque habitant morbi tristique
-                                                        senectus et netus et malesuada fames ac turpis egestas. Nam
-                                                        erat mi, rutrum at sollicitudin rhoncus</p>
+                                                    <p>{{ $product->description }}</p>
                                                 </div>
                                             </div>
                                             <div class="tab-pane fade" id="tab_two">
                                                 <table class="table table-bordered">
                                                     <tbody>
-                                                        <tr>
-                                                            <td>color</td>
-                                                            <td>black, blue, red</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>size</td>
-                                                            <td>L, M, S</td>
-                                                        </tr>
+                                                        @foreach ($attributes as $name => $values)
+                                                            <tr>
+                                                                <td>{{ ucfirst($name) }}</td>
+                                                                <td>{{ implode(', ', $values->toArray()) }}</td>
+                                                            </tr>
+                                                        @endforeach
                                                     </tbody>
                                                 </table>
-                                            </div>
+                                            </div>                                            
                                             <div class="tab-pane fade" id="tab_three">
                                                 @if(session('success'))
                                                     <div class="alert alert-success">{{ session('success') }}</div>
@@ -334,13 +333,23 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="product-carousel-4 slick-row-10 slick-arrow-style">
+                            @foreach ($products as $product)
                             <!-- product item start -->
                             <div class="product-item">
                                 <figure class="product-thumb">
-                                    <a href="product-details.html">
-                                        <img class="pri-img" src="assets/img/product/product-11.jpg" alt="product">
-                                        <img class="sec-img" src="assets/img/product/product-8.jpg" alt="product">
+                                    @php
+                                        $imagePath = $product->images->first()
+                                            ? asset('storage/' . $product->images->first()->image_url)
+                                            : asset('images/no-image.png');
+                                    @endphp
+
+                                    <a href="#">
+                                        <img class="pri-img" src="{{ $imagePath }}"
+                                            alt="">
+                                        <img class="sec-img" src="{{ $imagePath }}"
+                                            alt="">
                                     </a>
+
                                     <div class="product-badge">
                                         <div class="product-label new">
                                             <span>new</span>
@@ -350,12 +359,15 @@
                                         </div>
                                     </div>
                                     <div class="button-group">
-                                        <a href="wishlist.html" data-bs-toggle="tooltip" data-bs-placement="left"
-                                            title="Add to wishlist"><i class="pe-7s-like"></i></a>
-                                        <a href="compare.html" data-bs-toggle="tooltip" data-bs-placement="left"
-                                            title="Add to Compare"><i class="pe-7s-refresh-2"></i></a>
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view"><span
-                                                data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i
+                                        <a href="wishlist.html" data-bs-toggle="tooltip"
+                                            data-bs-placement="left" title="Add to wishlist"><i
+                                                class="pe-7s-like"></i></a>
+                                        <a href="compare.html" data-bs-toggle="tooltip"
+                                            data-bs-placement="left" title="Add to Compare"><i
+                                                class="pe-7s-refresh-2"></i></a>
+                                        <a href="#" data-bs-toggle="modal"
+                                            data-bs-target="#quick_view"><span data-bs-toggle="tooltip"
+                                                data-bs-placement="left" title="Quick View"><i
                                                     class="pe-7s-search"></i></span></a>
                                     </div>
                                     <div class="cart-hover">
@@ -364,11 +376,13 @@
                                 </figure>
                                 <div class="product-caption text-center">
                                     <div class="product-identity">
-                                        <p class="manufacturer-name"><a href="product-details.html">Gold</a></p>
+                                        <p class="manufacturer-name"><a
+                                                href="{{ route('client.pages.products.detail', $product->id) }}">{{ $product->name }}</a></p>
                                     </div>
                                     <ul class="color-categories">
                                         <li>
-                                            <a class="c-lightblue" href="#" title="LightSteelblue"></a>
+                                            <a class="c-lightblue" href="#"
+                                                title="LightSteelblue"></a>
                                         </li>
                                         <li>
                                             <a class="c-darktan" href="#" title="Darktan"></a>
@@ -380,15 +394,17 @@
                                             <a class="c-brown" href="#" title="Brown"></a>
                                         </li>
                                     </ul>
-                                    <h6 class="product-name">
-                                        <a href="product-details.html">Perfect Diamond Jewelry</a>
-                                    </h6>
+                                    {{-- <h6 class="product-name">
+                                        <a href="product-details.html">{{ $product->name }}</a>
+                                    </h6> --}}
                                     <div class="price-box">
-                                        <span class="price-regular">$60.00</span>
-                                        <span class="price-old"><del>$70.00</del></span>
+                                        <span
+                                            class="price-regular">{{ number_format($product->price, 0, ',', '.') }}₫</span>
+                                        <span class="price-old"><del>0đ</del></span>
                                     </div>
                                 </div>
                             </div>
+                            @endforeach
                             <!-- product item end -->
                         </div>
                     </div>
@@ -411,6 +427,7 @@
         const priceDisplay = document.getElementById('product-price');
         const priceInput = document.getElementById('price-input');
         const variantIdInput = document.querySelector('input[name="variant_id"]');
+        const form = document.querySelector('#addToCartForm');
     
         function updatePriceAndVariant() {
             let totalExtra = 0;
@@ -446,7 +463,37 @@
             variantIdInput.value = selectedVariantId || '';
             console.log('variant_id:', variantIdInput.value); // debug
         }
-    
+
+        if (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); // luôn chặn submit mặc định trước
+
+            const sizeSelect = document.querySelector('.variant-select');
+            const colorChecked = document.querySelector('input[name^="variants[màu]"]:checked');
+            const quantityInput = document.querySelector('input[name="quantity"]');
+
+            let errors = [];
+
+            if (sizeSelect && (!sizeSelect.value || sizeSelect.value === "")) {
+                errors.push("Vui lòng chọn size.");
+            }
+
+            if (!colorChecked) {
+                errors.push("Vui lòng chọn màu.");
+            }
+
+            if (!quantityInput.value || parseInt(quantityInput.value) <= 0) {
+                errors.push("Số lượng phải lớn hơn 0.");
+            }
+
+            if (errors.length > 0) {
+                alert(errors.join('\n'));
+                return false;
+            }
+            updatePriceAndVariant();
+            form.submit(); // cho phép submit lại
+        });
+    }
         // Khi chọn size hoặc màu, cập nhật lại
         document.querySelectorAll('.variant-select, input[name^="variants[màu]"]').forEach(el => {
             el.addEventListener('change', updatePriceAndVariant);

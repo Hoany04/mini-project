@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ShippingAddressRequest;
 use App\Services\Client\ShippingAddressService;
 use Illuminate\Http\Request;
 
@@ -22,19 +23,9 @@ class ClientShippingAddressController extends Controller
         return view('client.pages.checkout.index', compact('addresses', 'defaultAddress'));
     }
 
-    public function store(Request $request)
+    public function store(ShippingAddressRequest $request)
     {
-        $data = $request->validate([
-            'full_name' => 'required|string|max:150',
-            'phone' => 'required|string|max:15',
-            'province' => 'required|string|max:100',
-            'district' => 'required|string|max:100',
-            'ward' => 'required|string|max:100',
-            'address_detail' => 'required|string|max:255',
-            'is_default' => 'nullable|boolean',
-        ]);
-
-        $this->addressService->addAddress(auth()->id(), $data);
+        $this->addressService->addAddress(auth()->id(), $request->validated());
 
         return back()->with('success', 'Đã thêm địa chỉ giao hàng mới');
     }

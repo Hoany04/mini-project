@@ -26,6 +26,7 @@ class ClientProductController extends Controller
     // Trang chi tiết sản phẩm
     public function show($id)
     {
+        $products = Product::where('status', 1)->paginate(8);
         $product = Product::with(['images', 'variants', 'reviews.user'])
         ->where('status', 'active')
         ->find($id);
@@ -47,6 +48,10 @@ class ClientProductController extends Controller
             ->take(4)
             ->get();
 
-        return view('client.pages.products.detail', compact('product', 'groupedVariants', 'averageRating', 'relatedProducts', 'reviews'));
+        $attributes = $product->variants
+            ->groupBy('variant_name')
+            ->map(fn($group) => $group->pluck('variant_value')->unique()->values());
+            
+        return view('client.pages.products.detail', compact('product', 'products', 'groupedVariants', 'averageRating', 'relatedProducts', 'reviews', 'attributes'));
     }
 }

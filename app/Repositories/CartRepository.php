@@ -81,4 +81,27 @@ class CartRepository
 
         return true;
     }
+
+    public function findItemById($itemId)
+    {
+        return CartItem::with(['cart', 'product', 'variant'])->find($itemId);
+    }
+
+    public function findItemInCart(Cart $cart, $productId, $variantId = null, $variantText = null)
+    {
+        $query = $cart->items()->where('product_id', $productId);
+
+        if ($variantId) {
+            $query->where('variant_id', $variantId);
+        } else {
+            $query->whereNull('variant_id');
+        }
+
+        if ($variantText) {
+            $query->where('variant_text', $variantText);
+        }
+
+        return $query->first();
+    }
+
 }

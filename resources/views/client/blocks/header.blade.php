@@ -213,8 +213,10 @@
                                             <i class="pe-7s-user"></i>
                                         </a>
                                         <ul class="dropdown-list">
-                                            <li><a href="login-register.html">login</a></li>
-                                            <li><a href="login-register.html">register</a></li>
+                                            <form action="{{ route('logout') }}" method="post">
+                                                @csrf
+                                                <button type="submit">Logout</button>
+                                              </form>
                                             <li><a href="{{ route('client.pages.account.index') }}">my account</a></li>
                                         </ul>
                                     </li>

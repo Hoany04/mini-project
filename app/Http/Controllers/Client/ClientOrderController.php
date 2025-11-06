@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreOrderRequest;
 use App\Services\Client\ClientOrderService;
 use App\Services\OrderService;
 use App\Services\Client\ClientShippingService;
@@ -75,14 +76,9 @@ class ClientOrderController extends Controller
         return view('client.pages.checkout.success', compact('order'));
     }
 
-    public function store(Request $request)
+    public function store(StoreOrderRequest $request)
     {
-        $data = $request->validate([
-            'paymentmethod' => 'required|string',
-            'shipping_address_id' => 'required|integer',
-            'shipping_method_id' => 'required|integer',
-            'delivery_note' => 'nullable|string|max:255',
-        ]);
+        $data = $request->validated();
 
         $paymentMethod = \App\Models\PaymentMethod::where('name', $data['paymentmethod'])->first();
 

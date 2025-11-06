@@ -102,7 +102,7 @@
                 <div class="mb-3">
                     <label>Mã vận đơn</label>
                     <input type="text" name="tracking_number" class="form-control"
-                           value="{{ optional($order->shipping)->tracking_number }}">
+                           value="#{{ ($order->id) }}">
                 </div>
     
                 <div class="mb-3">

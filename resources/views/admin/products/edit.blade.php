@@ -13,6 +13,9 @@
                     <label class="form-label">Tên sản phẩm</label>
                     <input type="text" name="name" class="form-control" value="{{ old('name', $product->name) }}"
                         required>
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                 </div>
 
                 <div class="col-md-6 mb-3">
@@ -31,12 +34,18 @@
                     <label class="form-label">Giá</label>
                     <input type="number" name="price" class="form-control" value="{{ old('price', $product->price) }}"
                         required>
+                        @error('price')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                 </div>
 
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Tồn kho</label>
                     <input type="number" name="stock" class="form-control" value="{{ old('stock', $product->stock) }}"
                         required>
+                        @error('stock')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                 </div>
 
                 <div class="col-md-4 mb-3">
