@@ -45,4 +45,14 @@ class CategoryRepository
     {
         return Category::whereNull('parent_id')->get();
     }
+
+    public function getCategoriesWithProductCount()
+    {
+        return Category::withCount('products')
+        ->whereNull('parent_id')
+        ->with(['children' => function ($query) {
+            $query->withCount('products');
+        }])
+        ->get();
+    }
 }

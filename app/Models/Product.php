@@ -1,15 +1,16 @@
 <?php
 
 namespace App\Models;
-use App\Traits\LogsActivity;
 
+use App\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\softDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
 
-    use HasFactory, LogsActivity;
+    use HasFactory, softDeletes, LogsActivity;
 
     protected $fillable = [
         'name',
@@ -23,6 +24,8 @@ class Product extends Model
         'average_rating',
         'total_review'
     ];
+
+    protected $datas = ['deleted_at'];
 
     public function getAverageRatingAttribute()
     {

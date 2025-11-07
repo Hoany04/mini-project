@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Repositories;
 
 use App\Models\Cart;
@@ -17,7 +16,7 @@ class CartRepository
 
      public function findById($id)
      {
-         return Cart::with('items.product.images')->findOrFail($id);
+        return Cart::with('items.product.images')->findOrFail($id);
      }
 
     public function getUserCart($userId)

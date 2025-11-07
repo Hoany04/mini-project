@@ -48,9 +48,62 @@ class ProductRepository
         return $product->delete();
     }
 
+    public function getAllWithTrashed($filters = [])
+    {
+        $query = Product::withTrashed()->with(['category', 'user', 'mainImage']);
+
+        if (!empty($filters['search'])) {
+            $query->where('name', 'like', '%' . $filters['search'] . '%');
+        }
+
+        return $query->paginate(10);
+    }
+
+    public function getOnlyTrashed()
+    {
+        return Product::onlyTrashed()->with(['category', 'user', 'mainImage'])->paginate(10);
+    }
+
+    public function restore($id)
+    {
+        $product = Product::onlyTrashed()->findOrFail($id);
+        $product->restore();
+        return $product;
+    }
+
+    public function forceDelete($id)
+    {
+        $product = Product::onlyTrashed()->findOrFail($id);
+        return $product->forceDelete();
+    }
+
     public function deactivateProduct(Product $product)
     {
         $product->update(['status' => 'inactive']);
         return $product;
     }
+
+    // client
+
+    public function getActivePaginated($perPage = 8)
+    {
+        return Product::where('status', 'active')->paginate($perPage);
+    }
+
+    public function findActiveById($id)
+    {
+        return Product::with(['images', 'variants', 'reviews.user'])
+        ->where('status', 'active')
+        ->find($id);
+    }
+
+    public function getRelatedProducts($product, $limit = 4)
+    {
+        return Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->where('status', 'active')
+            ->take($limit)
+            ->get();
+    }
+
 }
