@@ -8,6 +8,9 @@ no
 no
 cd "php3vsvy"
 
+transaction
+'try catch'
+
 Migration: Dùng để tạo bảng trong CSDL mà ko cần thao tác trên giao diện quản trị
 - Thực hiện migration bằng lệnh: php artisan migrate
 - Tạo 1 migration cho bảng mới: php artisan make:migration creat_ten_bang_moi

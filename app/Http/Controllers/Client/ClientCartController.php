@@ -59,6 +59,8 @@ class ClientCartController extends Controller
     // Cập nhật số lượng
     public function update(UpdateCartRequest $request, $itemId)
     {
+        $data = $request->validated();
+        
         try {
             $this->cartService->updateQuantity($itemId, $data['quantity']);
             return redirect()->route('client.pages.cart.index')->with('success', 'Cập nhật số lượng thành công!');

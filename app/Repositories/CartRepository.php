@@ -5,13 +5,17 @@ use App\Models\Cart;
 use App\Models\CartItem;
 class CartRepository
 {
+    public function __construct(Cart $cart)
+    {
+        $this->cart = $cart;
+    }
     /**
      * Create a new class instance.
      */
 
      public function getAllCarts()
      {
-        return Cart::with('items.product.images')->get();
+        // return Cart::with('items.product.images')->get();
      }
 
      public function findById($id)

@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\ProductReview;
-use App\Models\Product;
+use App\Services\ProductReviewService;
 use Illuminate\Http\Request;
 
 class ProductReviewController extends Controller
@@ -12,71 +11,37 @@ class ProductReviewController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    protected $productReviewService;
+
+    public function __construct(ProductReviewService $productReviewService)
+    {
+        $this->productReviewService = $productReviewService;
+    }
     public function index(Request $request)
     {
-        $reviews = ProductReview::with(['product', 'user'])->orderBy('created_at', 'desc')->paginate(10);
+        $reviews = $this->productReviewService->getPaginatedReviews(10);
         return view('admin.product_reviews.index', compact('reviews'));
     }
 
     public function toggleVisibility($id)
     {
-        $review = ProductReview::findOrFail($id);
-        $review->is_visible = !$review->is_visible;
-        $review->save();
-
-        return redirect()->back()->with('success', 'Da cap nhat trang thai hien thi cua danh gia');
+        try {
+            $this->productReviewService->toggleVisibility($id);
+            return back()->with('success', 'Đã cập nhật trạng thái hiển thị của đánh giá');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     public function destroy($id)
     {
-        $review = ProductReview::findOrFail($id);
-        $review->delete();
-
-        return redirect()->back()->with('success', 'Da xoa danh gia');
+        try {
+            $this->productReviewService->deleteReview($id);
+            return back()->with('success', 'Đã xóa đánh giá thành công');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     
 }

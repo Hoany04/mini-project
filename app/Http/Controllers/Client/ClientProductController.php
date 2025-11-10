@@ -3,22 +3,24 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\Product;
+use App\Services\Client\ClientProductService;
+use App\Services\Client\ClientCategoryService;
 use Illuminate\Http\Request;
 
 class ClientProductController extends Controller
 {
+    protected $productService;
+    protected $categoryService;
+
+    public function __construct(ClientProductService $productService, ClientCategoryService $categoryService)
+    {
+        $this->productService = $productService;
+        $this->categoryService = $categoryService;
+    }
     public function index()
     {
-        $categories = Category::withCount('products')
-        ->whereNull('parent_id')
-        ->with(['children' => function ($query) {
-            $query->withCount('products');
-        }])
-        ->get();
-
-        $products = Product::where('status', 1)->paginate(8);
+        $categories = $this->categoryService->getCategoriesForFilter();
+        $products = $this->productService->getProductsForList();
 
         return view('client.pages.products.index', compact('products', 'categories'));
     }
@@ -26,32 +28,36 @@ class ClientProductController extends Controller
     // Trang chi tiết sản phẩm
     public function show($id)
     {
-        $products = Product::where('status', 1)->paginate(8);
-        $product = Product::with(['images', 'variants', 'reviews.user'])
-        ->where('status', 'active')
-        ->find($id);
+        $product = $this->productService->getProductDetail($id);
 
         if (!$product) {
-            return redirect()->route('client.pages.products.index')->with('error', 'San pham khong ton tai');
+            return redirect()->route('client.pages.products.index')
+                ->with('error', 'Sản phẩm không tồn tại');
         }
 
-    // Gom nhóm biến thể theo tên (vd: màu sắc, kích thước)
+        $products = $this->productService->getProductsForList();
+        $relatedProducts = $this->productService->getRelatedProducts($product);
+
         $groupedVariants = $product->variants->groupBy('variant_name');
-
         $averageRating = $product->reviews->avg('rating') ?? 0;
-
-        $reviews = $product->reviews()->where('is_visible', true)->with('user')->latest()->get();
-
-        $relatedProducts = Product::where('category_id', $product->category_id)
-            ->where('id', '!=', $id)
-            ->where('status', 'active')
-            ->take(4)
-            ->get();
+        $reviews = $product->reviews()
+                        ->where('is_visible', true)
+                        ->with('user')
+                        ->latest()
+                        ->get();
 
         $attributes = $product->variants
             ->groupBy('variant_name')
             ->map(fn($group) => $group->pluck('variant_value')->unique()->values());
-            
-        return view('client.pages.products.detail', compact('product', 'products', 'groupedVariants', 'averageRating', 'relatedProducts', 'reviews', 'attributes'));
+
+        return view('client.pages.products.detail', compact(
+            'product',
+            'products',
+            'groupedVariants',
+            'averageRating',
+            'relatedProducts',
+            'reviews',
+            'attributes'
+        ));
     }
 }

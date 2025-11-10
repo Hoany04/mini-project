@@ -12,7 +12,6 @@ class ProductVariantController extends Controller
 {
     protected $variantService;
 
-
     public function __construct(ProductVariantService $variantService)
     {
         $this->variantService = $variantService;

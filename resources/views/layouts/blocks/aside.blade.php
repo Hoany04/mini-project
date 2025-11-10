@@ -83,7 +83,7 @@
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="" class="menu-link">
+            <a href="{{ route('admin.home') }}" class="menu-link">
               <div data-i18n="Dashboard">Dashboard</div>
             </a>
           </li>

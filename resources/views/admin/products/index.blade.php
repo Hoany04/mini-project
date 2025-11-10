@@ -14,8 +14,7 @@
 
         @if (session('warning'))
             <div class="alert alert-warning">{{ session('warning') }}</div>
-        @endif
-
+        @endif        
         <form method="GET" action="{{ route('admin.products.index') }}" class="row g-2 mb-3">
             <div class="col-md-3">
                 <input type="text" name="search" class="form-control" placeholder="Tìm theo tên..."
@@ -46,11 +45,14 @@
                 <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">Đặt lại</a>
             </div>
         </form>
-
         <div class="text-end mb-3">
             <a href="{{ route('admin.products.create') }}" class="btn btn-success">+ Thêm mới</a>
         </div>
-
+        <div class="text-end mb3">
+            <a href="{{ route('admin.products.trashed') }}" class="btn btn-outline-danger">
+                🗑️ Thùng rác
+            </a>
+        </div>
         <!-- Bảng sản phẩm -->
         <table class="table table-bordered table-hover align-middle">
             <thead class="table-light text-center">

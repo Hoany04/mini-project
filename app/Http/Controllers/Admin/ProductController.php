@@ -8,7 +8,9 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Services\ProductService;
 use App\Models\Category;
 use App\Models\Product;
+use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -17,10 +19,15 @@ class ProductController extends Controller
      */
 
      protected $productService;
+     protected $productRepo;
 
-    public function __construct(ProductService $productService)
+    public function __construct(
+        ProductService $productService,
+        ProductRepository $productRepo
+        )
     {
         $this->productService = $productService;
+        $this->productRepo = $productRepo;
     }
     public function index(Request $request)
     {
@@ -77,8 +84,32 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, $id)
     {
-        $this->productService->updateProduct($id, $request->validated());
-        return redirect()->route('admin.products.index')->with('success', 'Cap nhat san pham thanh cong');
+        DB::beginTransaction();
+
+        try {
+            $data = $request->validated();
+
+            $itemProduct = $this->productService->findProduct($id);
+            if (!$itemProduct) {
+                return redirect()
+                    ->route('admin.products.index')
+                    ->with('error', 'Sản phẩm không tồn tại');
+            }
+
+            $this->productRepo->update($itemProduct, $data);
+
+            DB::commit();
+            return redirect()
+                ->route('admin.products.index')
+                ->with('success', 'Cập nhật sản phẩm thành công');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // Có thể ghi log lỗi tại đây
+            \Log::error($th);
+            return redirect()
+                ->route('admin.products.index')
+                ->with('error', 'Có lỗi xảy ra khi cập nhật sản phẩm');
+        }
     }
 
     /**
@@ -92,5 +123,23 @@ class ProductController extends Controller
             return redirect()->route('admin.products.index')->with('success', $result['message']);
         }
         return redirect()->route('admin.products.index')->with('warning', $result['message']);
+    }
+
+    public function trashed()
+    {
+        $products = $this->productService->getTrashedProducts();
+        return view('admin.products.trashed', compact('products'));
+    }
+
+    public function restore($id)
+    {
+        $this->productService->restoreProduct($id);
+        return redirect()->route('admin.products.trashed')->with('success', 'Đã khôi phục sản phẩm!');
+    }
+
+    public function forceDelete($id)
+    {
+        $this->productService->forceDeleteProduct($id);
+        return redirect()->route('admin.products.trashed')->with('success', 'Đã xóa vĩnh viễn sản phẩm!');
     }
 }

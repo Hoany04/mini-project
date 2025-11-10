@@ -1,5 +1,142 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-    <h1>Đây là trang home</h1>
+<div class="container mt-4">
+    <h3 class="mb-4">📊 Thống kê & Báo cáo</h3>
+
+    <div class="row justify-content-center g-3">
+
+        {{-- <div class="col-md-3">
+            <div class="card text-bg-warning shadow-sm">
+                <div class="card-body text-center">
+                    <h5>Đơn hàng chưa xử lý (tháng {{ now()->format('m') }})</h5>
+                    <h2>{{ $stats['pending_orders'] ?? 0 }}</h2>
+                </div>
+            </div>
+        </div> --}}
+
+        <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="card h-100">
+              <div class="card-header">
+                <h3 class="card-title mb-2">Congratulations <strong>{{ auth()->user()->username ?? 'User' }}</strong></h3>
+                <span class="d-block mb-4 text-nowrap">Doanh thu (tháng {{ now()->format('m') }})</span>
+                <h7 class="display-6 text-primary mb-2 pt-4 pb-1">{{ number_format($stats['total_revenue'], 0, ',', '.') }} ₫</h7>
+              </div>
+              <div class="card-body">
+                <div class="row align-items-end">
+                  <div class="col-6">
+                    
+                    <small class="d-block mb-3">You have done 57.6% <br>more sales today.</small>
+        
+                    <a href="javascript:;" class="btn btn-sm btn-primary">View sales</a>
+                  </div>
+                  <div class="col-6">
+                    <img src="{{ asset('assets/img/illustrations/prize-light.png') }}" width="140" height="150" class="rounded-start" alt="View Sales" data-app-light-img="illustrations/prize-light.png" data-app-dark-img="illustrations/prize-dark.html">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <div class="bg-label-primary rounded-3 text-center mb-3 pt-4">
+                  <img class="img-fluid w-60" src="{{ asset('assets/img/illustrations/sitting-girl-with-laptop-light.png') }}" alt="Card girl image" data-app-light-img="illustrations/sitting-girl-with-laptop-light.png" data-app-dark-img="illustrations/sitting-girl-with-laptop-dark.html" />
+                </div>
+                <h4 class="mb-2 pb-1">Đơn hàng chưa xử lý (tháng {{ now()->format('m') }})</h4>
+                <p class="big">{{ $stats['pending_orders'] ?? 0 }} Đơn hàng</p>
+                {{-- <div class="row mb-3 g-3">
+                  <div class="col-6">
+                    <div class="d-flex">
+                      <div class="avatar flex-shrink-0 me-2">
+                        <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-calendar-exclamation bx-sm"></i></span>
+                      </div>
+                      <div>
+                        <h6 class="mb-0 text-nowrap">17 Nov 23</h6>
+                        <small>Date</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="d-flex">
+                      <div class="avatar flex-shrink-0 me-2">
+                        <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-time-five bx-sm"></i></span>
+                      </div>
+                      <div>
+                        <h6 class="mb-0 text-nowrap">32 minutes</h6>
+                        <small>Duration</small>
+                      </div>
+                    </div>
+                  </div>
+                </div> --}}
+                <a href="{{ route('admin.orders.index') }}" class="btn btn-primary w-100">Xử lý ngay</a>
+              </div>
+            </div>
+        </div>
+        {{-- <div class="col-md-3">
+            <div class="card text-bg-success shadow-sm">
+                <div class="card-body text-center">
+                    <h5>Doanh thu (tháng {{ now()->format('m') }})</h5>
+                    <h2>{{ number_format($stats['total_revenue'], 0, ',', '.') }} ₫</h2>
+                </div>
+            </div>
+        </div> --}}
+    </div>   
+    <div class="row justify-content-center g-3 mt-2">
+        <div class="col-lg-4 col-12">
+            <div class="row">
+              <!-- Statistics Cards -->
+              <div class="col-6 col-md-3 col-lg-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-body text-center">
+                    <div class="avatar mx-auto mb-2">
+                      <span class="avatar-initial rounded-circle bg-label-success"><i class="bx bx-purchase-tag fs-4"></i></span>
+                    </div>
+                    <span class="d-block text-nowrap">Sản phẩm</span>
+                    <h2 class="mb-0">{{ $stats['total_products'] ?? 0 }}</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-md-3 col-lg-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-body text-center">
+                    <div class="avatar mx-auto mb-2">
+                      <span class="avatar-initial rounded-circle bg-label-danger"><i class="bx bx-cart fs-4"></i></span>
+                    </div>
+                    <span class="d-block text-nowrap">Order</span>
+                    <h2 class="mb-0">40</h2>
+                  </div>
+                </div>
+              </div>
+              <!--/ Statistics Cards -->
+            </div>
+          </div>
+        <div class="col-md-2">
+            <div class="card text-bg-primary shadow-sm">
+                <div class="card-body text-center">
+                    <h5>Người dùng</h5>
+                    <h2>{{ $stats['total_users'] ?? 0 }}</h2>
+                </div>
+            </div>
+        </div>
+
+        {{-- <div class="col-md-2">
+            <div class="card text-bg-info shadow-sm">
+                <div class="card-body text-center">
+                    <h5>Sản phẩm</h5>
+                    <h2>{{ $stats['total_products'] ?? 0 }}</h2>
+                </div>
+            </div>
+        </div> --}}
+
+        <div class="col-md-2">
+            <div class="card text-bg-secondary shadow-sm">
+                <div class="card-body text-center">
+                    <h5>Danh mục</h5>
+                    <h2>{{ $stats['total_categories'] ?? 0 }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

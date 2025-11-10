@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ShippingMethodController;
 use App\Http\Controllers\Admin\PaymentTransactionController;
 use App\Http\Controllers\Admin\PaymentMethodController;
+use App\Http\Controllers\Admin\DashboardController;
 
 Route::prefix('admin')->group(function () {
     Route::resource('roles', RoleController::class);
@@ -28,8 +29,9 @@ Route::prefix('admin')->group(function () {
 Route::middleware(['auth', 'CheckActive'])->prefix('admin')
 ->as('admin.')
 ->group(function () {
-    Route::get('/home', fn() => view('admin.home'))
-    ->name('home');
+    // Route::get('/home', fn() => view('admin.home'))
+    // ->name('home');
+    Route::get('home', [DashboardController::class, 'index'])->name('home');
 
     Route::get('access-logs', [AccessLogController::class, 'index'])->name('access-logs.index');
 
@@ -64,6 +66,9 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
         Route::get('{id}/edit', [ProductController::class, 'edit'])->name('edit');
         Route::put('{id}', [ProductController::class, 'update'])->name('update');
         Route::delete('{id}', [ProductController::class, 'destroy'])->name('destroy');
+        Route::get('trashed', [ProductController::class, 'trashed'])->name('trashed');
+        Route::post('{id}/restore', [ProductController::class, 'restore'])->name('restore');
+        Route::delete('{id}/force', [ProductController::class, 'forceDelete'])->name('forceDelete');
     });
 
     Route::prefix('products/{product}/images')
@@ -152,5 +157,11 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
         Route::put('/update/{id}', [PaymentMethodController::class, 'update'])->name('update');
         Route::delete('/delete/{id}', [PaymentMethodController::class, 'destroy'])->name('delete');
     });
+
+    // Route::prefix('dashboard')
+    // ->as('dashboard.')
+    // ->group(function () {
+    //     Route::get('/dashboard', [DashboardController::class, 'index'])->name('home');
+    // });
 });
 ?>

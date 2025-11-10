@@ -31,7 +31,7 @@ class CategoryService
     public function createCategory(array $data)
     {
         $data['created_by'] = Auth::id();
-        return $this->categoryRepo->create($data);
+        return $this->categoryRepo->    ($data);
     }
 
     public function updateCategory($id, array $data)

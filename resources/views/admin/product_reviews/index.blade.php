@@ -1,5 +1,7 @@
 @extends('layouts.AdminLayout')
-
+<?php
+use Carbon\Carbon;
+?>
 @section('content')
 <div class="container mt-4 card">
     <h3 class="mb-3">Danh sách đánh giá sản phẩm</h3>
@@ -29,7 +31,7 @@
                     <td>{{ $review->user->username ?? 'Ẩn danh' }}</td>
                     <td>{{ $review->rating }} ⭐</td>
                     <td>{{ $review->comment ?? 'Không có' }}</td>
-                    <td>{{ $review->created_at->format('Y/m/d H:i') }}</td>
+                    <td>{{ Carbon::parse($review->created_at)->setTimezone('Asia/Ho_Chi_Minh')->format('Y/m/d H:i') }}</td>
                     <td>
                         <form action="{{ route('admin.product_reviews.toggle', $review->id) }}" method="POST">
                             @csrf

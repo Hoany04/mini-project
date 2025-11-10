@@ -8,22 +8,34 @@
         @csrf
         <div class="mb-3">
             <label class="form-label">Tên biến thể</label>
-            <input type="text" name="variant_name" class="form-control" value="{{ old('variant_name') }}" required>
+            <input type="text" name="variant_name" class="form-control" value="{{ old('variant_name') }}">
+            @error('variant_name')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
 
         <div class="mb-3">
             <label class="form-label">Giá trị biến thể</label>
-            <input type="text" name="variant_value" class="form-control" value="{{ old('variant_value') }}" required>
+            <input type="text" name="variant_value" class="form-control" value="{{ old('variant_value') }}">
+            @error('variant_value')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
 
         <div class="mb-3">
             <label class="form-label">Giá cộng thêm</label>
-            <input type="number" name="extra_price" class="form-control" value="{{ old('extra_price', 0) }}" required>
+            <input type="number" name="extra_price" class="form-control" value="{{ old('extra_price', 0) }}">
+            @error('extra_price')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
 
         <div class="mb-3">
             <label class="form-label">Tồn kho</label>
-            <input type="number" name="stock" class="form-control" value="{{ old('stock', 0) }}" required>
+            <input type="number" name="stock" class="form-control" value="{{ old('stock', 0) }}">
+            @error('stock')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
 
         <button class="btn btn-success">Lưu</button>

@@ -35,11 +35,11 @@ class ProductService
         return $this->productRepo->create($data);
     }
 
-    public function updateProduct($id, array $data)
+    public function findProduct($id)
     {
-        $product = $this->productRepo->findById($id);
-        $this->productRepo->update($product, $data);
-        return $product;
+        return $this->productRepo->findById($id);
+        // $this->productRepo->update($product, $data);
+        // return $product;
     }
 
     public function deleteProduct($id)
@@ -59,5 +59,25 @@ class ProductService
             'success' => true,
             'message' => 'Da xoa san pham thanh cong.'
         ];
+    }
+
+    public function getTrashedProducts()
+    {
+        return $this->productRepo->getOnlyTrashed();
+    }
+
+    public function getAllWithTrashed($filters = [])
+    {
+        return $this->productRepo->getAllWithTrashed($filters);
+    }
+
+    public function restoreProduct($id)
+    {
+        return $this->productRepo->restore($id);
+    }
+
+    public function forceDeleteProduct($id)
+    {
+        return $this->productRepo->forceDelete($id);
     }
 }

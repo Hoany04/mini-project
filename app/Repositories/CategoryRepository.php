@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Category;
+use App\Models\Product;
 
 class CategoryRepository
 {
@@ -54,5 +55,34 @@ class CategoryRepository
             $query->withCount('products');
         }])
         ->get();
+    }
+    // client
+    // tim danh muc theo slug
+    public function findBySlug($slug)
+    {
+        return Category::where('slug', $slug)->firstOrFail();
+    }
+
+    // Lay id cua cac danh muc con
+    public function getChildrenIds(Category $category)
+    {
+        return $category->children()->pluck('id')->toArray();
+    }
+
+    // Lay danh sach san pham trong cac danh muc chi dinh
+    public function getProductsByCategoryIds(array $categoryIds)
+    {
+        return Product::whereIn('category_id', $categoryIds)
+            ->where('status', 1)
+            ->paginate(8);
+    }
+
+    //Lay toan bo danh muc cha(cap 1) va danh muc con kem so luong san pham
+    public function getAllParentCategoriesWithChildren()
+    {
+        return Category::withCount('products')
+            ->whereNull('parent_id')
+            ->with('children')
+            ->get();
     }
 }

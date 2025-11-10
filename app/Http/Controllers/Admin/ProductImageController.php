@@ -3,40 +3,39 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
-use App\Models\ProductImage;
+use App\Services\ProductImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\ProductImage\StoreRequest;
 
 class ProductImageController extends Controller
 {
-    public function store(Request $request, $productId)
+    protected $productImageService;
+     public function __construct(
+        ProductImageService $productImageService
+    )
     {
-        $request->validate([
-            'images.*' => 'required|image|mimes:png,jpg,jpeg,webp|max:2048',
-        ]);
-
-        $product = Product::findOrFail($productId);
-
-        foreach ($request->file('images') as $index => $image) {
-            $path = $image->store('products', 'public');
-
-            ProductImage::create([
-                'product_id' => $product->id,
-                'image_url' => $path,
-                'is_main' => $index === 0
-            ]);
+        $this->productImageService = $productImageService;
+    }
+    
+    public function store(StoreRequest $request, $productId)
+    {
+        try {
+            $this->productImageService->uploadImages($productId, $request->file('images'));
+            return back()->with('success', 'Đã thêm ảnh cho sản phẩm!');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
         }
-
-        return back()->with('success', 'Da them anh cho san pham');
+        
     }
 
     public function destroy($productId, $id)
     {
-        $image = ProductImage::findOrFail($id);
-        Storage::disk('public')->delete($image->image_url);
-        $image->delete();
-
-        return back()->with('success', 'Da xoa anh san pham');
+        try {
+            $this->productImageService->deleteImage($productId, $id);
+            return back()->with('success', 'Đã xóa ảnh sản phẩm!');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 }

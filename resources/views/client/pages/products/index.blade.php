@@ -410,7 +410,7 @@
                 <!-- product details inner end -->
                 <div class="product-details-inner">
                     <div class="row">
-                        <div class="col-lg-5">
+                        {{-- <div class="col-lg-5">
                             <div class="product-large-slider">
                                 <div class="pro-large-img img-zoom">
                                     <img src="assets/img/product/product-details-img1.jpg" alt="product-details" />
@@ -428,7 +428,7 @@
                                     <img src="assets/img/product/product-details-img5.jpg" alt="product-details" />
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-lg-7">
                             <div class="product-details-des">
                                 <div class="manufacturer-name">
