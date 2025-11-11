@@ -151,7 +151,7 @@
               </li>
             </ul>
           </li>
-          <li class="menu-item">
+          {{-- <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <div data-i18n="Customer">Customer</div>
             </a>
@@ -190,8 +190,8 @@
                 </ul>
               </li>
             </ul>
-          </li>
-          <li class="menu-item">
+          </li> --}}
+          {{-- <li class="menu-item">
             <a href="app-ecommerce-manage-reviews.html" class="menu-link">
               <div data-i18n="Manage Reviews">Manage Reviews</div>
             </a>
@@ -237,7 +237,7 @@
                 </a>
               </li>
             </ul>
-          </li>
+          </li> --}}
         </ul>
       </li>
       <!-- e-commerce-app menu end -->
@@ -383,7 +383,7 @@
           </li>
         </ul>
       </li>
-      <li class="menu-item">
+      {{-- <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-user-check"></i>
           <div data-i18n="Authentications">Authentications</div>
@@ -542,7 +542,7 @@
           <div data-i18n="Documentation">Documentation</div>
         </a>
       </li>
-    </ul>
+    </ul> --}}
     
     
   

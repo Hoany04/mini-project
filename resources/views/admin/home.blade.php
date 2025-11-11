@@ -103,22 +103,40 @@
                     <div class="avatar mx-auto mb-2">
                       <span class="avatar-initial rounded-circle bg-label-danger"><i class="bx bx-cart fs-4"></i></span>
                     </div>
-                    <span class="d-block text-nowrap">Order</span>
-                    <h2 class="mb-0">40</h2>
+                    <span class="d-block text-nowrap">Danh mục</span>
+                    <h2 class="mb-0">{{ $stats['total_categories'] ?? 0 }}</h2>
                   </div>
                 </div>
               </div>
               <!--/ Statistics Cards -->
             </div>
           </div>
-        <div class="col-md-2">
+        
+          {{-- <div class="col-lg-4 col-12"> --}}
+            {{-- <div class="row"> --}}
+              <!-- Statistics Cards -->
+              <div class="col-md-2">
+                <div class="card h-80">
+                  <div class="card-body text-center">
+                    <div class="avatar mx-auto mb-2">
+                      <span class="avatar-initial rounded-circle bg-label-success"><i class="bx bx-purchase-tag fs-4"></i></span>
+                    </div>
+                    <span class="d-block text-nowrap">Người dùng</span>
+                    <h2 class="mb-0">{{ $stats['total_users'] ?? 0 }}</h2>
+                  </div>
+                </div>
+              </div>
+              <!--/ Statistics Cards -->
+            {{-- </div> --}}
+          {{-- </div> --}}
+        {{-- <div class="col-md-2">
             <div class="card text-bg-primary shadow-sm">
                 <div class="card-body text-center">
                     <h5>Người dùng</h5>
                     <h2>{{ $stats['total_users'] ?? 0 }}</h2>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         {{-- <div class="col-md-2">
             <div class="card text-bg-info shadow-sm">
@@ -129,14 +147,14 @@
             </div>
         </div> --}}
 
-        <div class="col-md-2">
+        {{-- <div class="col-md-2">
             <div class="card text-bg-secondary shadow-sm">
                 <div class="card-body text-center">
                     <h5>Danh mục</h5>
                     <h2>{{ $stats['total_categories'] ?? 0 }}</h2>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
 @endsection
