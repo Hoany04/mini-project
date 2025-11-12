@@ -23,6 +23,7 @@ class CategoryService
         return $this->categoryRepo->getAll($filters);
     }
 
+
     public function getCategoryById($id)
     {
         return $this->categoryRepo->findById($id, false);

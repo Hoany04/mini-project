@@ -81,6 +81,8 @@
                     </div>
                     <span class="d-block text-nowrap">Danh mục</span>
                     <h2 class="mb-0">{{ $stats['total_categories'] ?? 0 }}</h2>
+                    <span class="d-block text-nowrap">Danh mục</span>
+                    <h2 class="mb-0">{{ $stats['total_categories'] ?? 0 }}</h2>
                   </div>
                 </div>
               </div>
@@ -108,6 +110,7 @@
             </div>
         </div> --}}
 
+        {{-- <div class="col-md-2">
         {{-- <div class="col-md-2">
             <div class="card text-bg-secondary shadow-sm">
                 <div class="card-body text-center">

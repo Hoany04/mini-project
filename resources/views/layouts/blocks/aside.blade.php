@@ -152,6 +152,7 @@
             </ul>
           </li>
           {{-- <li class="menu-item">
+          {{-- <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <div data-i18n="Customer">Customer</div>
             </a>
@@ -190,8 +191,8 @@
                 </ul>
               </li>
             </ul>
-          </li>
-          <li class="menu-item">
+          </li> --}}
+          {{-- <li class="menu-item">
             <a href="app-ecommerce-manage-reviews.html" class="menu-link">
               <div data-i18n="Manage Reviews">Manage Reviews</div>
             </a>
