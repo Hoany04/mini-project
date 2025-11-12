@@ -34,7 +34,7 @@ class StripePaymentController extends Controller
         // Thanh toán
         $charge = Charge::create([
             'customer' => $customer->id,
-            'amount' => $order->total_amount * 100,
+            'amount' => (int)($order->total_amount * 100),
             'currency' => 'vnd',
             'description' => 'Thanh toán đơn hàng #' . $order->id,
             'shipping' => [
@@ -43,7 +43,7 @@ class StripePaymentController extends Controller
                 ],
                 'name' => $user->name ?? 'Khách hàng',
             ],
-        ]);        
+        ]);
 
         // Lưu giao dịch
         PaymentTransaction::create([

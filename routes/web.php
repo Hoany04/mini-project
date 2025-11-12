@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/admin.php';
+use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 
@@ -72,7 +73,7 @@ Route::middleware(['auth', 'CheckActive'])
         //
         Route::get('/checkout', [ClientShippingAddressController::class, 'index'])->name('pages.checkout.index');
         Route::post('/checkout/address', [ClientShippingAddressController::class, 'store'])->name('pages.checkout.store');
-        // 
+        //
         Route::post('/addresses/store', [ClientShippingAddressController::class, 'store'])
         ->name('pages.addresses.store');
         //
@@ -82,4 +83,3 @@ Route::middleware(['auth', 'CheckActive'])
         //
         Route::get('/checkout', [ClientShippingController::class, 'index'])->name('pages.checkout.order');
     });
-    

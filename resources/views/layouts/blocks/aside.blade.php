@@ -1,5 +1,5 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-  
+
     <div class="app-brand demo ">
       <a href="index.html" class="app-brand-link">
         <span class="app-brand-logo demo">
@@ -29,25 +29,25 @@
       </g>
     </g>
   </svg>
-  
+
   </span>
         <span class="app-brand-text demo menu-text fw-bold ms-2">Frest</span>
       </a>
-  
+
       <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
         <i class="bx menu-toggle-icon d-none d-xl-block fs-4 align-middle"></i>
         <i class="bx bx-x d-block d-xl-none bx-sm align-middle"></i>
       </a>
     </div>
-  
-    
+
+
     <div class="menu-divider mt-0  ">
     </div>
-  
+
     <div class="menu-inner-shadow"></div>
-  
-    
-    
+
+
+
     <ul class="menu-inner py-1">
       <!-- Apps & Pages -->
       <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Apps & Pages">Apps &amp; Pages</span></li>
@@ -128,7 +128,7 @@
             <ul class="menu-sub">
               <li class="menu-item">
                 {{-- {{ route('admin.carts.show', $cart->id) }} --}}
-                <a href="" class="menu-link"> 
+                <a href="" class="menu-link">
                   <div data-i18n="Cart Show">Show Cart</div>
                 </a>
               </li>
@@ -151,7 +151,7 @@
               </li>
             </ul>
           </li>
-          <li class="menu-item">
+          {{-- <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <div data-i18n="Customer">Customer</div>
             </a>
@@ -186,7 +186,7 @@
                       <div data-i18n="Notifications">Notifications</div>
                     </a>
                   </li>
-  
+
                 </ul>
               </li>
             </ul>
@@ -237,7 +237,7 @@
                 </a>
               </li>
             </ul>
-          </li>
+          </li> --}}
         </ul>
       </li>
       <!-- e-commerce-app menu end -->
@@ -324,7 +324,7 @@
               <div data-i18n="List">List</div>
             </a>
           </li>
-  
+
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <div data-i18n="View">View</div>
@@ -383,7 +383,7 @@
           </li>
         </ul>
       </li>
-      <li class="menu-item">
+      {{-- <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-user-check"></i>
           <div data-i18n="Authentications">Authentications</div>
@@ -526,8 +526,8 @@
           <i class="menu-icon tf-icons bx bx-window-open"></i>
           <div data-i18n="Modal Examples">Modal Examples</div>
         </a>
-      </li>
-  
+      </li> --}}
+
       <!-- Misc -->
       <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Misc">Misc</span></li>
       <li class="menu-item">
@@ -543,7 +543,7 @@
         </a>
       </li>
     </ul>
-    
-    
-  
+
+
+
   </aside>

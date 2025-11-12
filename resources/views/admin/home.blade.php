@@ -25,9 +25,9 @@
               <div class="card-body">
                 <div class="row align-items-end">
                   <div class="col-6">
-                    
+
                     <small class="d-block mb-3">You have done 57.6% <br>more sales today.</small>
-        
+
                     <a href="javascript:;" class="btn btn-sm btn-primary">View sales</a>
                   </div>
                   <div class="col-6">
@@ -45,30 +45,6 @@
                 </div>
                 <h4 class="mb-2 pb-1">Đơn hàng chưa xử lý (tháng {{ now()->format('m') }})</h4>
                 <p class="big">{{ $stats['pending_orders'] ?? 0 }} Đơn hàng</p>
-                {{-- <div class="row mb-3 g-3">
-                  <div class="col-6">
-                    <div class="d-flex">
-                      <div class="avatar flex-shrink-0 me-2">
-                        <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-calendar-exclamation bx-sm"></i></span>
-                      </div>
-                      <div>
-                        <h6 class="mb-0 text-nowrap">17 Nov 23</h6>
-                        <small>Date</small>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-6">
-                    <div class="d-flex">
-                      <div class="avatar flex-shrink-0 me-2">
-                        <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-time-five bx-sm"></i></span>
-                      </div>
-                      <div>
-                        <h6 class="mb-0 text-nowrap">32 minutes</h6>
-                        <small>Duration</small>
-                      </div>
-                    </div>
-                  </div>
-                </div> --}}
                 <a href="{{ route('admin.orders.index') }}" class="btn btn-primary w-100">Xử lý ngay</a>
               </div>
             </div>
@@ -81,7 +57,7 @@
                 </div>
             </div>
         </div> --}}
-    </div>   
+    </div>
     <div class="row justify-content-center g-3 mt-2">
         <div class="col-lg-4 col-12">
             <div class="row">
@@ -103,22 +79,25 @@
                     <div class="avatar mx-auto mb-2">
                       <span class="avatar-initial rounded-circle bg-label-danger"><i class="bx bx-cart fs-4"></i></span>
                     </div>
-                    <span class="d-block text-nowrap">Order</span>
-                    <h2 class="mb-0">40</h2>
+                    <span class="d-block text-nowrap">Danh mục</span>
+                    <h2 class="mb-0">{{ $stats['total_categories'] ?? 0 }}</h2>
                   </div>
                 </div>
               </div>
               <!--/ Statistics Cards -->
             </div>
           </div>
-        <div class="col-md-2">
-            <div class="card text-bg-primary shadow-sm">
-                <div class="card-body text-center">
-                    <h5>Người dùng</h5>
-                    <h2>{{ $stats['total_users'] ?? 0 }}</h2>
+            <div class="col-md-2">
+                <div class="card h-80">
+                  <div class="card-body text-center">
+                    <div class="avatar mx-auto mb-2">
+                      <span class="avatar-initial rounded-circle bg-label-success"><i class="bx bx-purchase-tag fs-4"></i></span>
+                    </div>
+                    <span class="d-block text-nowrap">Người dùng</span>
+                    <h2 class="mb-0">{{ $stats['total_users'] ?? 0 }}</h2>
+                  </div>
                 </div>
             </div>
-        </div>
 
         {{-- <div class="col-md-2">
             <div class="card text-bg-info shadow-sm">
@@ -129,14 +108,14 @@
             </div>
         </div> --}}
 
-        <div class="col-md-2">
+        {{-- <div class="col-md-2">
             <div class="card text-bg-secondary shadow-sm">
                 <div class="card-body text-center">
                     <h5>Danh mục</h5>
                     <h2>{{ $stats['total_categories'] ?? 0 }}</h2>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
 @endsection

@@ -4,6 +4,8 @@ namespace App\Services\Client;
 use App\Models\OrderItem;
 use App\Models\OrderShipping;
 use App\Models\ShippingMethod;
+use App\Models\ProductVariant;
+use App\Models\Product;
 use App\Repositories\OrderRepository;
 use App\Repositories\OrderItemRepository;
 use App\Repositories\CartRepository;
@@ -46,7 +48,7 @@ class ClientOrderService
             }
 
             // Tính tổng giá trị giỏ hàng
-            $cartTotal = $cart->total_price;
+            $cartTotal = $cart->items->sum(fn($item) => $item->price * $item->quantity);
 
             // Lấy phương thức vận chuyển và phí ship
             $shippingMethod = ShippingMethod::find($data['shipping_method_id'] ?? null);
@@ -78,6 +80,33 @@ class ClientOrderService
                     'quantity' => $item->quantity,
                     'price' => $item->price,
                 ];
+
+                $product = Product::find($item['product_id']);
+                if ($product->stock >= $item['quantity']) {
+                    $product->decrement('stock', $item['quantity']);
+                    $product->increment('sold', $item['quantity']);
+                } else {
+                    throw new \Exception("Sản phẩm {$product->name} không đủ hàng");
+                }
+
+                if ($item->variant_id) {
+                    // dd($item->variant_id);
+                    $variant = ProductVariant::find($item->variant_id);
+
+                    if ($variant && $variant->stock >= $item->quantity) {
+                        $variant->decrement('stock', $item->quantity);
+                    } else {
+                        throw new \Exception("Biến thể {$variant->variant_value} không đủ hàng trong kho!");
+                    }
+                } else {
+                    // nếu spham ko co bien the
+                    $product = Product::find($item->product_id);
+                    if ($product && $product->stock >= $item->quantity) {
+                        $product->decrement('stock', $item->quantity);
+                    } else {
+                        throw new \Exception("Sản phẩm {$product->name} không đủ hàng trong kho!");
+                    }
+                }
             }
 
             OrderItem::insert($orderItems);

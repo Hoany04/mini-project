@@ -12,7 +12,7 @@ class OrderItemRepository
 
     public function bulkCreate(array $items)
     {
-        return OrderItem::insert($item);
+        return OrderItem::insert($items);
     }
 }
 ?>
