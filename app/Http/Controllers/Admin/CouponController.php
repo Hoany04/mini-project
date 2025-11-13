@@ -17,7 +17,7 @@ class CouponController extends Controller
         $this->couponService = $couponService;
     }
 
-    public function index(Request $request) 
+    public function index(Request $request)
     {
         $filters = $request->only(['search', 'status']);
         $coupons = $this->couponService->getAllCoupons($filters);

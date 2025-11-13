@@ -5,9 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Services\API\ApiTransactionService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class TransactionController extends Controller
+class PaymentTransactionController extends Controller
 {
     protected $transactionService;
 
@@ -16,16 +15,9 @@ class TransactionController extends Controller
         $this->transactionService = $transactionService;
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        $user = Auth::user();
-
-        if (!$user) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
-
-        $transactions = $this->transactionService->getUserTransactions($user->id);
-
+        $transactions = $this->transactionService->getAll();
         return response()->json([
             'status' => 'success',
             'data' => $transactions
@@ -34,20 +26,28 @@ class TransactionController extends Controller
 
     public function show($id)
     {
-        $user = auth()->user();
-
-        if (!$user) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
-
-        $transaction = $this->transactionService->getTransactionDetail($id, $user->id);
-
+        $transaction = $this->transactionService->findById($id);
         if (!$transaction) {
             return response()->json(['message' => 'Transaction not found'], 404);
         }
 
         return response()->json([
             'status' => 'success',
+            'data' => $transaction
+        ]);
+    }
+
+    public function process(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:pending,paid,failed,refunded',
+        ]);
+
+        $transaction = $this->transactionService->process($id, $validated['status']);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Transaction processed successfully',
             'data' => $transaction
         ]);
     }

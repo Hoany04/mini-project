@@ -27,6 +27,7 @@ class SendPendingOrdersEmail extends Command
     /**
      * Execute the console command.
      */
+    // sd job
     public function handle()
     {
         $orders = Order::with('user')

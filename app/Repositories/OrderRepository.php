@@ -2,8 +2,10 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\NewOrderNotification;
 use App\Models\Order;
-use App\Models\OrderItem;
+use App\Models\User;
 use App\Models\OrderShipping;
 class OrderRepository
 {
@@ -21,7 +23,7 @@ class OrderRepository
         if (!empty($filters['search'])) {
             $search = $filters['search'];
             $query->whereHas('user', function ($q) use ($search) {
-                $q->where('username', 'like', "%{search}%")->orWhere('email', 'like', "%{search}%");
+                $q->where('username', 'like', "%{$search}%")->orWhere('email', 'like', "%{$search}%");
             });
         }
         return $query->orderByDesc('id')->paginate(10);
@@ -29,12 +31,14 @@ class OrderRepository
 
     public function create(array $data)
     {
-        return Order::create([
+        $order = Order::create([
             'user_id' => $data['user_id'],
             'coupon_id' => $data['coupon_id'] ?? null,
             'total_amount' => $data['total_amount'],
             'status' => $data['status'] ?? 'pending',
         ]);
+       $admin = User::where('role', 'admin')->get();
+       Notification::send($admin, new NewOrderNotification($order));
     }
 
     //

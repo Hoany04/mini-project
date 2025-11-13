@@ -5,13 +5,12 @@ namespace App\Events;
 use App\Models\Order;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class OrderStatusUpdated
+class NewOrderCreated implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -21,7 +20,7 @@ class OrderStatusUpdated
     public $order;
     public function __construct(Order $order)
     {
-        $this->order = $order;
+        $this->order = $order->load('user');
     }
 
     /**
@@ -29,15 +28,15 @@ class OrderStatusUpdated
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn()
+    public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('orders.' .$this->order->user_id),
+            new Channel('mini-project'),
         ];
     }
 
     public function broadcastAs()
     {
-        return 'OrderStatusUpdated';
+        return 'new-order';
     }
 }

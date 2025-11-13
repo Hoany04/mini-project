@@ -1,5 +1,5 @@
 @extends('layouts.AdminLayout')
-
+@vite(['resources/js/app.js'])
 @section('content')
 <div class="container mt-4">
     <h3 class="mb-4">📊 Thống kê & Báo cáo</h3>
@@ -81,8 +81,7 @@
                     </div>
                     <span class="d-block text-nowrap">Danh mục</span>
                     <h2 class="mb-0">{{ $stats['total_categories'] ?? 0 }}</h2>
-                    <span class="d-block text-nowrap">Danh mục</span>
-                    <h2 class="mb-0">{{ $stats['total_categories'] ?? 0 }}</h2>
+
                   </div>
                 </div>
               </div>
@@ -100,25 +99,15 @@
                   </div>
                 </div>
             </div>
-
-        {{-- <div class="col-md-2">
-            <div class="card text-bg-info shadow-sm">
-                <div class="card-body text-center">
-                    <h5>Sản phẩm</h5>
-                    <h2>{{ $stats['total_products'] ?? 0 }}</h2>
-                </div>
-            </div>
-        </div> --}}
-
-        {{-- <div class="col-md-2">
-        {{-- <div class="col-md-2">
-            <div class="card text-bg-secondary shadow-sm">
-                <div class="card-body text-center">
-                    <h5>Danh mục</h5>
-                    <h2>{{ $stats['total_categories'] ?? 0 }}</h2>
-                </div>
-            </div>
-        </div> --}}
     </div>
 </div>
+@endsection
+@section('js')
+<script>
+    window.Echo.channel('mini-project')
+    .listen('.new-order', (e) => {
+        console.log('🛒 Có đơn hàng mới:', e.order);
+        alert('Có đơn hàng mới #' + e.order.id);
+    });
+</script>
 @endsection

@@ -47,7 +47,7 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($orderId);
 
-        $shipping = $order->shipping ?: new \App\Models\OrderShipping(['order_id' => $order->id]);
+        $shipping = $order->shipping ?: new OrderShipping(['order_id' => $order->id]);
         $shipping->fill($request->only([
             'shipping_method_id',
             'shipping_address_id',

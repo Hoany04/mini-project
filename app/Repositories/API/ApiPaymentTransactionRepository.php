@@ -28,4 +28,20 @@ class ApiPaymentTransactionRepository
             })
             ->first();
     }
+
+    public function getAll()
+    {
+        return PaymentTransaction::with('order.user')->latest()->get();
+    }
+
+    public function findById($id)
+    {
+        return PaymentTransaction::with('order.user')->find($id);
+    }
+
+    public function updateStatus(PaymentTransaction $transaction, $status)
+    {
+        $transaction->update(['status' => $status]);
+        return $transaction;
+    }
 }
