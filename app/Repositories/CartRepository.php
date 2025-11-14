@@ -15,7 +15,7 @@ class CartRepository
 
      public function getAllCarts()
      {
-        // return Cart::with('items.product.images')->get();
+        return Cart::with('items.product.images')->get();
      }
 
      public function findById($id)

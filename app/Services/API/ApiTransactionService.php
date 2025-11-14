@@ -56,13 +56,13 @@ class ApiTransactionService
             if ($order) {
                 switch ($status) {
                     case 'paid':
-                        $order->status = 'processing';
+                        $order->status = 'paid';
                         break;
                     case 'failed':
                         $order->status = 'cancelled';
                         break;
                     case 'refunded':
-                        $order->status = 'refunded';
+                        $order->status = 'completed';
                         break;
                     default:
                         $order->status = 'pending';

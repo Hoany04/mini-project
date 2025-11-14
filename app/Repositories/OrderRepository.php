@@ -37,8 +37,10 @@ class OrderRepository
             'total_amount' => $data['total_amount'],
             'status' => $data['status'] ?? 'pending',
         ]);
-       $admin = User::where('role', 'admin')->get();
+       $admin = User::where('role_id', 'admin')->get();
        Notification::send($admin, new NewOrderNotification($order));
+
+       return $order;
     }
 
     //
