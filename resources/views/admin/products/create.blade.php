@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mt-4 col-md-8 card">
-        <h3>Thêm sản phẩm mới</h3>
+        <h3 class="p-4">Thêm sản phẩm mới</h3>
 
         <form method="POST" action="{{ route('admin.products.store') }}">
             @csrf

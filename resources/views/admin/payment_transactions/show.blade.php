@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-<h3>Chi tiết giao dịch #{{ $transaction->id }}</h3>
+<h3 class="p-4">Chi tiết giao dịch #{{ $transaction->id }}</h3>
 
 <ul class="list-group">
     <li class="list-group-item"><strong>Đơn hàng:</strong> #{{ $transaction->order_id }}</li>

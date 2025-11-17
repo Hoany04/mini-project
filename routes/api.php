@@ -15,21 +15,21 @@ Route::middleware('throttle:api')->group(function () {
         Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
         //
         Route::get('/home', [HomeController::class, 'index']);
-        //
+        // get category
         Route::get('/categories', [CategoryController::class, 'index']);
         Route::get('/categories/{id}', [CategoryController::class, 'show']);
-        //
+        // get products
         Route::get('/products', [ProductController::class, 'index']);
         Route::get('/products/{id}', [ProductController::class, 'show']);
         Route::middleware('auth:sanctum')->group(function () {
-        //
+        // get lsu gdich
         Route::get('/transactions', [TransactionController::class, 'index']);
         Route::get('/transactions/{id}', [TransactionController::class, 'show']);
-        //
+        // xu ly gd
         Route::get('/payment', [PaymentTransactionController::class, 'index']);
         Route::get('/payment/{id}', [PaymentTransactionController::class, 'show']);
         Route::put('/payment/{id}/process', [PaymentTransactionController::class, 'process']);
-        //
+        // tao order
         Route::post('/order', [OrderController::class, 'store']);
     });
 });

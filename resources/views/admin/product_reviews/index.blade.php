@@ -4,7 +4,7 @@ use Carbon\Carbon;
 ?>
 @section('content')
 <div class="container mt-4 card">
-    <h3 class="mb-3">Danh sách đánh giá sản phẩm</h3>
+    <h3 class="mb-3 p-4">Danh sách đánh giá sản phẩm</h3>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>

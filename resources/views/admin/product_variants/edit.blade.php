@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-4 card">
-    <h3 class="mb-3">Chỉnh sửa biến thể cho: {{ $product->name }}</h3>
+    <h3 class="mb-3 p-4">Chỉnh sửa biến thể cho: {{ $product->name }}</h3>
 
     <form action="{{ route('admin.product_variants.update', [$product->id, $variant->id]) }}" method="POST">
         @csrf

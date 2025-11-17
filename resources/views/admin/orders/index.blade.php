@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-4 card">
-    <h3>Danh sách đơn hàng</h3>
+    <h3 class="p-4">Danh sách đơn hàng</h3>
 
     @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>

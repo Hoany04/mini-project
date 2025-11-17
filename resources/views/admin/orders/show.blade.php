@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-4 card">
-    <h3>Chi tiết đơn hàng #{{ $order->id }}</h3>
+    <h3 class="p-4">Chi tiết đơn hàng #{{ $order->id }}</h3>
 
     <div class="mb-3">
         <strong>Khách hàng:</strong> {{ $order->user->username ?? 'N/A' }} <br>
@@ -60,7 +60,7 @@
             <form action="{{ route('admin.orders.updateShipping', $order->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-    
+
                 <div class="mb-3">
                     <label>Địa chỉ giao hàng</label>
                     @if($order->shipping && $order->shipping->shippingAddress)
@@ -79,7 +79,7 @@
                         <p class="text-muted">Chưa có địa chỉ giao hàng</p>
                     @endif
                 </div>
-                
+
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label>Phương thức vận chuyển</label>
@@ -98,18 +98,18 @@
                                value="{{ optional($order->shipping)->shipping_fee }}">
                     </div>
                 </div>
-    
+
                 <div class="mb-3">
                     <label>Mã vận đơn</label>
                     <input type="text" name="tracking_number" class="form-control"
                            value="#{{ ($order->id) }}">
                 </div>
-    
+
                 <div class="mb-3">
                     <label>Ghi chú giao hàng</label>
                     <textarea name="delivery_note" class="form-control">{{ optional($order->shipping)->delivery_note }}</textarea>
                 </div>
-    
+
                 <div class="mb-3">
                     <label>Trạng thái giao hàng</label>
                     <select name="status" class="form-select">
@@ -124,11 +124,11 @@
                         @endforeach
                     </select>
                 </div>
-    
+
                 <button type="submit" class="btn btn-success">Cập nhật</button>
             </form>
         </div>
-    </div>    
+    </div>
 
     <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary mt-3">Quay lại</a>
 </div>

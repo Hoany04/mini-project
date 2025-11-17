@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h4>Thêm phương thức vận chuyển</h4>
+    <h4 class="p-4">Thêm phương thức vận chuyển</h4>
     <form action="{{ route('admin.shipping_methods.store') }}" method="POST">
         @csrf
         <div class="mb-3">

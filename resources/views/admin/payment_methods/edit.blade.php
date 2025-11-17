@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h4>Sửa phương thức thanh toán</h4>
+    <h4 class="p-4">Sửa phương thức thanh toán</h4>
 
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -24,8 +24,8 @@
 
         <div class="mb-3">
             <label for="name">Tên</label>
-            <input type="text" name="name" id="name" 
-                   value="{{ old('name', $method->name) }}" 
+            <input type="text" name="name" id="name"
+                   value="{{ old('name', $method->name) }}"
                    class="form-control" required>
         </div>
 

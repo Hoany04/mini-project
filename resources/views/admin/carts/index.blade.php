@@ -1,9 +1,8 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-<h3>Danh sách giỏ hàng</h3>
 <div class="container mt-4 card">
-
+    <h3 class="p-4">Danh sách giỏ hàng</h3>
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif

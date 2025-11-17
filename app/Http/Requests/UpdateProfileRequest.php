@@ -19,7 +19,7 @@ class UpdateProfileRequest extends FormRequest
             'address' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:100',
             'country' => 'nullable|string|max:100',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ];
     }
 
@@ -32,7 +32,7 @@ class UpdateProfileRequest extends FormRequest
             'city.max' => 'Tên thành phố không được vượt quá 100 ký tự.',
             'country.max' => 'Tên quốc gia không được vượt quá 100 ký tự.',
             'avatar.image' => 'Ảnh đại diện phải là định dạng hình ảnh.',
-            'avatar.mimes' => 'Ảnh đại diện chỉ chấp nhận các định dạng jpeg, png, jpg, gif.',
+            'avatar.mimes' => 'Ảnh đại diện chỉ chấp nhận các định dạng jpeg, png, jpg, gif, webp.',
             'avatar.max' => 'Ảnh đại diện không được vượt quá 2MB.',
         ];
     }

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-4 card">
-    <h4>Biến thể sản phẩm: {{ $product->name }}</h4>
+    <h4 class="p-4">Biến thể sản phẩm: {{ $product->name }}</h4>
     <a href="{{ route('admin.product_variants.create', $product->id) }}" class="btn btn-primary mb-3">+ Thêm biến thể</a>
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>

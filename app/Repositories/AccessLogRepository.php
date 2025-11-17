@@ -18,19 +18,19 @@ class AccessLogRepository
     {
         return $this->accessLog
             ->with('user')
-            ->when($data['user_id'], function ($query) use ($data) {
+            ->when(isset($data['user_id']), function ($query) use ($data) {
                 $query->where('user_id', $data['user_id'],);
             })
-            ->when($data['table_name'], function ($query) use ($data) {
+            ->when(isset($data['table_name']), function ($query) use ($data) {
                 $query->where('table_name', $data['table_name'],);
             })
-            ->when($data['action'], function ($query) use ($data) {
+            ->when(isset($data['action']), function ($query) use ($data) {
                 $query->where('action', $data['action'],);
             })
-            ->when($data['from'], function ($query) use ($data) {
-                $query->whereDate('created_at', '>=', $data['user_id'],);
+            ->when(isset($data['from']), function ($query) use ($data) {
+                $query->whereDate('created_at', '>=', $data['from'],);
             })
-            ->when($data['to'], function ($query) use ($data) {
+            ->when(isset($data['to']), function ($query) use ($data) {
                 $query->whereDate('created_at', '<=', $data['to'],);
             })
             ->orderByDesc('created_at')

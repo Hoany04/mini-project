@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mt-4 card">
-        <h2>List users</h2>
+        <h2 class="p-4">List users</h2>
 
         @if(session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
@@ -42,7 +42,7 @@
         </form>
 
         <a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3">+ Add user</a>
-        
+
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif

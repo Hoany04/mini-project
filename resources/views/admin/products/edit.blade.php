@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mt-4 col-md-8 card">
-        <h3>Cập nhật sản phẩm</h3>
+        <h3 class="p-4">Cập nhật sản phẩm</h3>
 
         <form method="POST" action="{{ route('admin.products.update', $product->id) }}">
             @csrf
@@ -74,7 +74,7 @@
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
-        
+
         <form method="POST" action="{{ route('admin.products.images.store', $product->id) }}"
             enctype="multipart/form-data">
             @csrf
@@ -88,6 +88,7 @@
             @foreach ($product->images as $img)
                 <div class="col-md-3 text-center mb-3">
                     <div class="card">
+                        {{-- <pre>{{ $img->image_url }}</pre> --}}
                         <img src="{{ asset('storage/' . $img->image_url) }}" class="card-img-top" alt="Ảnh sản phẩm">
                         <div class="card-body p-2">
                             @if ($img->is_main)

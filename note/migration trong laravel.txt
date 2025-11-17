@@ -17,14 +17,14 @@ Migration: Dùng để tạo bảng trong CSDL mà ko cần thao tác trên giao
 - Để rollback lại lệnh vừa thực thi: php artisan migrate:rollback
  + rollback nhiều bước: php artisan migrate:rollback --step= "số bước"
  + rollback toàn bộ csdl, sau đó migration lại từ đầu(reset database): php artisan migrate:refresh
-- Lưu ý: 1. Đối với các bảng có khóa ngoại (categories - products), yêu cầu tạo bảng cha(categories) trước 
+- Lưu ý: 1. Đối với các bảng có khóa ngoại (categories - products), yêu cầu tạo bảng cha(categories) trước
          2. Trong trường hợp không thể có xử lý khác mới dùng lệnh "php artisan migrate:refesh"
 
 Vd: Tạo migration bảng danh mục, bảng sản phẩm, bảng customer
 - Tạo các bảng, chạy migrate trong 3 bước khác nhau
 - Thực hiện rollback 1 bước sau đó là 2 bước
 - Thực hiện migrate lại
-- Thực hiện refest database 
+- Thực hiện refest database
 
 Seeder: Tạo dữ liệu mẫu trong các bảng (dữ liệu test)
 Factory: Dùng để tạo nhiều dữ liệu dưới dạng data test (dùng faker)

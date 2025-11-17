@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mt-4 col-md-6 card">
-        <h3>Cập nhật danh mục</h3>
+        <h3 class="p-4">Cập nhật danh mục</h3>
 
         <form method="POST" action="{{ route('admin.categorys.update', $category->id) }}">
             @csrf

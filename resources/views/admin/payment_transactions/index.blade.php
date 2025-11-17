@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-<h3>Danh sách giao dịch thanh toán</h3>
+<h3 class="p-4">Danh sách giao dịch thanh toán</h3>
 
 <table class="table table-bordered">
     <thead>

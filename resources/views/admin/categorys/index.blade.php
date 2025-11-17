@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mt-4 card">
-        <h2>List Category</h2>
+        <h2 class="p-4">List Category</h2>
 
         @if(session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>

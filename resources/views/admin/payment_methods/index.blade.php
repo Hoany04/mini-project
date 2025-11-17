@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-<h4>Phương thức thanh toán</h4>
+<h4 class="p-4">Phương thức thanh toán</h4>
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
@@ -27,7 +27,7 @@
                 <span class="badge bg-{{ $method->status === 'active' ? 'success' : 'secondary' }}">
                     {{ $method->status === 'active' ? 'Kích hoạt' : 'Tạm ngừng' }}
                 </span>
-            </td>            
+            </td>
             <td>
                 <a href="{{ route('admin.payment-methods.edit', $method->id) }}" class="btn btn-warning btn-sm">✏️</a>
 

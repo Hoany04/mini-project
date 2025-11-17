@@ -3,8 +3,8 @@
 use Carbon\Carbon;
 ?>
 @section('content')
-<div class="container-fluid">
-    <h3>Nhật ký truy cập / thay đổi</h3>
+<div class="container-fluid card">
+    <h3 class="p-4">Nhật ký truy cập / thay đổi</h3>
 
     <form class="row g-2 mb-3" method="GET">
         <div class="col-auto">

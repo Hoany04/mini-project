@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="container mt-4 col-md-6 card">
-    <h3>Sửa thông tin người dùng</h3>
+    <h3 class="p-4">Sửa thông tin người dùng</h3>
     <form method="POST" action="{{ route('admin.users.update', $user->id) }}">
-        @csrf 
+        @csrf
         @method('PUT')
         <div class="mb-3">
             <label>Tên đăng nhập</label>

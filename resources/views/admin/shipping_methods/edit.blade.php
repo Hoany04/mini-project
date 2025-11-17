@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-4">
-    <h4 class="mb-3">✏️ Cập nhật phương thức vận chuyển</h4>
+    <h4 class="mb-3 p-4">✏️ Cập nhật phương thức vận chuyển</h4>
 
     <form action="{{ route('admin.shipping_methods.update', $method->id) }}" method="POST">
         @csrf

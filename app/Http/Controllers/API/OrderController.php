@@ -17,22 +17,30 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        $userId = $request->user()->id;
+         $data = $request->validate([
+            'user_id' => 'required|integer',
+            'items' => 'required|array|min:1',
+            'items.*.product_id' => 'required|integer',
+            'items.*.quantity' => 'required|integer|min:1'
+        ]);
 
-        try {
-            $order = $this->orderService->createOrder($userId);
+        return $this->orderService->createOrder($data);
+        // $userId = $request->user()->id;
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Order created successfully',
-                'data' => $order
-            ]);
-        } catch (\Exception $e) {
+        // try {
+        //     $order = $this->orderService->createOrder($userId);
 
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 422);
-        }
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'message' => 'Order created successfully',
+        //         'data' => $order
+        //     ]);
+        // } catch (\Exception $e) {
+
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'message' => $e->getMessage()
+        //     ], 422);
+        // }
     }
 }

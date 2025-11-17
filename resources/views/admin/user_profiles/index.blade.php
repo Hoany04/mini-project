@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mt-4 card">
-        <h2>List Profile User</h2>
+        <h2 class="p-4">List Profile User</h2>
 
         <table class="table table-bordered">
             <thead class="table-dark">

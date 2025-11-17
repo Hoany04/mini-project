@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h4>Thêm phương thức thanh toán</h4>
+        <h4 class="p-4">Thêm phương thức thanh toán</h4>
         <form action="{{ route('admin.payment-methods.store') }}" method="POST">
             @csrf
             <div class="mb-3">

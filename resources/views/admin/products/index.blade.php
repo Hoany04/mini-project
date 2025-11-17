@@ -2,19 +2,19 @@
 
 @section('content')
     <div class="container mt-5 card">
-        <h2>List Product</h2>
+        <h2 class="p-4">List Product</h2>
 
         @if(session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
-        
+
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
         @if (session('warning'))
             <div class="alert alert-warning">{{ session('warning') }}</div>
-        @endif        
+        @endif
         <form method="GET" action="{{ route('admin.products.index') }}" class="row g-2 mb-3">
             <div class="col-md-3">
                 <input type="text" name="search" class="form-control" placeholder="Tìm theo tên..."
@@ -78,25 +78,25 @@
                         <td>{{ $product->category?->name ?? 'Không có' }}</td>
                         <td>
                             @if($product->mainImage)
-                              <img src="{{ asset('storage/' . $product->mainImage->image_url) }}" 
-                                   alt="Ảnh sản phẩm" 
-                                   width="70" height="70" 
+                              <img src="{{ asset('storage/' . $product->mainImage->image_url) }}"
+                                   alt="Ảnh sản phẩm"
+                                   width="70" height="70"
                                    class="rounded border">
                             @else
-                              <img src="https://via.placeholder.com/70x70?text=No+Image" 
-                                   alt="Không có ảnh" 
-                                   width="70" height="70" 
+                              <img src="https://via.placeholder.com/70x70?text=No+Image"
+                                   alt="Không có ảnh"
+                                   width="70" height="70"
                                    class="rounded border">
                             @endif
                           </td>
-                          
+
                         <td>{{ number_format($product->price, 0, ',', '.') }}₫</td>
                         <td>{{ $product->stock }}</td>
                         <td>{{ $product->sold }}</td>
                         <td>{{ number_format($product->average_rating, 2) }}</td>
                         <td>
                             <span
-                                class="badge 
+                                class="badge
                       {{ $product->status == 'active' ? 'bg-success' : ($product->status == 'inactive' ? 'bg-secondary' : 'bg-danger') }}">
                                 {{ $product->status }}
                             </span>

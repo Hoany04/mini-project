@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-4">
-    <h3>Chi tiết giỏ hàng #{{ $cart->id }}</h3>
+    <h3 class="p-4">Chi tiết giỏ hàng #{{ $cart->id }}</h3>
 
     <div class="mb-3">
         <strong>Người dùng:</strong> {{ $cart->user->username ?? 'Không xác định' }} <br>
@@ -34,7 +34,7 @@
         </tbody>
     </table>
 
-    <h5 class="text-end mt-3">Tổng cộng: 
+    <h5 class="text-end mt-3">Tổng cộng:
         <span class="text-danger fw-bold">
             {{ number_format($cart->items->sum(fn($i) => $i->price * $i->quantity)) }}₫
         </span>

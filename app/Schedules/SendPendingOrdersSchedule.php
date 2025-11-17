@@ -12,6 +12,6 @@ class SendPendingOrdersSchedule
         // Lên lịch chạy command mỗi ngày lúc 8h sáng
         // php artisan email:pending-orders
         // php artisan schedule:run
-        $schedule->command(SendPendingOrdersEmail::class)->everyMinute()->withoutOverlapping(); //everyMinute()
+        $schedule->command(SendPendingOrdersEmail::class)->everyMinute(); //everyMinute()->withoutOverlapping()
     }
 }
