@@ -25,15 +25,5 @@ class ApiOrderRepository
     public function createOrderItems($data)// $orderId, $items
     {
         return OrderItem::create($data);
-        // foreach ($items as $item) {
-        //     OrderItem::created([
-        //         'order_id' => $orderId,
-        //         'product_id' => $item['product_id'],
-        //         'variant_id' => $item['variant_id'],
-        //         'quantity' => $item['quantity'],
-        //         'price' => $item['price'],
-        //         'variant_text' => $item['variant_text'],
-        //     ]);
-        // }
     }
 }

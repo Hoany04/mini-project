@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Services\Client\ClientShippingService;
+use Illuminate\Http\Request;
 
 class ClientShippingController extends Controller
 {

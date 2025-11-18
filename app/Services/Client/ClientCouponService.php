@@ -36,7 +36,7 @@ class ClientCouponService
                 'coupon' => 'Mã giảm giá chưa đến thời gian sử dụng.',
             ]);
         }
-        // 
+        //
         if ($coupon->usage_limit !== null && $coupon->used_count >= $coupon->usage_limit) {
             throw ValidationException::withMessages([
                 'coupon' => 'Mã giảm giá đã hết lượt sử dụng.',
@@ -88,6 +88,7 @@ class ClientCouponService
             'total_price' => $cartTotal - $discount,
         ]);
 
+        $cart->refresh();
         //  Tăng số lần sử dụng mã
         $coupon->increment('used_count');
 
@@ -95,7 +96,7 @@ class ClientCouponService
             'success' => true,
             'message' => "Áp dụng mã {$coupon->code} thành công, giảm " . number_format($discount) . "đ!",
             'discount' => $discount,
-            'new_total' => $cart->total_price,
+            'new_total' => $cartTotal - $discount,
             'coupon' => $coupon,
         ];
     }

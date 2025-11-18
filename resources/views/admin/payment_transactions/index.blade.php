@@ -1,5 +1,7 @@
 @extends('layouts.AdminLayout')
-
+<?php
+use Carbon\Carbon;
+?>
 @section('content')
 <h3 class="p-4">Danh sách giao dịch thanh toán</h3>
 
@@ -29,7 +31,7 @@
                 </span>
             </td>
 
-            <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
+            <td>{{ Carbon::parse($item->created_at)->format('d/m/Y H:i') }}</td>
             <td>
                 <a href="{{ route('admin.payment-transactions.show', $item->id) }}" class="btn btn-info btn-sm">
                     👁️

@@ -10,7 +10,7 @@
 
         <div class="mb-3">
           <label for="name" class="form-label">Tên danh mục</label>
-          <input type="text" name="name" id="name" value="{{ old('name') }}" class="form-control" required>
+          <input type="text" name="name" id="name" value="{{ old('name') }}" class="form-control">
           @error('name') <span class="text-danger small">{{ $message }}</span> @enderror
         </div>
 

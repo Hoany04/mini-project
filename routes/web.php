@@ -19,6 +19,12 @@ use App\Http\Controllers\Client\AccountController;
 
 Route::get('/', [HomeController::class, 'index'])->name('client.home');
 
+Route::get('/category/{slug}', [ClientCategoryController::class, 'show'])->name('client.pages.category.show');
+//
+Route::get('/products', [ClientProductController::class, 'index'])->name('client.pages.products.index');
+Route::get('/products/{id}', [ClientProductController::class, 'show'])->name('client.pages.products.detail');
+//
+
 Route::get('login', [AuthController::class, 'showFormLogin']);
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
@@ -49,10 +55,10 @@ Route::middleware(['auth', 'CheckActive'])
         Route::post('/account/profile/update', [ClientProfileController::class, 'update'])
         ->name('pages.profile.update');
         //
-        Route::get('/category/{slug}', [ClientCategoryController::class, 'show'])->name('pages.category.show');
+        // Route::get('/category/{slug}', [ClientCategoryController::class, 'show'])->name('pages.category.show');
         //
-        Route::get('/products', [ClientProductController::class, 'index'])->name('pages.products.index');
-        Route::get('/products/{id}', [ClientProductController::class, 'show'])->name('pages.products.detail');
+        // Route::get('/products', [ClientProductController::class, 'index'])->name('pages.products.index');
+        // Route::get('/products/{id}', [ClientProductController::class, 'show'])->name('pages.products.detail');
         //
         Route::post('/products/{id}/reviews', [ClientProductReviewController::class, 'store'])->name('pages.products.reviews.store')->middleware('auth');
         //

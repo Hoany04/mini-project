@@ -60,7 +60,7 @@ class ClientCartController extends Controller
     public function update(UpdateCartRequest $request, $itemId)
     {
         $data = $request->validated();
-        
+
         try {
             $this->cartService->updateQuantity($itemId, $data['quantity']);
             return redirect()->route('client.pages.cart.index')->with('success', 'Cập nhật số lượng thành công!');
@@ -82,7 +82,7 @@ class ClientCartController extends Controller
         $discount = 0;
         if (session('coupon')) {
             $coupon = session('coupon');
-        
+
             if ($coupon['discount_type'] === 'percent') {
                 // Giảm động
                 $discount = $cartTotal * ($coupon['discount_value'] / 100);
@@ -91,7 +91,7 @@ class ClientCartController extends Controller
                 $discount = $coupon['discount_amount'] ?? $coupon['discount_value'];
             }
         }
-        
+
 
         $finalTotal = $cartTotal - $discount;
 

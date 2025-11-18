@@ -25,11 +25,11 @@
         @if (session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
-        
+
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
-    
+
         <!-- page main wrapper start -->
         <div class="shop-main-wrapper section-padding pb-0">
             <div class="container">
@@ -49,7 +49,7 @@
                                             </div>
                                         @endforeach
                                     </div>
-                                
+
                                     {{-- Ảnh nhỏ bên dưới (thumbnail navigation) --}}
                                     <div class="pro-nav slick-row-10 slick-arrow-style">
                                         @foreach ($product->images as $image)
@@ -59,7 +59,7 @@
                                         @endforeach
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-lg-7">
                                     <div class="product-details-des">
                                         <div class="manufacturer-name">
@@ -93,47 +93,47 @@
                                         </div>
                                         <div class="price-box">
                                             <span
-                                                class="price-regular">{{ number_format($product->price, 0, ',', '.') }}₫</span>
+                                                class="price-regular">{{ number_format($product->price, 0, ',', ',') }}₫</span>
                                             <span class="price-old"><del>0đ</del></span>
                                         </div>
-                                        <h5 class="offer-text"><strong>Hurry up</strong>! offer ends in:</h5>
-                                        <div class="product-countdown" data-countdown="2022/12/20"></div>
+                                        {{-- <h5 class="offer-text"><strong>Hurry up</strong>! offer ends in:</h5>
+                                        <div class="product-countdown" data-countdown="2022/12/20"></div> --}}
                                         <div class="availability">
                                             <i class="fa fa-check-circle"></i>
                                             <span>{{ $product->stock }} in stock</span>
                                         </div>
                                         <p class="pro-desc">{{ $product->description }}</p>
-                                        
+
                                         {{-- Hiển thị các biến thể --}}
                                         <p class="text-danger fs-4 fw-bold" id="product-price" data-base-price="{{ $product->price }}">
-                                            {{ number_format($product->price, 0, ',', '.') }}₫
+                                            {{ number_format($product->price, 0, ',', ',') }}₫
                                         </p>
-                                        
+
                                         <form action="{{ route('client.pages.cart.store') }}" method="POST" id="addToCartForm">
                                             @csrf
                                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                                             <input type="hidden" name="price" id="price-input" value="{{ $product->price }}">
                                             <input type="hidden" name="variant_id" id="variant-id-input" value="">
-                                        
+
                                             {{-- Size --}}
                                             <div class="pro-size mb-3">
                                                 <h6 class="option-title">Size :</h6>
                                                 <select class="nice-select variant-select" name="variants[size]" data-name="Size">
                                                     <option value="">-- Chọn size --</option>
                                                     @foreach($groupedVariants['Size'] ?? [] as $variant)
-                                                        <option 
-                                                            value="{{ $variant->variant_value }}" 
-                                                            data-extra="{{ $variant->extra_price }}" 
+                                                        <option
+                                                            value="{{ $variant->variant_value }}"
+                                                            data-extra="{{ $variant->extra_price }}"
                                                             data-id="{{ $variant->id }}">
                                                             {{ $variant->variant_value }}
                                                             @if($variant->extra_price > 0)
-                                                                (+{{ number_format($variant->extra_price, 0, ',', '.') }}₫)
+                                                                (+{{ number_format($variant->extra_price, 0, ',', ',') }}₫)
                                                             @endif
                                                         </option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                        
+
                                             {{-- Màu --}}
                                             <div class="color-option mb-3">
                                                 <h6 class="option-title">Màu :</h6>
@@ -141,15 +141,15 @@
                                                     <div class="d-flex flex-wrap gap-3">
                                                         @foreach($groupedVariants['Màu'] ?? [] as $variant)
                                                             <label style="cursor:pointer;">
-                                                                <input 
-                                                                    type="radio" 
-                                                                    name="variants[màu]" 
+                                                                <input
+                                                                    type="radio"
+                                                                    name="variants[màu]"
                                                                     value="{{ $variant->variant_value }}"
-                                                                    data-extra="{{ $variant->extra_price }}" 
-                                                                    data-id="{{ $variant->id }}"> 
+                                                                    data-extra="{{ $variant->extra_price }}"
+                                                                    data-id="{{ $variant->id }}">
                                                                 {{ $variant->variant_value }}
                                                                 @if($variant->extra_price > 0)
-                                                                    <small class="text-muted">(+{{ number_format($variant->extra_price, 0, ',', '.') }}₫)</small>
+                                                                    <small class="text-muted">(+{{ number_format($variant->extra_price, 0, ',', ',') }}₫)</small>
                                                                 @endif
                                                             </label>
                                                         @endforeach
@@ -158,7 +158,7 @@
                                                     <p class="text-muted">Không có biến thể màu cho sản phẩm này.</p>
                                                 @endif
                                             </div>
-                                        
+
                                             {{-- Số lượng --}}
                                             <div class="mt-3">
                                                 <label class="fw-bold">Số lượng:</label>
@@ -167,13 +167,13 @@
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
-                                        
+
                                             {{-- Nút thêm --}}
                                             <button type="submit" class="mt-3 action_link">
                                                 <a class="btn btn-cart2">Thêm vào giỏ hàng</a>
                                             </button>
                                         </form>
-                                                                                
+
 
                                         <div class="useful-links">
                                             <a href="#" data-bs-toggle="tooltip" title="Compare"><i
@@ -227,16 +227,16 @@
                                                         @endforeach
                                                     </tbody>
                                                 </table>
-                                            </div>                                            
+                                            </div>
                                             <div class="tab-pane fade" id="tab_three">
                                                 @if(session('success'))
                                                     <div class="alert alert-success">{{ session('success') }}</div>
                                                 @endif
                                                 <div class="review-form">
-                                                    <h5>{{ $product->reviews->count() }} đánh giá cho 
+                                                    <h5>{{ $product->reviews->count() }} đánh giá cho
                                                         <span>{{ $product->name }}</span>
                                                     </h5>
-                                            
+
                                                     {{-- Danh sách đánh giá --}}
                                                     @foreach($product->reviews as $review)
                                                         <div class="total-reviews mb-4">
@@ -256,7 +256,7 @@
                                                                         @endif
                                                                     @endfor
                                                                 </div>
-                                                                
+
                                                                 <div class="post-author">
                                                                     <p>
                                                                         <span>{{ $review->user->username ?? 'Người dùng' }} -</span>
@@ -267,7 +267,7 @@
                                                             </div>
                                                         </div>
                                                     @endforeach
-                                            
+
                                                     {{-- Form thêm đánh giá --}}
                                                     @auth
                                                         <form action="{{ route('client.pages.products.reviews.store', $product->id) }}" method="POST">
@@ -281,7 +281,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                            
+
                                                             <div class="form-group row">
                                                                 <div class="col">
                                                                     <label class="col-form-label"><span class="text-danger">*</span> Điểm đánh giá</label>
@@ -293,7 +293,7 @@
                                                                     Tốt
                                                                 </div>
                                                             </div>
-                                            
+
                                                             <div class="buttons">
                                                                 <button class="btn btn-sqr" type="submit">Gửi đánh giá</button>
                                                             </div>
@@ -303,7 +303,7 @@
                                                     @endauth
                                                 </div> <!-- end of review-form -->
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -428,11 +428,11 @@
         const priceInput = document.getElementById('price-input');
         const variantIdInput = document.querySelector('input[name="variant_id"]');
         const form = document.querySelector('#addToCartForm');
-    
+
         function updatePriceAndVariant() {
             let totalExtra = 0;
             let selectedVariantId = null;
-    
+
             // --- Size (select) ---
             const sizeSelect = document.querySelector('.variant-select');
             if (sizeSelect) {
@@ -444,7 +444,7 @@
                     selectedVariantId = selected.dataset.id; // lấy id biến thể size
                 }
             }
-    
+
             // --- Màu (radio) ---
             const colorRadios = document.querySelectorAll('input[name^="variants[màu]"]');
             colorRadios.forEach(radio => {
@@ -453,12 +453,12 @@
                     if (radio.dataset.id) selectedVariantId = radio.dataset.id; // lấy id biến thể màu
                 }
             });
-    
+
             // --- Cập nhật giá ---
             const newPrice = basePrice + totalExtra;
             priceDisplay.innerText = newPrice.toLocaleString('vi-VN') + '₫';
             priceInput.value = newPrice;
-    
+
             // --- Ghi variant_id duy nhất ---
             variantIdInput.value = selectedVariantId || '';
             console.log('variant_id:', variantIdInput.value); // debug
@@ -498,10 +498,10 @@
         document.querySelectorAll('.variant-select, input[name^="variants[màu]"]').forEach(el => {
             el.addEventListener('change', updatePriceAndVariant);
         });
-    
+
         // Khi load trang cũng cập nhật trước
         updatePriceAndVariant();
     });
     </script>
-    
+
 @endsection

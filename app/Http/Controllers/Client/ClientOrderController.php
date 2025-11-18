@@ -18,7 +18,7 @@ class ClientOrderController extends Controller
     protected $addressService;
 
     public function __construct(
-        ClientOrderService $orderService, 
+        ClientOrderService $orderService,
         ClientShippingService $shippingService,
         ShippingAddressService $addressService,
         )
@@ -69,7 +69,7 @@ class ClientOrderController extends Controller
     public function success($id)
     {
         $order = $this->orderService->findWithRelations($id);
-        
+
         if(!$order) {
             return redirect()->route('client.pages.checkout.index')->with('error', 'Don hang khong ton tai');
         }
@@ -88,11 +88,11 @@ class ClientOrderController extends Controller
         $cart = $cartService->getCart(auth()->id());
         $cartTotal = $cart->items->sum(fn($item) => $item->price * $item->quantity);
 
-        // 
+        //
         $shippingMethod = \App\Models\ShippingMethod::find($data['shipping_method_id']);
         $shippingFee = $shippingMethod->fee ?? 0;
 
-        // 
+        //
         $discountPercent = $coupon['discount_value'] ?? 0;
         $discountAmount = $cartTotal * ($discountPercent / 100);
         $finalTotal = $cartTotal - $discountAmount + $shippingFee;
@@ -120,5 +120,5 @@ class ClientOrderController extends Controller
         return redirect()->route('client.pages.checkout.success', $order->id)
                         ->with('success', 'Đơn hàng đã được đặt thành công');
     }
-    
+
 }

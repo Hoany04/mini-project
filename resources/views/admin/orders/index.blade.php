@@ -1,5 +1,7 @@
 @extends('layouts.AdminLayout')
-
+<?php
+use Carbon\Carbon;
+?>
 @section('content')
 <div class="container mt-4 card">
     <h3 class="p-4">Danh sách đơn hàng</h3>
@@ -54,7 +56,7 @@
                             </select>
                         </form>
                     </td>
-                    <td>{{ $order->created_at->format('d/m/Y H:i') }}</td>
+                    <td>{{ Carbon::parse($order->created_at)->format('d/m/Y H:i') }}</td>
                     <td>
                         <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-sm btn-primary">👁️</a>
                         <form method="POST" action="{{ route('admin.orders.destroy', $order->id) }}" class="d-inline">

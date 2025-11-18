@@ -1,5 +1,7 @@
 @extends('layouts.AdminLayout')
-
+<?php
+use Carbon\Carbon;
+?>
 @section('content')
     <div class="container mt-4 card">
         <h2 class="p-4">List Category</h2>
@@ -44,7 +46,7 @@
                         <td>{{ $item->parent?->name ?? 'Không có' }}</td>
                         <td>{{ $item->creator?->username ?? 'N/A' }}</td>
                         <td class="text-start">{{ Str::limit($item->description, 40) }}</td>
-                        <td>{{ $item->created_at->format('d/m/Y') }}</td>
+                        <td>{{ Carbon::parse($item->created_at)->format('Y-m-d H:i') }}</td>
                         <td>
                             <a href="{{ route('admin.categorys.edit', $item->id) }}" class="btn btn-sm btn-warning">✏️</a>
                             <form method="POST" action="{{ route('admin.categorys.destroy', $item->id) }}"

@@ -1,5 +1,7 @@
 @extends('layouts.ClientLayout')
-
+<?php
+use Carbon\Carbon;
+?>
 @section('content')
 <div class="container py-5">
     @if(session('error'))
@@ -9,7 +11,7 @@
         <h2 class="text-success">🎉 Đặt hàng thành công!</h2>
         <p>Cảm ơn bạn đã mua hàng cùng chúng tôi.</p>
         <h5>Mã đơn hàng: <strong>#{{ $order->id }}</strong></h5>
-        <p>Ngày đặt: {{ $order->created_at->format('d/m/Y H:i') }}</p>
+        <p>Ngày đặt: {{ Carbon::parse($order->created_at)->format('Y/m/d H:i') }}</p>
     </div>
 
     <!-- Thông tin người đặt -->
@@ -18,7 +20,7 @@
         <div class="card-body">
             <p><strong>Người nhận:</strong> {{ $order->shipping->address->full_name ?? 'N/A' }}</p>
             <p><strong>Số điện thoại:</strong> {{ $order->shipping->address->phone ?? '-' }}</p>
-            <p><strong>Địa chỉ:</strong> 
+            <p><strong>Địa chỉ:</strong>
                 {{ $order->shipping->address->address_detail ?? '' }},
                 {{ $order->shipping->address->ward ?? '' }},
                 {{ $order->shipping->address->district ?? '' }},
@@ -28,7 +30,7 @@
             <p><strong>Phương thức vận chuyển:</strong> {{ $order->shipping->method->name ?? '-' }}</p>
         </div>
     </div>
-    
+
 
     <!-- Danh sách sản phẩm -->
     <div class="card mb-4 shadow-sm">
@@ -58,15 +60,15 @@
                             </td>
                             <td>{{ $item->variant_text ?? 'Không có' }}</td>
                             <td>{{ $item->quantity }}</td>
-                            <td>{{ number_format($item->price, 0, ',', '.') }}₫</td>
-                            <td>{{ number_format($item->price * $item->quantity, 0, ',', '.') }}₫</td>
+                            <td>{{ number_format($item->price, 0, ',', ',') }}₫</td>
+                            <td>{{ number_format($item->price * $item->quantity, 0, ',', ',') }}₫</td>
                         </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
                         <th colspan="4" class="text-end">Tổng tiền hàng:</th>
-                        <th>{{ number_format($order->items->sum(fn($i) => $i->price * $i->quantity), 0, ',', '.') }}₫</th>
+                        <th>{{ number_format($order->items->sum(fn($i) => $i->price * $i->quantity), 0, ',', ',') }}₫</th>
                     </tr>
                     @if ($order->coupon)
                     <tr>
@@ -80,7 +82,7 @@
                     </tr>
                     <tr>
                         <th colspan="4" class="text-end">Tổng thanh toán:</th>
-                        <th>{{ number_format($order->total_amount, 0, ',', '.') }}₫</th>
+                        <th>{{ number_format($order->total_amount, 0, ',', ',') }}₫</th>
                     </tr>
                 </tfoot>
             </table>
@@ -112,7 +114,7 @@
                                     <span class="badge bg-danger">Đã hủy</span>
                                 @endif
                             </td></p>
-                <p><strong>Số tiền thanh toán:</strong> {{ number_format($payment->amount, 0, ',', '.') }}₫</p>
+                <p><strong>Số tiền thanh toán:</strong> {{ number_format($payment->amount, 0, ',', ',') }}₫</p>
             @else
                 <p>Chưa có thông tin thanh toán.</p>
             @endif

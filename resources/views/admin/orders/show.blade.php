@@ -93,9 +93,12 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label>Phí vận chuyển</label>
-                        <input type="number" name="shipping_fee" class="form-control"
-                               value="{{ optional($order->shipping)->shipping_fee }}">
+                        <label>Phí vận chuyển</label><br>
+                        <div class="border rounded p-2 bg-light">
+                            <th>{{ number_format($order->shipping->method->fee ?? 0) }}₫</th>
+                            {{-- <input type="number" name="shipping_fee" class="form-control"
+                                value="{{ optional($order->shipping)->shipping_fee }}"> --}}
+                        </div>
                     </div>
                 </div>
 

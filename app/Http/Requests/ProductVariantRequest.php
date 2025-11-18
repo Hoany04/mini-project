@@ -28,4 +28,12 @@ class ProductVariantRequest extends FormRequest
             'stock'         => 'required|integer|min:0',
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'variant_name.required'  => 'Ten bien the khong duoc de trong',
+            'variant_value.required' => 'Gia tri bien the khong duoc de trong',
+            'stock.required'         => 'So luong bien the khong duoc de trong',
+        ];
+    }
 }

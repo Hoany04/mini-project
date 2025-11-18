@@ -35,7 +35,7 @@ class LogUserLoginLogout
             ]);
         }
 
-        if ($event instanceof Logout) {
+        if ($event instanceof Logout && $event->user) {
             AccessLog::create([
                 'user_id' => $event->user->id ?? null,
                 'action' => 'logout',

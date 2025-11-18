@@ -1,7 +1,7 @@
 @extends('layouts.ClientLayout')
 
 @section('content')
-    
+
 <main>
     <!-- breadcrumb area start -->
     <div class="breadcrumb-area">
@@ -115,51 +115,51 @@
                         <div class="billing-form-wrap">
                             {{-- <div>
                                 <div class="row">
-                                    
+
                                     <div class="single-input-item">
                                         <label for="f_name" class="required">Full name</label>
                                         <input type="text" id="f_name" name="username"
                                             value="{{ old('username', $user->username ?? '') }}"
                                             placeholder="Full Name" required />
                                     </div>
-                                    
+
                                 </div>
-                    
+
                                 <div class="single-input-item">
                                     <label for="email" class="required">Email Address</label>
                                     <input type="email" id="email" name="email"
                                         value="{{ old('email', $user->email) }}"
                                         placeholder="Email Address" required />
                                 </div>
-                    
+
                                 <div class="single-input-item">
                                     <label for="phone">Phone</label>
                                     <input type="text" id="phone" name="phone"
                                         value="{{ old('phone', $user->profile->phone ?? '') }}"
                                         placeholder="Phone" />
                                 </div>
-                    
+
                                 <div class="single-input-item">
                                     <label for="country" class="required">Country</label>
                                     <input type="text" id="country" name="country"
                                         value="{{ old('country', $user->profile->country ?? '') }}"
                                         placeholder="Country" required />
                                 </div>
-                    
+
                                 <div class="single-input-item">
                                     <label for="street-address" class="required mt-20">Street address</label>
                                     <input type="text" id="street-address" name="address"
                                         value="{{ old('address', $user->profile->address ?? '') }}"
                                         placeholder="Street address" required />
                                 </div>
-                    
+
                                 <div class="single-input-item">
                                     <label for="town" class="required">City / Town</label>
                                     <input type="text" id="town" name="city"
                                         value="{{ old('city', $user->profile->city ?? '') }}"
                                         placeholder="City / Town" required />
                                 </div>
-                    
+
                                 <div class="checkout-billing-details-wrap">
                                     <h5 class="checkout-title">Địa chỉ giao hàng</h5>
                             </div>     --}}
@@ -173,7 +173,7 @@
                                     @else
                                         <p>Chưa có địa chỉ mặc định. Hãy thêm địa chỉ giao hàng.</p>
                                     @endif
-                                
+
                                     {{-- Chọn địa chỉ khác --}}
                                     <div class="mb-3">
                                         <label class="form-label">Chọn địa chỉ giao hàng</label>
@@ -192,13 +192,13 @@
                                             </div>
                                         @endforeach
                                       </div>
-                                      
+
                                       <div class="mb-3">
                                         <label for="delivery_note" class="form-label">Ghi chú giao hàng (tuỳ chọn)</label>
                                         <textarea name="delivery_note" id="delivery_note" class="form-control" rows="3"
                                                   placeholder="Ví dụ: Giao hàng trong giờ hành chính, gọi trước khi giao..."></textarea>
                                     </div>
-                                
+
                                     {{-- Nút mở modal thêm địa chỉ --}}
                                     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
                                         + Thêm địa chỉ mới
@@ -206,16 +206,16 @@
                                 {{-- </div> --}}
                         </div>
                     </div>
-                    
+
                 </div>
 
                 <!-- Order Summary Details -->
                 <div class="col-lg-6">
-                
+
                     {{-- <div class="col-lg-6"> --}}
                         <div class="order-summary-details">
                             <h5 class="checkout-title">Your Order Summary</h5>
-                
+
                             {{-- hiển thị danh sách sản phẩm --}}
                             <div class="order-summary-content">
                                 <table class="table table-bordered">
@@ -233,15 +233,31 @@
                                             </tr>
                                         @endforeach
                                     </tbody>
+                                    @if($cart->coupon)
+                                        <tr>
+                                            <td>Mã giảm giá:</td>
+                                            <td class="text-start text-success">{{ $cart->coupon->code }} ({{ $cart->coupon->discount_type == 'percent' ? $cart->coupon->discount_value . '%' : number_format($cart->coupon->discount_value) . 'đ' }})</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Giảm giá:</td>
+                                            <td id="discount" class="text-start text-danger">-{{ number_format($cart->discount) }}đ</td>
+                                        </tr>
+                                    @endif
                                     <tfoot>
                                         <tr>
                                             <td>Tổng tạm tính</td>
-                                            <td><strong>{{ number_format($cart->total_price) }}đ</strong></td>
+                                            <td><strong class="text-start text-danger">
+                                                @if(session('coupon'))
+                                                    {{ number_format(session('coupon.new_total'), 0, ',', '.') }}đ
+                                                @else
+                                                    {{ number_format($cart->total_price, 0, ',', '.') }}đ
+                                                @endif
+                                            </strong></td>
                                         </tr>
                                     </tfoot>
                                 </table>
                             </div>
-                
+
                             {{-- Chọn phương thức thanh toán --}}
                             <div class="order-payment-method">
 
@@ -283,8 +299,8 @@
                                         <div class="custom-control custom-radio">
                                             <input type="radio" id="stripe" name="paymentmethod" value="stripe" class="custom-control-input" />
                                             <label class="custom-control-label" for="stripe">
-                                                Thanh toán qua Stripe 
-                                                <img src="{https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Stripe_logo%2C_revised_2016.svg/2560px-Stripe_logo%2C_revised_2016.svg.png}" 
+                                                Thanh toán qua Stripe
+                                                <img src="{https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Stripe_logo%2C_revised_2016.svg/2560px-Stripe_logo%2C_revised_2016.svg.png}"
                                                      alt="Stripe" style="width:60px; margin-left:5px;">
                                             </label>
                                         </div>
@@ -293,14 +309,14 @@
                                         <p>Thanh toán an toàn bằng thẻ Visa, Mastercard qua Stripe.</p>
                                     </div>
                                 </div>
-                                
-                                
+
+
                                     <div class="custom-control custom-checkbox mb-20">
                                         <input type="checkbox" class="custom-control-input" id="terms" required />
                                         <label class="custom-control-label" for="terms">I have read and agree to
                                             the website terms and conditions.</label>
                                     </div>
-                                    
+
                                 <div class="summary-footer-area">
                                     <button type="submit" class="btn btn-sqr">Đặt hàng</button>
                                 </div>
@@ -324,27 +340,45 @@
                         <div class="modal-body">
                             <div class="mb-2">
                                 <label>Họ tên</label>
-                                <input type="text" name="full_name" class="form-control" required>
+                                <input type="text" name="full_name" class="form-control" >
+                                @error('full_name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="mb-2">
                                 <label>Số điện thoại</label>
-                                <input type="text" name="phone" class="form-control" required>
+                                <input type="text" name="phone" class="form-control">
+                                @error('phone')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="mb-2">
                                 <label>Tỉnh/Thành phố</label>
-                                <input type="text" name="province" class="form-control" required>
+                                <input type="text" name="province" class="form-control">
+                                @error('province')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="mb-2">
                                 <label>Quận/Huyện</label>
-                                <input type="text" name="district" class="form-control" required>
+                                <input type="text" name="district" class="form-control">
+                                @error('district')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="mb-2">
                                 <label>Phường/Xã</label>
-                                <input type="text" name="ward" class="form-control" required>
+                                <input type="text" name="ward" class="form-control" >
+                                @error('ward')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="mb-2">
                                 <label>Địa chỉ chi tiết</label>
-                                <input type="text" name="address_detail" class="form-control" required>
+                                <input type="text" name="address_detail" class="form-control" >
+                                @error('address_detail')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="form-check mb-2">
                                 <input type="checkbox" name="is_default" class="form-check-input" id="is_default" value="1">

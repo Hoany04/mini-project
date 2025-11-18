@@ -10,12 +10,18 @@
 
         <div class="mb-3">
             <label class="form-label">Tên biến thể</label>
-            <input type="text" name="variant_name" class="form-control" value="{{ old('variant_name', $variant->variant_name) }}" required>
+            <input type="text" name="variant_name" class="form-control" value="{{ old('variant_name', $variant->variant_name) }}" >
+            @error('variant_name')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
 
         <div class="mb-3">
             <label class="form-label">Giá trị biến thể</label>
-            <input type="text" name="variant_value" class="form-control" value="{{ old('variant_value', $variant->variant_value) }}" required>
+            <input type="text" name="variant_value" class="form-control" value="{{ old('variant_value', $variant->variant_value) }}" >
+            @error('variant_value')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
 
         <div class="mb-3">
@@ -26,6 +32,9 @@
         <div class="mb-3">
             <label class="form-label">Tồn kho</label>
             <input type="number" name="stock" class="form-control" value="{{ old('stock', $variant->stock) }}" required>
+            @error('stock')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
 
         <button class="btn btn-success">Cập nhật</button>
