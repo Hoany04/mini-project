@@ -43,13 +43,13 @@
 	// offcanvas mobile menu
     var $offCanvasNav = $('.mobile-menu'),
         $offCanvasNavSubMenu = $offCanvasNav.find('.dropdown');
-    
+
     /*Add Toggle Button With Off Canvas Sub Menu*/
     $offCanvasNavSubMenu.parent().prepend('<span class="menu-expand"><i></i></span>');
-    
+
     /*Close Off Canvas Sub Menu*/
     $offCanvasNavSubMenu.slideUp();
-    
+
     /*Category Sub Menu Toggle*/
     $offCanvasNav.on('click', 'li a, li .menu-expand', function(e) {
         var $this = $(this);
@@ -66,7 +66,7 @@
             }
         }
 	});
-	
+
 
 	// hero slider active js
 	$('.hero-slider-active').slick({
@@ -491,25 +491,39 @@
         $(this).addClass('active');
         shopProductWrap.removeClass('grid-view list-view').addClass(viewMode);
 	})
-	
-	
+
+
 	// pricing filter
-	var rangeSlider = $(".price-range"),
-		amount = $("#amount"),
-		minPrice = rangeSlider.data('min'),
-		maxPrice = rangeSlider.data('max');
-	rangeSlider.slider({
-		range: true,
-		min: minPrice,
-		max: maxPrice,
-		values: [minPrice, maxPrice],
-		slide: function (event, ui) {
-			amount.val("$" + ui.values[0] + " - $" + ui.values[1]);
-		}
-	});
-	amount.val(" $" + rangeSlider.slider("values", 0) +
-		" - $" + rangeSlider.slider("values", 1)
-	);
+	$(function () {
+    let rangeVal = "{{ request('price_range') }}";
+
+    let min = 10000;
+    let max = 10000000;
+
+    if (rangeVal && rangeVal.includes('-')) {
+        let parts = rangeVal.split('-');
+        min = parseInt(parts[0].replace(/\D/g, ''));
+        max = parseInt(parts[1].replace(/\D/g, ''));
+    }
+
+    if (isNaN(min) || isNaN(max)) {
+        min = 10000;
+        max = 10000000;
+    }
+
+    $("#price-slider").slider({
+        range: true,
+        min: 1,
+        max: 10000000,
+        values: [min, max],
+        slide: function(event, ui) {
+            $("#amount").val(ui.values[0] + " - " + ui.values[1]);
+        }
+    });
+
+    $("#amount").val(min + " - " + max);
+});
+
 
 
 	// Checkout Page accordion
@@ -520,7 +534,7 @@
     $("#ship_to_different").on("change", function () {
         $(".ship-to-different").slideToggle("100");
 	});
-	
+
 
     // Payment Method Accordion
     $('input[name="paymentmethod"]').on('click', function () {
@@ -543,7 +557,7 @@
 			scrollTop: 0
 		}, 1000);
 	});
-	
+
 
 	// Search trigger js
 	$(".search-trigger").on('click', function(){
@@ -599,6 +613,6 @@
 			}
 		]
 	})
-	
+
 })(jQuery);
 

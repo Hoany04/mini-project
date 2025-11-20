@@ -239,7 +239,7 @@
                     <div class="col-sm-6">
                         <figure class="banner-statistics mt-20">
                             <a href="#">
-                                <img src="{{ asset('assets/client/img/banner/img1-top.jpg') }}" alt="product banner">
+                                <img src="{{ asset('assets/client/img/banner/images.jpg') }}" alt="product banner" width="100" height="300">
                             </a>
                             <div class="banner-content text-right">
                                 <h5 class="banner-text1">BEAUTIFUL</h5>
@@ -251,7 +251,7 @@
                     <div class="col-sm-6">
                         <figure class="banner-statistics mt-20">
                             <a href="#">
-                                <img src="{{ asset('assets/client/img/banner/img2-top.jpg') }}" alt="product banner">
+                                <img src="{{ asset('assets/client/img/banner/images (1).jpg') }}" alt="product banner" width="100" height="300">
                             </a>
                             <div class="banner-content text-center">
                                 <h5 class="banner-text1">EARRINGS</h5>
@@ -263,7 +263,7 @@
                     <div class="col-sm-6">
                         <figure class="banner-statistics mt-20">
                             <a href="#">
-                                <img src="{{ asset('assets/client/img/banner/img3-top.jpg') }}" alt="product banner">
+                                <img src="{{ asset('assets/client/img/banner/images (2).jpg') }}" alt="product banner" width="100" height="300">
                             </a>
                             <div class="banner-content text-center">
                                 <h5 class="banner-text1">NEW ARRIVALLS</h5>
@@ -275,7 +275,7 @@
                     <div class="col-sm-6">
                         <figure class="banner-statistics mt-20">
                             <a href="#">
-                                <img src="{{ asset('assets/client/img/banner/img4-top.jpg') }}" alt="product banner">
+                                <img src="{{ asset('assets/client/img/banner/images (3).jpg') }}" alt="product banner" width="100" height="300">
                             </a>
                             <div class="banner-content text-right">
                                 <h5 class="banner-text1">NEW DESIGN</h5>

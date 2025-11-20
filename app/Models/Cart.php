@@ -10,7 +10,7 @@ class Cart extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'coupon_id', 'discount',
+        'user_id', 'total_price', 'coupon_id', 'discount',
     ];
 
     public function user() {
@@ -25,9 +25,13 @@ class Cart extends Model
     public function items(){
         return $this->hasMany(CartItem::class);
     }
-    public function getTotalPriceAttribute()
+    // public function getTotalPriceAttribute()
+    // {
+    //     return $this->items->sum(fn($item) => $item->price * $item->quantity);
+    // }
+
+    public function total()
     {
         return $this->items->sum(fn($item) => $item->price * $item->quantity);
     }
-
 }

@@ -48,7 +48,8 @@ class ClientOrderService
             }
 
             // Tính tổng giá trị giỏ hàng
-            $cartTotal = $cart->items->sum(fn($item) => $item->price * $item->quantity);
+            // $cartTotal = $cart->items->sum(fn($item) => $item->price * $item->quantity);
+            $cartTotal = $cart->total_price;
 
             // Lấy phương thức vận chuyển và phí ship
             $shippingMethod = ShippingMethod::find($data['shipping_method_id'] ?? null);
@@ -56,6 +57,16 @@ class ClientOrderService
 
             // Giảm giá (nếu có)
             $discount = $data['discount'] ?? 0;
+            // $coupon = session('coupon');
+            // $discount = 0;
+
+            // if ($coupon) {
+            //     if ($coupon['discount_type'] === 'percent') {
+            //         $discount = $cartTotal * ($coupon['discount_value'] / 100);
+            //     } else {
+            //         $discount = $coupon['discount_value'];
+            //     }
+            // }
 
             // Tính tổng tiền cuối cùng (có cộng phí vận chuyển)
             $totalAmount = $cartTotal - $discount + $shippingFee;
@@ -65,8 +76,11 @@ class ClientOrderService
                 'user_id' => $userId,
                 'coupon_id' => $data['coupon_id'] ?? null,
                 'total_amount' => $totalAmount,
+                // 'discount_amount' => $discount,
                 'status' => 'pending',
             ]);
+
+            session()->forget('coupon');
 
             // Tạo chi tiết đơn hàng
             $orderItems = [];

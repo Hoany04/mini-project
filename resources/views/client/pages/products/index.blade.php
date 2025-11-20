@@ -49,7 +49,7 @@
                                                 {{ $cat->name }}
                                                 <span>({{ $cat->products_count }})</span>
                                             </a>
-                        
+
                                             @if($cat->children->count() > 0)
                                                 <ul class="ms-3">
                                                     @foreach($cat->children as $child)
@@ -68,31 +68,32 @@
                                 </ul>
                             </div>
                         </div>
-                        
+
                         <!-- single sidebar end -->
 
                         <!-- single sidebar start -->
                         <div class="sidebar-single">
-                            <h5 class="sidebar-title">price</h5>
+                            <h5 class="sidebar-title">Price</h5>
+
                             <div class="sidebar-body">
-                                <div class="price-range-wrap">
-                                    <div class="price-range" data-min="1" data-max="1000"></div>
-                                    <div class="range-slider">
-                                        <form action="#" class="d-flex align-items-center justify-content-between">
-                                            <div class="price-input">
-                                                <label for="amount">Price: </label>
-                                                <input type="text" id="amount">
-                                            </div>
-                                            <button class="filter-btn">filter</button>
-                                        </form>
+
+                                <!-- Slider UI -->
+                                <div id="price-slider" style="margin-bottom: 15px;"></div>
+
+                                <!-- Form -->
+                                <form action="{{ route('client.pages.products.index') }}" method="GET" class="d-flex align-items-center justify-content-between">
+                                    <div class="price-input">
+                                        <label for="amount">Price: </label>
+                                        <input type="text" id="amount" name="price_range" readonly style="width:120px; font-weight:bold;">
                                     </div>
-                                </div>
+                                    <button type="submit" class="filter-btn">Filter</button>
+                                </form>
                             </div>
                         </div>
                         <!-- single sidebar end -->
 
                         <!-- single sidebar start -->
-                        <div class="sidebar-single">
+                        {{-- <div class="sidebar-single">
                             <h5 class="sidebar-title">Brand</h5>
                             <div class="sidebar-body">
                                 <ul class="checkbox-container categories-list">
@@ -128,7 +129,7 @@
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> --}}
                         <!-- single sidebar end -->
 
                         <!-- single sidebar start -->
@@ -261,7 +262,7 @@
                             <div class="col-md-4 col-sm-6">
 
                                 @foreach ($products as $product)
-                                    
+
                                 <!-- product grid start -->
                                 <div class="product-item">
                                     <figure class="product-thumb">
@@ -369,7 +370,7 @@
                                 <!-- product list item end -->
                                 @endforeach
                             </div>
-                            
+
                         </div>
                         <!-- product item list wrapper end -->
 

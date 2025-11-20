@@ -88,7 +88,7 @@ class ClientCouponService
             'total_price' => $cartTotal - $discount,
         ]);
 
-        $cart->refresh();
+        // $cart->refresh();
         //  Tăng số lần sử dụng mã
         $coupon->increment('used_count');
 
@@ -96,7 +96,7 @@ class ClientCouponService
             'success' => true,
             'message' => "Áp dụng mã {$coupon->code} thành công, giảm " . number_format($discount) . "đ!",
             'discount' => $discount,
-            'new_total' => $cartTotal - $discount,
+            'new_total' => $cart->total_price,
             'coupon' => $coupon,
         ];
     }

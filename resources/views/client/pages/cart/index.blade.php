@@ -122,13 +122,7 @@
 
                         <tr class="fw-bold border-top">
                             <td>Tổng thanh toán:</td>
-                            <td id="final-total" class="text-end text-danger fs-5">
-                                @if(session('coupon'))
-                                    {{ number_format(session('coupon.new_total'), 0, ',', ',') }}đ
-                                @else
-                                    {{ number_format($cart->total_price, 0, ',', ',') }}đ
-                                @endif
-                            </td>
+                            <td id="final-total" class="text-end text-danger fs-5">{{ number_format($cart->total_price) }}đ</td>
                         </tr>
                     </table>
 
@@ -144,6 +138,8 @@
 <div class="scroll-top not-visible">
     <i class="fa fa-angle-up"></i>
 </div>
+<!-- Scroll to Top End -->
+
 
 @endsection
 @section('js')

@@ -27,7 +27,23 @@ class ProductRepository
         return $query->paginate(10);
     }
 
-    public function findById($id, $throw = true) 
+    // client
+    public function filterProducts(array $filters)
+    {
+
+        $query = Product::query()->where('status', 1);
+
+        if (isset($filters['price_min']) && isset($filters['price_max'])) {
+            $query->whereBetween('price', [
+                $filters['price_min'],
+                $filters['price_max'],
+            ]);
+        }
+
+        return $query->paginate(12)->withQueryString();
+    }
+
+    public function findById($id, $throw = true)
     {
         $query = Product::with(['category', 'user', 'mainImage']);
         return $throw ? $query->findOrFail($id) : $query->find($id);

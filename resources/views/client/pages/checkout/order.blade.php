@@ -246,13 +246,7 @@
                                     <tfoot>
                                         <tr>
                                             <td>Tổng tạm tính</td>
-                                            <td><strong class="text-start text-danger">
-                                                @if(session('coupon'))
-                                                    {{ number_format(session('coupon.new_total'), 0, ',', '.') }}đ
-                                                @else
-                                                    {{ number_format($cart->total_price, 0, ',', '.') }}đ
-                                                @endif
-                                            </strong></td>
+                                            <td><strong>{{ number_format($cart->total_price) }}đ</strong></td>
                                         </tr>
                                     </tfoot>
                                 </table>

@@ -13,6 +13,23 @@ class ClientProductService
         $this->productRepo = $productRepo;
     }
 
+    public function getFilteredProducts($request)
+    {
+        $filters = [];
+
+        if ($request->has('price_range') && $request->price_range !== null) {
+
+            [$min, $max] = explode('-', $request->price_range);
+
+            // Xóa khoảng trắng để tránh lỗi
+            $filters['price_min'] = (int) trim($min);
+            $filters['price_max'] = (int) trim($max);
+        }
+
+        return $this->productRepo->filterProducts($filters);
+    }
+
+
     public function getProductsForList()
     {
         return $this->productRepo->getActivePaginated();

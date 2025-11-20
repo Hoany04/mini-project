@@ -17,12 +17,14 @@ class ClientProductController extends Controller
         $this->productService = $productService;
         $this->categoryService = $categoryService;
     }
-    public function index()
+    public function index(Request $request)
     {
+        
         $categories = $this->categoryService->getCategoriesForFilter();
         $products = $this->productService->getProductsForList();
+        $product = $this->productService->getFilteredProducts($request);
 
-        return view('client.pages.products.index', compact('products', 'categories'));
+        return view('client.pages.products.index', compact('products', 'product', 'categories'));
     }
 
     // Trang chi tiết sản phẩm

@@ -60,15 +60,15 @@ use Carbon\Carbon;
                             </td>
                             <td>{{ $item->variant_text ?? 'Không có' }}</td>
                             <td>{{ $item->quantity }}</td>
-                            <td>{{ number_format($item->price, 0, ',', ',') }}₫</td>
-                            <td>{{ number_format($item->price * $item->quantity, 0, ',', ',') }}₫</td>
+                            <td>{{ number_format($item->price, 0, ',', '.') }}₫</td>
+                            <td>{{ number_format($item->price * $item->quantity, 0, ',', '.') }}₫</td>
                         </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
                         <th colspan="4" class="text-end">Tổng tiền hàng:</th>
-                        <th>{{ number_format($order->items->sum(fn($i) => $i->price * $i->quantity), 0, ',', ',') }}₫</th>
+                        <th>{{ number_format($order->items->sum(fn($i) => $i->price * $i->quantity), 0, ',', '.') }}₫</th>
                     </tr>
                     @if ($order->coupon)
                     <tr>
@@ -82,7 +82,7 @@ use Carbon\Carbon;
                     </tr>
                     <tr>
                         <th colspan="4" class="text-end">Tổng thanh toán:</th>
-                        <th>{{ number_format($order->total_amount, 0, ',', ',') }}₫</th>
+                        <th>{{ number_format($order->total_amount, 0, ',', '.') }}₫</th>
                     </tr>
                 </tfoot>
             </table>
