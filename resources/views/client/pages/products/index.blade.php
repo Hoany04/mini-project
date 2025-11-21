@@ -73,20 +73,25 @@
 
                         <!-- single sidebar start -->
                         <div class="sidebar-single">
-                            <h5 class="sidebar-title">Price</h5>
-
+                            <h5 class="sidebar-title">Lọc theo giá</h5>
                             <div class="sidebar-body">
 
-                                <!-- Slider UI -->
-                                <div id="price-slider" style="margin-bottom: 15px;"></div>
+                                <form action="{{ route('client.pages.products.index') }}" method="GET">
 
-                                <!-- Form -->
-                                <form action="{{ route('client.pages.products.index') }}" method="GET" class="d-flex align-items-center justify-content-between">
-                                    <div class="price-input">
-                                        <label for="amount">Price: </label>
-                                        <input type="text" id="amount" name="price_range" readonly style="width:120px; font-weight:bold;">
+                                    <div id="slider-range"></div>
+
+                                    <div class="d-flex align-items-center justify-content-between mt-3">
+                                        <div class="price-input">
+                                            <label for="amount">Giá: </label>
+                                            <input type="text" id="amount" readonly style="border: none; color:#333; font-weight:bold;">
+                                        </div>
+                                        <button type="submit" class="filter-btn btn btn-primary">Lọc</button>
                                     </div>
-                                    <button type="submit" class="filter-btn">Filter</button>
+
+                                    {{-- Hidden fields gửi dữ liệu dạng số --}}
+                                    <input type="hidden" name="min_price" id="min_price" value="{{ request('min_price') }}">
+                                    <input type="hidden" name="max_price" id="max_price" value="{{ request('max_price') }}">
+
                                 </form>
                             </div>
                         </div>
@@ -411,25 +416,6 @@
                 <!-- product details inner end -->
                 <div class="product-details-inner">
                     <div class="row">
-                        {{-- <div class="col-lg-5">
-                            <div class="product-large-slider">
-                                <div class="pro-large-img img-zoom">
-                                    <img src="assets/img/product/product-details-img1.jpg" alt="product-details" />
-                                </div>
-                                <div class="pro-large-img img-zoom">
-                                    <img src="assets/img/product/product-details-img2.jpg" alt="product-details" />
-                                </div>
-                                <div class="pro-large-img img-zoom">
-                                    <img src="assets/img/product/product-details-img3.jpg" alt="product-details" />
-                                </div>
-                                <div class="pro-large-img img-zoom">
-                                    <img src="assets/img/product/product-details-img4.jpg" alt="product-details" />
-                                </div>
-                                <div class="pro-large-img img-zoom">
-                                    <img src="assets/img/product/product-details-img5.jpg" alt="product-details" />
-                                </div>
-                            </div>
-                        </div> --}}
                         <div class="col-lg-7">
                             <div class="product-details-des">
                                 <div class="manufacturer-name">
@@ -490,4 +476,35 @@
 
 <!-- offcanvas mini cart start -->
 <!-- offcanvas mini cart end -->
+@endsection
+@section('js')
+    <script>
+        $(function () {
+
+            let min = {{ request('min_price', 0) }};
+            let max = {{ request('max_price', 5000000) }};
+
+            $("#slider-range").slider({
+                range: true,
+                min: 0,
+                max: 5000000,
+                values: [min, max],
+                slide: function (event, ui) {
+                    $("#amount").val(
+                        ui.values[0].toLocaleString('vi-VN') + " VNĐ - " +
+                        ui.values[1].toLocaleString('vi-VN') + " VNĐ"
+                    );
+
+                    $("#min_price").val(ui.values[0]);
+                    $("#max_price").val(ui.values[1]);
+                }
+            });
+
+            // Load giá hiển thị ban đầu
+            $("#amount").val(
+                min.toLocaleString('vi-VN') + " VNĐ - " +
+                max.toLocaleString('vi-VN') + " VNĐ"
+            );
+        });
+    </script>
 @endsection

@@ -494,35 +494,35 @@
 
 
 	// pricing filter
-	$(function () {
-    let rangeVal = "{{ request('price_range') }}";
+// 	$(function () {
+//     let rangeVal = "{{ request('price_range') }}";
 
-    let min = 10000;
-    let max = 10000000;
+//     let min = 10000;
+//     let max = 10000000;
 
-    if (rangeVal && rangeVal.includes('-')) {
-        let parts = rangeVal.split('-');
-        min = parseInt(parts[0].replace(/\D/g, ''));
-        max = parseInt(parts[1].replace(/\D/g, ''));
-    }
+//     if (rangeVal && rangeVal.includes('-')) {
+//         let parts = rangeVal.split('-');
+//         min = parseInt(parts[0].replace(/\D/g, ''));
+//         max = parseInt(parts[1].replace(/\D/g, ''));
+//     }
 
-    if (isNaN(min) || isNaN(max)) {
-        min = 10000;
-        max = 10000000;
-    }
+//     if (isNaN(min) || isNaN(max)) {
+//         min = 10000;
+//         max = 10000000;
+//     }
 
-    $("#price-slider").slider({
-        range: true,
-        min: 1,
-        max: 10000000,
-        values: [min, max],
-        slide: function(event, ui) {
-            $("#amount").val(ui.values[0] + " - " + ui.values[1]);
-        }
-    });
+//     $("#price-slider").slider({
+//         range: true,
+//         min: 1,
+//         max: 10000000,
+//         values: [min, max],
+//         slide: function(event, ui) {
+//             $("#amount").val(ui.values[0] + " - " + ui.values[1]);
+//         }
+//     });
 
-    $("#amount").val(min + " - " + max);
-});
+//     $("#amount").val(min + " - " + max);
+// });
 
 
 

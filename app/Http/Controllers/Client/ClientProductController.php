@@ -19,12 +19,11 @@ class ClientProductController extends Controller
     }
     public function index(Request $request)
     {
-        
         $categories = $this->categoryService->getCategoriesForFilter();
-        $products = $this->productService->getProductsForList();
-        $product = $this->productService->getFilteredProducts($request);
+        $products = $this->productService->getFilteredProducts($request);
+        // $products = $this->productService->getProductsForList();
 
-        return view('client.pages.products.index', compact('products', 'product', 'categories'));
+        return view('client.pages.products.index', compact('products', 'categories'));
     }
 
     // Trang chi tiết sản phẩm

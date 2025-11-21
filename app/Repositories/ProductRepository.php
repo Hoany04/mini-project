@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 use App\Models\Product;
+use Illuminate\Http\Request;
 
 class ProductRepository
 {
@@ -28,19 +29,19 @@ class ProductRepository
     }
 
     // client
-    public function filterProducts(array $filters)
+    public function filterProducts(Request $request)
     {
 
-        $query = Product::query()->where('status', 1);
+        $query = Product::query();
 
-        if (isset($filters['price_min']) && isset($filters['price_max'])) {
+        if ($request->filled('min_price') && $request->filled('max_price')) {
             $query->whereBetween('price', [
-                $filters['price_min'],
-                $filters['price_max'],
+                intval($request->min_price),
+                intval($request->max_price),
             ]);
         }
 
-        return $query->paginate(12)->withQueryString();
+        return $query->paginate(12);
     }
 
     public function findById($id, $throw = true)
