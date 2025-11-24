@@ -25,22 +25,5 @@ class OrderController extends Controller
         ]);
 
         return $this->orderService->createOrder($data);
-        // $userId = $request->user()->id;
-
-        // try {
-        //     $order = $this->orderService->createOrder($userId);
-
-        //     return response()->json([
-        //         'status' => 'success',
-        //         'message' => 'Order created successfully',
-        //         'data' => $order
-        //     ]);
-        // } catch (\Exception $e) {
-
-        //     return response()->json([
-        //         'status' => 'error',
-        //         'message' => $e->getMessage()
-        //     ], 422);
-        // }
     }
 }

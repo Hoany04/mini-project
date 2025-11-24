@@ -55,7 +55,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'auth' => \App\Http\Middleware\Authenticate::class,
-            'auth.admin' => \App\Http\Middleware\CheckRoleAdminMiddleware::class,
+            'CheckRole' => \App\Http\Middleware\CheckRoleAdminMiddleware::class,
             'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
             'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
             'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

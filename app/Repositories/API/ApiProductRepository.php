@@ -5,9 +5,9 @@ use App\Models\Product;
 
 class ApiProductRepository
 {
-    public function find($id)
+    public function getProductsByIds(array $ids)
     {
-        return Product::findOrFail($id);
+        return Product::whereIn('id', $ids)->get()->keyBy('id');
     }
 
     public function decreaseStock($productId, $qty)

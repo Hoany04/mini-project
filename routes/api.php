@@ -20,6 +20,7 @@ Route::middleware('throttle:api')->group(function () {
         // get products
         Route::get('/products', [ProductController::class, 'index']);
         Route::get('/products/{id}', [ProductController::class, 'show']);
+        
         Route::middleware('auth:sanctum')->group(function () {
         // get lsu gdich
         Route::get('/transactions', [TransactionController::class, 'index']);

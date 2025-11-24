@@ -9,6 +9,7 @@ use App\Services\UserService;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -78,9 +79,9 @@ class UserController extends Controller
         $data = $request->validated();
 
         if ($data['status'] == 'inactive') {
-            \DB::table('sessions')->where('user_id', $id)->delete();
+            DB::table('sessions')->where('user_id', $id)->delete();
         }
-        
+
         User::findOrFail($id)->update($data);
 
         return redirect()->route('admin.users.index')->with('success', 'Cap nhat thong tin user thanh cong');

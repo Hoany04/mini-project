@@ -1,6 +1,6 @@
 <?php
+use App\Enums\RoleStatus;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Admin\AccessLogController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
