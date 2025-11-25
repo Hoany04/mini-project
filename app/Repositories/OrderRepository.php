@@ -2,11 +2,14 @@
 
 namespace App\Repositories;
 
+use App\Events\OrderStatusUpdated;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\NewOrderNotification;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\OrderShipping;
+use App\Events\NewOrderCreated;
+use Illuminate\Support\Facades\DB;
 class OrderRepository
 {
     /**
@@ -31,16 +34,23 @@ class OrderRepository
 
     public function create(array $data)
     {
-        $order = Order::create([
-            'user_id' => $data['user_id'],
-            'coupon_id' => $data['coupon_id'] ?? null,
-            'total_amount' => $data['total_amount'],
-            'status' => $data['status'] ?? 'pending',
-        ]);
-       $admin = User::where('role_id', 'admin')->get();
-       Notification::send($admin, new NewOrderNotification($order));
+        return DB::transaction(function() use ($data) {
+            $order = Order::create([
+                'user_id' => $data['user_id'],
+                'coupon_id' => $data['coupon_id'] ?? null,
+                'total_amount' => $data['total_amount'],
+                'status' => $data['status'] ?? 'pending',
+            ]);
 
-       return $order;
+            $admins = User::where('role_id', 'admin')->get();
+            if ($admins->isNotEmpty()) {
+                Notification::send($admins, new NewOrderNotification($order));
+            }
+
+            event(new NewOrderCreated($order));
+
+            return $order;
+        });
     }
 
     //
@@ -101,6 +111,9 @@ class OrderRepository
     {
         $order = Order::findOrFail($orderId);
         $order->update(['status' => $status]);
+
+        event(new OrderStatusUpdated($order));
+        
         return $order;
     }
 

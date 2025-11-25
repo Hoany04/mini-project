@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderShipping;
 use App\Http\Requests\UpdateOrderStatusRequest;
 use App\Http\Requests\UpdateOrderShippingRequest;
+use App\Events\OrderStatusUpdated;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -67,6 +68,7 @@ class OrderController extends Controller
 
         $shipping->save();
 
+        event(new OrderStatusUpdated($order));
         return redirect()->route('admin.orders.index')->with('success', 'Cập nhật thông tin giao hàng thành công!');
     }
 

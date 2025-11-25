@@ -1,0 +1,43 @@
+Các bước triển khai
+1. Cài đặt package
+- composer require pusher/pusher-php-server
+- npm install --save laravel-echo pusher-js
+2. Cấu hình Pusher
+- Tạo tk Pusher để lấy app_id, key, secret, cluster
+- Cấu hình trong file env.
+BROADCAST_DRIVER=pusher
+PUSHER_APP_ID=xxxx
+PUSHER_APP_KEY=xxxx
+PUSHER_APP_SECRET=xxxx
+PUSHER_APP_CLUSTER=ap1
+3. Cấu hình config/broadcasting
+'pusher' => [
+    'driver' => 'pusher',
+    'key' => env('PUSHER_APP_KEY'),
+    'secret' => env('PUSHER_APP_SECRET'),
+    'app_id' => env('PUSHER_APP_ID'),
+    'options' => [
+        'cluster' => env('PUSHER_APP_CLUSTER'),
+        'useTLS' => true,
+    ],
+],
+4. Khởi tạo laravel echo ở frontend trong resource/js/app.js
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+
+window.Pusher = Pusher;
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
+    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+    forceTLS: true,
+    authEndpoint: '/broadcasting/auth', // để join private channel
+});
+5. Định nghĩa channel trong Route/channels.php
+6. Build lại assets
+npm run dev
+7. Tạo Event
+8. Phát event từ backend
+9. Lắng nghe ở frontend
+

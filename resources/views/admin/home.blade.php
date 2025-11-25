@@ -104,10 +104,16 @@
 @endsection
 @section('js')
 <script>
-    window.Echo.channel('mini-project')
-    .listen('.new-order', (e) => {
-        console.log('🛒 Có đơn hàng mới:', e.order);
-        alert('Có đơn hàng mới #' + e.order.id);
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.Echo) {
+            window.Echo.channel('orders')
+            .listen('.new-order', (e) => {
+                console.log('🛒 Có đơn hàng mới:', e);
+                alert('Có đơn hàng mới #' + e.order.id);
+            });
+        } else {
+            console.error('Echo chưa load xong!');
+        }
     });
 </script>
 @endsection

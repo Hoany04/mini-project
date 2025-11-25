@@ -47,7 +47,7 @@ class NewOrderNotification extends Notification implements ShouldQueue
         ];
     }
 
-    public function toBroadCast($notifiable)
+    public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
             'order_id' => $this->order->id,

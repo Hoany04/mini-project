@@ -17,6 +17,16 @@ use App\Http\Controllers\Admin\ShippingMethodController;
 use App\Http\Controllers\Admin\PaymentTransactionController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\DashboardController;
+// use App\Events\NewOrderCreated;
+// use App\Models\Order;
+
+// Route::get('/test-realtime', function () {
+//     $order = Order::first();
+//     event(new NewOrderCreated($order));
+
+//     return "Event sent";
+// });
+
 
 Route::prefix('admin')->group(function () {
     Route::resource('roles', RoleController::class);
@@ -157,11 +167,5 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
         Route::put('/update/{id}', [PaymentMethodController::class, 'update'])->name('update');
         Route::delete('/delete/{id}', [PaymentMethodController::class, 'destroy'])->name('delete');
     });
-
-    // Route::prefix('dashboard')
-    // ->as('dashboard.')
-    // ->group(function () {
-    //     Route::get('/dashboard', [DashboardController::class, 'index'])->name('home');
-    // });
 });
 ?>

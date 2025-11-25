@@ -28,15 +28,31 @@ class NewOrderCreated implements ShouldBroadcastNow
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): array
+    public function broadcastOn(): Channel
     {
-        return [
-            new Channel('mini-project'),
-        ];
+        return new Channel('orders');
     }
 
     public function broadcastAs()
     {
         return 'new-order';
+    }
+
+    public function broadcastWith(): array
+    {
+        return [
+            'order' => [
+                'id' => $this->order->id,
+                'user_id' => $this->order->user_id,
+                'total_amount' => $this->order->total_amount,
+                'status' => $this->order->status,
+                'created_at' => $this->order->created_at->toDateTimeString(),
+                'user' => [
+                    'id' => $this->order->user->id,
+                    'username' => $this->order->user->username,
+                    'email' => $this->order->user->email,
+                ],
+            ],
+        ];
     }
 }
