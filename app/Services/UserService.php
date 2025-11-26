@@ -2,12 +2,14 @@
 
 namespace App\Services;
 
+use App\Enums\UserStatus;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class UserService
 {
-    protected $userRepo;
+    protected UserRepository $userRepo;
 
     public function __construct(UserRepository $userRepo)
     {
@@ -24,8 +26,19 @@ class UserService
     public function createUser(array $data)
     {
         $data['password'] = Hash::make($data['password']);
+
+        if (!empty($data['status'])) {
+            try{
+                $data['status'] = UserStatus::from($data['status'])->value;
+            } catch (\ValueError $e) {
+                throw new \Exception("Trạng thái user không hợp lệ");
+            }
+        }
+
         $user = $this->userRepo->createUser($data);
+
         $user->profile()->create([]); // Tạo profile rỗng
+
         return $user;
     }
 
@@ -44,6 +57,21 @@ class UserService
             $data['password'] = Hash::make($data['password']);
         } else {
             unset($data['password']); // Không ghi đè password nếu form không có
+        }
+
+        if (!empty($data['status'])) {
+            try {
+                $newStatus = UserStatus::from($data['status']);
+            } catch (\ValueError $e) {
+                throw new \Exception("Trạng thái user không hợp lệ");
+            }
+
+            if ($newStatus === UserStatus::INACTIVE) {
+                // Xoá tất cả session của user này để đăng xuất
+                DB::table('sessions')->where('user_id', $id)->delete();
+            }
+
+            $data['status'] = $newStatus->value;
         }
 
         return $this->userRepo->updateUser($user, $data);

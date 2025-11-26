@@ -3,7 +3,6 @@ require __DIR__ . '/admin.php';
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
-use App\Enums\RoleStatus;
 
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ClientProfileController;

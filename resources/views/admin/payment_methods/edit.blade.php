@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-<div class="container">
+<div class="container card mt-4">
     <h4 class="p-4">Sửa phương thức thanh toán</h4>
 
     @if (session('success'))
@@ -40,5 +40,6 @@
         <button class="btn btn-success">Cập nhật</button>
         <a href="{{ route('admin.payment-methods.index') }}" class="btn btn-secondary">Hủy</a>
     </form>
+    <div class="mt-3"></div>
 </div>
 @endsection

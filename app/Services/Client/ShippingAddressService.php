@@ -7,7 +7,7 @@ use App\Repositories\ShippingAddressRepository;
 
 class ShippingAddressService
 {
-    protected $addressRepo;
+    protected ShippingAddressRepository $addressRepo;
 
     public function __construct(ShippingAddressRepository $addressRepo)
     {

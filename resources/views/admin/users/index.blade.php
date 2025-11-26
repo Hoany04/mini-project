@@ -1,4 +1,7 @@
 @extends('layouts.AdminLayout')
+@php
+use App\Enums\UserStatus;
+@endphp
 
 @section('content')
     <div class="container mt-4 card">
@@ -31,8 +34,12 @@
             <div class="col-md-3">
                 <select name="status" class="form-select">
                     <option value="">-- Trạng thái --</option>
-                    <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Kích hoạt</option>
-                    <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Ngưng hoạt động</option>
+                    @foreach (UserStatus::cases() as $status)
+                        <option value="{{ $status->value }}"
+                            {{ request('status') == $status->value ? 'selected' : '' }}>
+                            {{ $status->label() }}
+                        </option>
+                    @endforeach
                 </select>
             </div>
 
@@ -66,8 +73,8 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->role->name ?? 'Not available' }}</td>
                         <td>
-                            <span class="badge bg-{{ $user->status === 'active' ? 'success' : ($user->status === 'inactive' ? 'secondary' : 'danger') }}">
-                                {{ ucfirst($user->status) }}
+                            <span class="badge bg-{{ $user->status->badgeColor() }}">
+                                {{ $user->status->label() }}
                             </span>
                         </td>
                         <td>
@@ -84,6 +91,8 @@
             </tbody>
         </table>
 
-        {{ $users->withQueryString()->links() }}
+        <div class="mt-3">
+            {{ $users->withQueryString()->links() }}
+        </div>
     </div>
 @endsection

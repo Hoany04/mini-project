@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-<div class="container">
+<div class="container card">
     <h4 class="p-4">Quản lý phương thức vận chuyển</h4>
 
     <a href="{{ route('admin.shipping_methods.create') }}" class="btn btn-primary mb-3">+ Thêm mới</a>
@@ -10,7 +10,7 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <table class="table table-striped">
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <th>#</th>
@@ -42,7 +42,8 @@
             @endforeach
         </tbody>
     </table>
-    {{ $methods->links() }}
+    <div class="mt-3">
+        {{ $methods->links() }}
 </div>
 
 <script>

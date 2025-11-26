@@ -10,8 +10,8 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-light">
             <tr class="text-center">
                 <th>ID</th>
                 <th>Mã</th>
@@ -21,7 +21,7 @@
                 <th>Ngày bắt đầu</th>
                 <th>Ngày kết thúc</th>
                 <th>Trạng thái</th>
-                <th>Hành động</th>
+                <th width="18%">Hành động</th>
             </tr>
         </thead>
         <tbody>
@@ -51,6 +51,8 @@
         </tbody>
     </table>
 
-    {{ $coupons->links() }}
+    <div class="mt-3">
+        {{ $coupons->links() }}
+    </div>
 </div>
 @endsection

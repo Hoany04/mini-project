@@ -1,6 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
+<div class="container mt-4 card">
 <h4 class="p-4">Phương thức thanh toán</h4>
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
@@ -42,6 +43,8 @@
         @endforeach
     </tbody>
 </table>
-
-{{ $methods->links() }}
+    <div class="mt-3">
+        {{ $methods->links() }}
+    </div>
+</div>
 @endsection

@@ -35,5 +35,6 @@
             @endforeach
         </tbody>
     </table>
+    <div class="mt-3">
 </div>
 @endsection

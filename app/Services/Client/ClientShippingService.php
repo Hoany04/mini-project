@@ -5,7 +5,7 @@ use App\Repositories\ShippingMethodRepository;
 
 class ClientShippingService
 {
-    protected $shippingRepo;
+    protected ShippingMethodRepository $shippingRepo;
 
     public function __construct(ShippingMethodRepository $shippingRepo)
     {

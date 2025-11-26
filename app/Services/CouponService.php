@@ -11,7 +11,7 @@ class CouponService
      * Create a new class instance.
      */
 
-     protected $couponRepo;
+     protected CouponRepository $couponRepo;
     public function __construct(CouponRepository $couponRepo)
     {
         $this->couponRepo = $couponRepo;

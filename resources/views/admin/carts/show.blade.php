@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-<div class="container mt-4">
+<div class="container mt-4 card">
     <h3 class="p-4">Chi tiết giỏ hàng #{{ $cart->id }}</h3>
 
     <div class="mb-3">
@@ -41,5 +41,6 @@
     </h5>
 
     <a href="{{ route('admin.carts.index') }}" class="btn btn-secondary mt-3">Quay lại</a>
+    <div class="mt-3"></div>
 </div>
 @endsection

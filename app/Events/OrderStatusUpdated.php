@@ -33,7 +33,7 @@ class OrderStatusUpdated implements ShouldBroadcastNow
      */
     public function broadcastOn(): Channel
     {
-        Log::info("📡 Broadcasting to user." . $this->order->user_id);
+        Log::info("Broadcasting to user." . $this->order->user_id);
         return new PrivateChannel('user.' .$this->order->user_id);
     }
 

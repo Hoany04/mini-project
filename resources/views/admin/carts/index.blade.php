@@ -40,6 +40,8 @@ use Carbon\Carbon;
         </tbody>
     </table>
 
-    {{-- {{ $carts->links() }} --}}
+    <div class="mt-3">
+        {{-- {{ $carts->links() }} --}}
+    </div>
 </div>
 @endsection

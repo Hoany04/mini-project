@@ -10,7 +10,7 @@ use Illuminate\Validation\ValidationException;
 
 class ApiTransactionService
 {
-    protected $transactionRepo;
+    protected ApiPaymentTransactionRepository $transactionRepo;
     protected $orderRepo;
 
     public function __construct(ApiPaymentTransactionRepository $transactionRepo, ApiOrderRepository $orderRepo)

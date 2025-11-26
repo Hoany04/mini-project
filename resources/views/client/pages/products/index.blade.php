@@ -1,5 +1,7 @@
 @extends('layouts.ClientLayout')
-
+@php
+    $colors = \App\Models\ProductVariant::where('variant_name', 'Màu')->pluck('variant_value')->unique();
+@endphp
 @section('content')
     @if(session('error'))
     <div class="alert alert-danger">{{ session('error') }}</div>
@@ -139,40 +141,19 @@
 
                         <!-- single sidebar start -->
                         <div class="sidebar-single">
-                            <h5 class="sidebar-title">color</h5>
+                            <h5 class="sidebar-title">Color</h5>
                             <div class="sidebar-body">
-                                <ul class="checkbox-container categories-list">
-                                    <li>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck12">
-                                            <label class="custom-control-label" for="customCheck12">black (20)</label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck13">
-                                            <label class="custom-control-label" for="customCheck13">red (6)</label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck14">
-                                            <label class="custom-control-label" for="customCheck14">blue (8)</label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck11">
-                                            <label class="custom-control-label" for="customCheck11">green (5)</label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck15">
-                                            <label class="custom-control-label" for="customCheck15">pink (4)</label>
-                                        </div>
-                                    </li>
-                                </ul>
+                                @foreach($colors as $color)
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox"
+                                            name="colors[]"
+                                            value="{{ $color }}"
+                                            id="color-{{ $color }}"
+                                            class="custom-control-input"
+                                            {{ in_array($color, request('colors', [])) ? 'checked' : '' }}>
+                                        <label class="custom-control-label" for="color-{{ $color }}">{{ $color }}</label>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                         <!-- single sidebar end -->

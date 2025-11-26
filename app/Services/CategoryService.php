@@ -11,7 +11,7 @@ class CategoryService
      * Create a new class instance.
      */
 
-     protected $categoryRepo;
+     protected CategoryRepository $categoryRepo;
 
     public function __construct(CategoryRepository $categoryRepo)
     {

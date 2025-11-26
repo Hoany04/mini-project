@@ -1,4 +1,7 @@
 @extends('layouts.AdminLayout')
+@php
+use App\Enums\ProductStatus;
+@endphp
 
 @section('content')
     <div class="container mt-5 card">
@@ -33,11 +36,12 @@
             <div class="col-md-3">
                 <select name="status" class="form-select">
                     <option value="">-- Trạng thái --</option>
-                    <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Kích hoạt</option>
-                    <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Ngưng hoạt động
-                    </option>
-                    <option value="out_of_stock" {{ request('status') == 'out_of_stock' ? 'selected' : '' }}>Hết hàng
-                    </option>
+                    @foreach (ProductStatus::cases() as $status)
+                        <option value="{{ $status->value }}"
+                            {{ request('status') == $status->value ? 'selected' : '' }}>
+                            {{ $status->label() }}
+                        </option>
+                    @endforeach
                 </select>
             </div>
             <div class="col-md-3">
@@ -95,10 +99,8 @@
                         <td>{{ $product->sold }}</td>
                         <td>{{ number_format($product->average_rating, 2) }}</td>
                         <td>
-                            <span
-                                class="badge
-                      {{ $product->status == 'active' ? 'bg-success' : ($product->status == 'inactive' ? 'bg-secondary' : 'bg-danger') }}">
-                                {{ $product->status }}
+                             <span class="badge bg-{{ $product->status_enum->badgeColor() }}">
+                                {{ $product->status_enum->label() }}
                             </span>
                         </td>
                         <td>{{ $product->user?->username ?? 'N/A' }}</td>

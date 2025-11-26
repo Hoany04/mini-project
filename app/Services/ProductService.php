@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Services;
+
+use App\Enums\ProductStatus;
 use App\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,7 +12,7 @@ class ProductService
      * Create a new class instance.
      */
 
-     protected $productRepo;
+     protected ProductRepository $productRepo;
     public function __construct(ProductRepository $productRepo)
     {
         $this->productRepo = $productRepo;
@@ -26,12 +28,22 @@ class ProductService
         return $this->productRepo->findById($id, false);
     }
 
-    public function createProduct(array $data) 
+    public function createProduct(array $data)
     {
         $data['user_id'] = Auth::id();
         $data['sold'] = 0;
         $data['average_rating'] = 0;
         $data['total_review'] = 0;
+
+        // Convert Status -> enum
+        if (!empty($data['status'])) {
+            try {
+                $data['status'] = ProductStatus::from($data['status'])->value;
+            } catch (\ValueError $e) {
+                throw new \Exception("Trạng thái sản phẩm không hợp lệ");
+            }
+        }
+
         return $this->productRepo->create($data);
     }
 
@@ -47,7 +59,10 @@ class ProductService
         $product = $this->productRepo->findById($id);
 
         if ($product->orderItems()->exists()) {
-            $this->productRepo->deactivateProduct($product);
+
+            $product->status = ProductStatus::INACTIVE->value;
+            $product->save();
+
             return [
                 'success' => false,
                 'message' => 'San pham dang ton tai trong don hang, he thong chuyen sang trang thai "Ngung hoat dong" . '
@@ -55,6 +70,7 @@ class ProductService
         }
 
         $this->productRepo->delete($product);
+        
         return [
             'success' => true,
             'message' => 'Da xoa san pham thanh cong.'

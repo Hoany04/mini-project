@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\DB;
 
 class ClientOrderService
 {
-    protected $orderRepo;
-    protected $orderItemRepo;
-    protected $cartRepo;
-    protected $paymentTransactionRepo;
+    protected OrderRepository $orderRepo;
+    protected OrderItemRepository $orderItemRepo;
+    protected CartRepository $cartRepo;
+    protected PaymentTransactionRepository $paymentTransactionRepo;
 
     public function __construct(
         OrderRepository $orderRepo,

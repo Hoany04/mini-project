@@ -6,10 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
-use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -25,8 +23,10 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $filters = $request->only(['search', 'role_id', 'status']);
+
         $users = $this->userService->getUsersWithFilters($filters);
         $roles = Role::all();
+
         return view('admin.users.index', compact('users', 'roles'));
     }
 
@@ -67,6 +67,7 @@ class UserController extends Controller
         if(!$user) {
             return redirect()->route('admin.users.index')->with('error', 'User không tồn tại!');
         }
+
         $roles = Role::all();
         return view('admin.users.edit', compact('user', 'roles'));
     }
@@ -76,13 +77,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, $id)
     {
-        $data = $request->validated();
-
-        if ($data['status'] == 'inactive') {
-            DB::table('sessions')->where('user_id', $id)->delete();
-        }
-
-        User::findOrFail($id)->update($data);
+        $this->userService->updateUser($id, $request->validated());
 
         return redirect()->route('admin.users.index')->with('success', 'Cap nhat thong tin user thanh cong');
     }

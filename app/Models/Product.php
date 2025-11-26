@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ProductStatus;
 use App\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\softDeletes;
@@ -23,6 +24,10 @@ class Product extends Model
         'status',
         'average_rating',
         'total_review'
+    ];
+
+    protected $casts = [
+        'status' => ProductStatus::class,
     ];
 
     protected $datas = ['deleted_at'];
@@ -76,4 +81,10 @@ class Product extends Model
         return $this->images->first()->image_url ?? 'defaults/no-image.png';
     }
 
+    public function getStatusEnumAttribute()
+    {
+        return $this->status instanceof ProductStatus
+            ? $this->status
+            : ProductStatus::from($this->status);
+    }
 }

@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Models;
+
+use App\Enums\UserStatus;
 use Laravel\Cashier\Billable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,9 +12,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Billable;
 
-    const ROLE_ADMIN = 'Admin';
-
-    const ROLE_USER = 'Customer';
+    protected $casts = [
+        'status' => UserStatus::class,
+    ];
 
     protected $fillable = [
         'username', 'email', 'password', 'role_id', 'status'

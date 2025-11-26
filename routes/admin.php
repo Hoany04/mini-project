@@ -1,5 +1,4 @@
 <?php
-use App\Enums\RoleStatus;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AccessLogController;
 use App\Http\Controllers\Admin\RoleController;
@@ -17,15 +16,15 @@ use App\Http\Controllers\Admin\ShippingMethodController;
 use App\Http\Controllers\Admin\PaymentTransactionController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\DashboardController;
-// use App\Events\NewOrderCreated;
-// use App\Models\Order;
+use App\Events\NewOrderCreated;
+use App\Models\Order;
 
-// Route::get('/test-realtime', function () {
-//     $order = Order::first();
-//     event(new NewOrderCreated($order));
+Route::get('/test-realtime', function () {
+    $order = Order::first();
+    event(new NewOrderCreated($order));
 
-//     return "Event sent";
-// });
+    return "Event sent";
+});
 
 
 Route::prefix('admin')->group(function () {

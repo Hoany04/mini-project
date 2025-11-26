@@ -69,6 +69,8 @@ use Carbon\Carbon;
         </tbody>
     </table>
 
-    {{ $orders->links() }}
+    <div class="mt-3">
+        {{ $orders->links() }}
+    </div>
 </div>
 @endsection

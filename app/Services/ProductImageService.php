@@ -7,7 +7,7 @@ use Illuminate\Http\UploadedFile;
 
 class ProductImageService
 {
-    protected $productImageRepo;
+    protected ProductImageRepository $productImageRepo;
 
     public function __construct(ProductImageRepository $productImageRepo)
     {

@@ -3,9 +3,9 @@ namespace App\Services;
 
 use App\Repositories\PaymentTransactionRepository;
 
-class PaymentTransactionService 
+class PaymentTransactionService
 {
-    protected $repo;
+    protected PaymentTransactionRepository $repo;
 
     public function __construct(PaymentTransactionRepository $repo)
     {

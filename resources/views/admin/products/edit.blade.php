@@ -1,5 +1,7 @@
 @extends('layouts.AdminLayout')
-
+@php
+use App\Enums\ProductStatus;
+@endphp
 @section('content')
     <div class="container mt-4 col-md-8 card">
         <h3 class="p-4">Cập nhật sản phẩm</h3>
@@ -51,11 +53,12 @@
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Trạng thái</label>
                     <select name="status" class="form-select" required>
-                        <option value="active" {{ $product->status == 'active' ? 'selected' : '' }}>Kích hoạt</option>
-                        <option value="inactive" {{ $product->status == 'inactive' ? 'selected' : '' }}>Ngưng hoạt động
-                        </option>
-                        <option value="out_of_stock" {{ $product->status == 'out_of_stock' ? 'selected' : '' }}>Hết hàng
-                        </option>
+                        @foreach (ProductStatus::cases() as $status)
+                            <option value="{{ $status->value }}"
+                                {{ request('status') == $status->value ? 'selected' : '' }}>
+                                {{ $status->label() }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
 
@@ -105,6 +108,6 @@
                 </div>
             @endforeach
         </div>
-
     </div>
+    <div class="mt-3"></div>
 @endsection

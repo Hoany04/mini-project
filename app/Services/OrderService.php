@@ -10,7 +10,7 @@ class OrderService
      * Create a new class instance.
      */
 
-     protected $orderRepo;
+     protected OrderRepository $orderRepo;
     public function __construct(OrderRepository $orderRepo)
     {
         $this->orderRepo = $orderRepo;

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Storage;
 
 class UserProfileService
 {
-    protected $userProfileRepo;
+    protected UserProfileRepository $userProfileRepo;
 
     public function __construct(UserProfileRepository $userProfileRepo)
     {

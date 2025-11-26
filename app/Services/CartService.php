@@ -10,7 +10,7 @@ class CartService
      * Create a new class instance.
      */
 
-     protected $cartRepo;
+     protected CartRepository $cartRepo;
     public function __construct(CartRepository $cartRepo)
     {
         $this->cartRepo = $cartRepo;

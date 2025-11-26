@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class ClientProductService
 {
-    protected $productRepo;
+    protected ProductRepository $productRepo;
 
     public function __construct(ProductRepository $productRepo)
     {

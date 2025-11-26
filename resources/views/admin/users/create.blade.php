@@ -1,5 +1,7 @@
 @extends('layouts.AdminLayout')
-
+@php
+use App\Enums\UserStatus;
+@endphp
 @section('content')
 <div class="container mt-4 col-md-6 card">
     <h3 class="p-4">Thêm người dùng mới</h3>
@@ -52,12 +54,17 @@
         <div class="mb-3">
             <label>Trạng thái</label>
             <select name="status" class="form-select">
-                <option value="active">Kích hoạt</option>
-                <option value="inactive">Ngưng hoạt động</option>
+                @foreach (UserStatus::cases() as $status)
+                        <option value="{{ $status->value }}"
+                            {{ request('status') == $status->value ? 'selected' : '' }}>
+                            {{ $status->label() }}
+                        </option>
+                    @endforeach
             </select>
         </div>
 
-        <button class="btn btn-success w-100">Lưu</button>
+        <button class="btn btn-primary w-100">Lưu</button>
     </form>
+    <div class="mt-3"></div>
 </div>
 @endsection

@@ -40,5 +40,6 @@
         <button class="btn btn-success">Cập nhật</button>
         <a href="{{ route('admin.product_variants.index', $product->id) }}" class="btn btn-secondary">Hủy</a>
     </form>
+    <div class="mt-3"></div>
 </div>
 @endsection

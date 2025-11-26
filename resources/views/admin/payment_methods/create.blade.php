@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-    <div class="container">
+    <div class="container card mt-4">
         <h4 class="p-4">Thêm phương thức thanh toán</h4>
         <form action="{{ route('admin.payment-methods.store') }}" method="POST">
             @csrf
@@ -19,5 +19,6 @@
             <button class="btn btn-success">Lưu</button>
             <a href="{{ route('admin.payment-methods.index') }}" class="btn btn-secondary">Hủy</a>
         </form>
+        <div class="mt-3"></div>
     </div>
 @endsection

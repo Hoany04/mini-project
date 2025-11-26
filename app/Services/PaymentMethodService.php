@@ -6,7 +6,7 @@ use App\Repositories\PaymentMethodRepository;
 
 class PaymentMethodService
 {
-    protected $repo;
+    protected PaymentMethodRepository $repo;
 
     public function __construct(PaymentMethodRepository $repo)
     {

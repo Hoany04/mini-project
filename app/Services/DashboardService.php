@@ -6,7 +6,7 @@ use App\Repositories\DashboardRepository;
 
 class DashboardService
 {
-    protected $dashboardRepo;
+    protected DashboardRepository $dashboardRepo;
 
     public function __construct(DashboardRepository $dashboardRepo)
     {

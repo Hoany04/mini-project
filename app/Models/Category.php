@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CategoryStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
@@ -12,6 +13,10 @@ class Category extends Model
 
     protected $fillable = ['name', 'slug', 'description', 'parent_id', 'created_by'];
 
+    protected $casts = [
+        'status' => CategoryStatus::class,
+    ];
+    
     public function parent(){
         return $this->belongsTo(Category::class, 'parent_id');
     }

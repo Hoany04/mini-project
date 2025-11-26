@@ -6,7 +6,7 @@ use App\Repositories\OrderShippingRepository;
 
 class OrderShippingService
 {
-    protected $orderShippingRepo;
+    protected OrderShippingRepository $orderShippingRepo;
 
     public function __construct(OrderShippingRepository $orderShippingRepo)
     {

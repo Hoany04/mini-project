@@ -15,11 +15,11 @@ enum UserStatus: string
         };
     }
 
-    public static function options(): array
+    public function badgeColor(): string
     {
-        return [
-            self::ACTIVE->value => 'Đang hoạt động',
-            self::INACTIVE->value => 'Đã khóa',
-        ];
+        return match ($this) {
+            self::ACTIVE => 'success',
+            self::INACTIVE => 'secondary',
+        };
     }
 }

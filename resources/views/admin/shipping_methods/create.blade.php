@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-<div class="container">
+<div class="container card">
     <h4 class="p-4">Thêm phương thức vận chuyển</h4>
     <form action="{{ route('admin.shipping_methods.store') }}" method="POST">
         @csrf
@@ -27,5 +27,6 @@
         <button class="btn btn-success">Lưu</button>
         <a href="{{ route('admin.shipping_methods.index') }}" class="btn btn-secondary">Hủy</a>
     </form>
+    <div class="mt-3"></div>
 </div>
 @endsection

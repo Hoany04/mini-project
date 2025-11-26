@@ -9,7 +9,7 @@ class ProductVariantService
      * Create a new class instance.
      */
 
-     protected $repo;
+     protected ProductVariantRepository $repo;
     public function __construct(ProductVariantRepository $repo)
     {
         $this->repo = $repo;

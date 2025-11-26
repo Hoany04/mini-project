@@ -10,7 +10,7 @@
                             <p>Welcome to Corano Jewelry online store</p>
                         </div>
                     </div>
-                    <div class="col-lg-6 text-right">
+                    {{-- <div class="col-lg-6 text-right">
                         <div class="header-top-settings">
                             <ul class="nav align-items-center justify-content-end">
                                 <li class="curreny-wrap">
@@ -33,7 +33,7 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

@@ -22,7 +22,7 @@ class ProductRepository
         }
 
         if (!empty($filters['status'])) {
-            $query->orderByDesc('id');
+            $query->where('status', $filters['status']);
         }
 
         return $query->paginate(10);
@@ -39,6 +39,22 @@ class ProductRepository
                 intval($request->min_price),
                 intval($request->max_price),
             ]);
+        }
+
+        // FILTER COLOR
+        if ($request->filled('colors')) {
+            $query->whereHas('variants', function ($q) use ($request) {
+                $q->where('variant_name', 'Màu')
+                ->whereIn('variant_value', $request->colors);
+            });
+        }
+
+        // FILTER SIZE
+        if ($request->filled('sizes')) {
+            $query->whereHas('variants', function ($q) use ($request) {
+                $q->where('variant_name', 'Size')
+                ->whereIn('variant_value', $request->sizes);
+            });
         }
 
         return $query->paginate(12);

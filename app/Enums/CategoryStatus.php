@@ -2,18 +2,16 @@
 
 namespace App\Enums;
 
-enum ProductStatus: string
+enum CategoryStatus: string
 {
     case ACTIVE = 'active';
     case INACTIVE = 'inactive';
-    case OUT_OF_STOCK = 'out_of_stock';
 
     public function label(): string
     {
         return match ($this) {
-            self::ACTIVE => 'Đang bán',
-            self::INACTIVE => 'Ngừng bán',
-            self::OUT_OF_STOCK => 'Hết hàng',
+            self::ACTIVE => 'Đang hoạt động',
+            self::INACTIVE => 'Đã khóa',
         };
     }
 
@@ -22,7 +20,6 @@ enum ProductStatus: string
         return match ($this) {
             self::ACTIVE => 'success',
             self::INACTIVE => 'secondary',
-            self::OUT_OF_STOCK => 'danger',
         };
     }
 }

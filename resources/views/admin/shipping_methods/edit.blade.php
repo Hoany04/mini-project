@@ -1,7 +1,7 @@
 @extends('layouts.AdminLayout')
 
 @section('content')
-<div class="container mt-4">
+<div class="container mt-4 card">
     <h4 class="mb-3 p-4">✏️ Cập nhật phương thức vận chuyển</h4>
 
     <form action="{{ route('admin.shipping_methods.update', $method->id) }}" method="POST">
@@ -49,5 +49,6 @@
             <button type="submit" class="btn btn-primary">💾 Cập nhật</button>
         </div>
     </form>
+    <div class="mt-3"></div>
 </div>
 @endsection

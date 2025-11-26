@@ -10,6 +10,10 @@ PUSHER_APP_ID=xxxx
 PUSHER_APP_KEY=xxxx
 PUSHER_APP_SECRET=xxxx
 PUSHER_APP_CLUSTER=ap1
+- Sau khi chỉnh file env xong chạy
+$php artisan config:clear
+$php artisan cache:clear
+- để các variable đc active.
 3. Cấu hình config/broadcasting
 'pusher' => [
     'driver' => 'pusher',

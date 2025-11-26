@@ -7,10 +7,10 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Services\ProductService;
 use App\Models\Category;
-use App\Models\Product;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -24,14 +24,14 @@ class ProductController extends Controller
     public function __construct(
         ProductService $productService,
         ProductRepository $productRepo
-        )
-    {
+    ) {
         $this->productService = $productService;
         $this->productRepo = $productRepo;
     }
     public function index(Request $request)
     {
         $filters = $request->only(['search', 'category_id', 'status']);
+
         $products = $this->productService->getAllProducts($filters);
         $categories = Category::all();
 
@@ -105,7 +105,7 @@ class ProductController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             // Có thể ghi log lỗi tại đây
-            \Log::error($th);
+            Log::error($th);
             return redirect()
                 ->route('admin.products.index')
                 ->with('error', 'Có lỗi xảy ra khi cập nhật sản phẩm');

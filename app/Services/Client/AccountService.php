@@ -6,7 +6,7 @@ use App\Repositories\AccountRepository;
 
 class AccountService
 {
-    protected $accountRepo;
+    protected AccountRepository $accountRepo;
 
     public function __construct(AccountRepository $accountRepo)
     {
