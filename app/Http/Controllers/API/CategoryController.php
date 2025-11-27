@@ -3,17 +3,20 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Services\API\ApiCategoryService;
 
 class CategoryController extends Controller
 {
+    protected ApiCategoryService $apiCategoryService;
+
+    public function __construct(ApiCategoryService $apiCategoryService)
+    {
+        $this->apiCategoryService = $apiCategoryService;
+    }
     // GET /api/categories
     public function index()
     {
-        $categories = Category::where('status', 'active')
-            ->select('id', 'name', 'description')
-            ->orderBy('name')
-            ->get();
+        $categories = $this->apiCategoryService->getAllActive();
 
         return response()->json([
             'success' => true,
@@ -24,19 +27,12 @@ class CategoryController extends Controller
         // GET /api/categories/{id}
     public function show($id)
     {
-        $category = Category::where('status', 'active')
-            ->select('id', 'name')
-            ->findOrFail($id);
-
-        $products = $category->products()
-            ->where('status', 'active')
-            ->select('id', 'name', 'price', 'average_rating', 'total_review')
-            ->paginate(10);
+        $data = $this->apiCategoryService->findCategoryWithProducts($id);
 
         return response()->json([
             'success' => true,
-            'category' => $category,
-            'products' => $products
+            'category' => $data['category'],
+            'products' => $data['products']
         ]);
     }
 }

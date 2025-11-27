@@ -25,16 +25,19 @@ class OrderRepository
 
         if (!empty($filters['search'])) {
             $search = $filters['search'];
+
             $query->whereHas('user', function ($q) use ($search) {
                 $q->where('username', 'like', "%{$search}%")->orWhere('email', 'like', "%{$search}%");
             });
         }
+
         return $query->orderByDesc('id')->paginate(10);
     }
 
     public function create(array $data)
     {
         return DB::transaction(function() use ($data) {
+
             $order = Order::create([
                 'user_id' => $data['user_id'],
                 'coupon_id' => $data['coupon_id'] ?? null,
@@ -113,7 +116,7 @@ class OrderRepository
         $order->update(['status' => $status]);
 
         event(new OrderStatusUpdated($order));
-        
+
         return $order;
     }
 

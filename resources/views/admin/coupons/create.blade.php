@@ -1,5 +1,7 @@
 @extends('layouts.AdminLayout')
-
+@php
+use App\Enums\CouponStatus;
+@endphp
 @section('content')
 <div class="container mt-4 card">
     <h4 class="mb-3 p-4">Thêm mã giảm giá</h4>
@@ -63,15 +65,19 @@
             <div class="col-md-6 mb-3">
                 <label class="form-label">Trạng thái</label>
                 <select name="status" class="form-control">
-                    <option value="active" {{ old('status', $coupon->status ?? '') == 'active' ? 'selected' : '' }}>Kích hoạt</option>
-                    <option value="inactive" {{ old('status', $coupon->status ?? '') == 'inactive' ? 'selected' : '' }}>Vô hiệu</option>
-                    <option value="expired" {{ old('status', $coupon->status ?? '') == 'expired' ? 'selected' : '' }}>Hết hạn</option>
+                    @foreach (CouponStatus::cases() as $status)
+                        <option value="{{ $status->value }}"
+                            {{ old('status', $coupon->status ?? '') == $status->value ? 'selected' : '' }}>
+                            {{ $status->label() }}
+                        </option>
+                    @endforeach
                 </select>
                 @error('status') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
         </div>
 
         <button type="submit" class="btn btn-primary">Thêm mới</button>
+        <div class="mt-3">
     </form>
 </div>
 @endsection

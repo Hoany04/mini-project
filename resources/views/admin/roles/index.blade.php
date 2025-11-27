@@ -4,7 +4,9 @@
     <div class="container mt-4 card">
         <h2 class="p-4">List of authorizations</h2>
 
-        <a href="" class="btn btn-primary mb-3">Add</a>
+        <div class="text-end">
+            <a href="" class="btn btn-primary mb-3">Add</a>
+        </div>
 
         <table class="table table-bordered">
             <thead class="table-dark">

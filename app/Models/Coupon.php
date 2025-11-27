@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CouponStatus;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,6 +27,7 @@ class Coupon extends Model
     protected $casts = [
         'start_date' => 'datetime',
         'end_date' => 'datetime',
+        'status' => CouponStatus::class,
     ];
 
     public function order(){

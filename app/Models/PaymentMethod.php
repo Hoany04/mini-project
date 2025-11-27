@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentMethodStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -12,6 +13,10 @@ class PaymentMethod extends Model
     protected $fillable = [
         'name',
         'status'
+    ];
+
+    protected $casts = [
+        'status' => PaymentMethodStatus::class,
     ];
 
     public function transactions() {

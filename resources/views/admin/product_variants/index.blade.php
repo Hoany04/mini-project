@@ -3,12 +3,14 @@
 @section('content')
 <div class="container mt-4 card">
     <h4 class="p-4">Biến thể sản phẩm: {{ $product->name }}</h4>
-    <a href="{{ route('admin.product_variants.create', $product->id) }}" class="btn btn-primary mb-3">+ Thêm biến thể</a>
+    <div class="text-end">
+        <a href="{{ route('admin.product_variants.create', $product->id) }}" class="btn btn-primary mb-3">+ Thêm biến thể</a>
+    </div>
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
     <table class="table table-bordered">
-        <thead>
+        <thead class="text-center">
             <tr>
                 <th>Tên biến thể</th>
                 <th>Giá trị</th>
@@ -17,7 +19,7 @@
                 <th>Hành động</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="text-center">
             @foreach($variants as $v)
                 <tr>
                     <td>{{ $v->variant_name }}</td>

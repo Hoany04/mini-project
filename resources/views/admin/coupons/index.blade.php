@@ -3,8 +3,9 @@
 @section('content')
 <div class="container mt-4 card">
     <h4 class="mb-3 p-4">Danh sách mã giảm giá</h4>
-
-    <a href="{{ route('admin.coupons.create') }}" class="btn btn-primary mb-3">+ Thêm mã mới</a>
+    <div class="text-end">
+        <a href="{{ route('admin.coupons.create') }}" class="btn btn-primary mb-3">+ Thêm mã mới</a>
+    </div>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -35,8 +36,8 @@
                     <td>{{ $coupon->start_date }}</td>
                     <td>{{ $coupon->end_date }}</td>
                     <td>
-                        <span class="badge bg-{{ $coupon->status === 'active' ? 'success' : ($coupon->status === 'inactive' ? 'secondary' : 'danger') }}">
-                            {{ ucfirst($coupon->status) }}
+                        <span class="badge bg-{{ $coupon->status->badgeColor() }}">
+                            {{ $coupon->status->label() }}
                         </span>
                     </td>
                     <td>

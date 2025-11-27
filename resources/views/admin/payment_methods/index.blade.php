@@ -6,9 +6,11 @@
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
-<a href="{{ route('admin.payment-methods.create') }}" class="btn btn-primary mb-3">
-    + Thêm phương thức
-</a>
+    <div class="text-end">
+        <a href="{{ route('admin.payment-methods.create') }}" class="btn btn-primary mb-3">
+            + Thêm phương thức
+        </a>
+    </div>
 
 <table class="table table-bordered">
     <thead>
@@ -25,8 +27,8 @@
             <td>{{ $key+1 }}</td>
             <td>{{ $method->name }}</td>
             <td>
-                <span class="badge bg-{{ $method->status === 'active' ? 'success' : 'secondary' }}">
-                    {{ $method->status === 'active' ? 'Kích hoạt' : 'Tạm ngừng' }}
+                <span class="badge bg-{{ $method->status->badgeColor() }}">
+                    {{ $method->status->label() }}
                 </span>
             </td>
             <td>

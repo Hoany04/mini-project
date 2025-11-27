@@ -1,5 +1,7 @@
 @extends('layouts.AdminLayout')
-
+@php
+use App\Enums\PaymentMethodStatus;
+@endphp
 @section('content')
 <div class="container card mt-4">
     <h4 class="p-4">Sửa phương thức thanh toán</h4>
@@ -32,8 +34,12 @@
         <div class="mb-3">
             <label>Trạng thái</label>
             <select name="status" class="form-select">
-                <option value="active" {{ $method->status === 'active' ? 'selected' : '' }}>Kích hoạt</option>
-                <option value="inactive" {{ $method->status === 'inactive' ? 'selected' : '' }}>Tạm ngừng</option>
+                @foreach (PaymentMethodStatus::cases() as $status)
+                    <option value="{{ $status->value }}"
+                        {{ old('status', $method->status->value) == $status->value ? 'selected' : '' }}>
+                        {{ $status->label() }}
+                    </option>
+                @endforeach
             </select>
         </div>
 

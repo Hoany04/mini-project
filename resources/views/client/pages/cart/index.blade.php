@@ -126,7 +126,12 @@
                         </tr>
                     </table>
 
-                    <a href="{{ route('client.pages.checkout.order') }}" class="btn btn-danger w-100">Tiến hành thanh toán</a>
+                    <div class="text-center my-3">
+                        <a href="{{ route('client.pages.checkout.order') }}"
+                            class="btn btn-cart2">
+                            Tiến hành thanh toán
+                        </a>
+                    </div>
                 </div>
         @else
             <p>Giỏ hàng của bạn đang trống.</p>

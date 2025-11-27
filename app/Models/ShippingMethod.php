@@ -20,7 +20,7 @@ class ShippingMethod extends Model
     {
         return $this->status === 'active' ? 'Kích hoạt' : 'Tạm ngừng';
     }
-    
+
     public function orderShipping() {
         return $this->hasMany(OrderShipping::class);
     }

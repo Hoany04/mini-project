@@ -22,7 +22,7 @@ use Carbon\Carbon;
         </form>
 
         <div class="text-end mb-3">
-            <a href="{{ route('admin.categorys.create') }}" class="btn btn-success">+ Thêm mới</a>
+            <a href="{{ route('admin.categorys.create') }}" class="btn btn-primary">+ Thêm mới</a>
         </div>
 
         <!-- Bảng danh mục -->

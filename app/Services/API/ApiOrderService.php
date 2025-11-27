@@ -52,7 +52,7 @@ class ApiOrderService
                 $order = $this->orderRepo->createOrder([
                     'user_id' => $data['user_id'],
                     'total_amount' => $total,
-                    'status' => OrderStatus::Pending->value,
+                    'status' => OrderStatus::PENDING->value,
                 ]);
 
                 foreach ($items as $item) {

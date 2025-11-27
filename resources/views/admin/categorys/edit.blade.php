@@ -36,5 +36,6 @@
 
             <button type="submit" class="btn btn-primary w-100">Cập nhật</button>
         </form>
+        <div class="mt-3"></div>
     </div>
 @endsection

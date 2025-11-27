@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\PaymentMethodStatus;
 use App\Repositories\PaymentMethodRepository;
 
 class PaymentMethodService
@@ -25,11 +26,27 @@ class PaymentMethodService
 
     public function create($data)
     {
+        if (!empty($data['status'])) {
+            try {
+                $data['status'] = PaymentMethodStatus::from($data['status'])->value;
+            } catch (\ValueError $e) {
+                throw new \Exception("Trạng thái phương thức thanh toán không hợp lệ");
+            }
+        }
+        
         return $this->repo->create($data);
     }
 
     public function update($id, $data)
     {
+        if (!empty($data["status"])) {
+            try {
+                $data['status'] = PaymentMethodStatus::from($data['status'])->value;
+            } catch (\ValueError $e) {
+                throw new \Exception("Trạng thái phương thức thanh toán không hợp lệ");
+            }
+        }
+
         return $this->repo->update($id, $data);
     }
 

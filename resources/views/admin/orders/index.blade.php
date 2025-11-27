@@ -42,7 +42,7 @@ use Carbon\Carbon;
         <tbody>
             @foreach($orders as $key=>$order)
                 <tr>
-                    <td>{{ $key+1 }}</td>
+                    <td>{{ ($orders->currentPage() - 1) * $orders->perPage() + $key + 1 }}</td>
                     <td>{{ $order->user->username ?? 'N/A' }}</td>
                     <td>{{ number_format($order->total_amount) }}₫</td>
                     <td>{{ $order->coupon->code ?? '-' }}</td>
