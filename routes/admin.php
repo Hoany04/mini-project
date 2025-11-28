@@ -19,6 +19,16 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Events\NewOrderCreated;
 use App\Models\Order;
 
+Route::get('/test-notify', function () {
+    $user = App\Models\User::first();
+
+    $order = App\Models\Order::first();
+
+    $user->notify(new App\Notifications\OrderStatusUpdatedNotification($order));
+
+    return "Sent!";
+});
+
 Route::get('/test-realtime', function () {
     $order = Order::first();
     event(new NewOrderCreated($order));

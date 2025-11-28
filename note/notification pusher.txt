@@ -45,3 +45,4 @@ npm run dev
 8. Phát event từ backend
 9. Lắng nghe ở frontend
 
+php artisan queue:work

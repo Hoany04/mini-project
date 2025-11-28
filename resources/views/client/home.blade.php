@@ -20,7 +20,7 @@
                 </div>
             </div>
             <!-- single slider item end -->
-
+            
             <!-- single slider item start -->
             <div class="hero-single-slide hero-overlay">
                 <div class="hero-slider-item bg-img" data-bg="{{ asset('assets/client/img/slider/home2-slide2.jpg') }}">

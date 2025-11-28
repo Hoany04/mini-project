@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Events\OrderStatusUpdated;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\NewOrderNotification;
+use App\Notifications\OrderStatusUpdatedNotification;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\OrderShipping;
@@ -113,8 +114,17 @@ class OrderRepository
     public function updateStatus($orderId, $status)
     {
         $order = Order::findOrFail($orderId);
+
+        if ($order->status === $status) {
+            return $order;
+        }
+
         $order->update(['status' => $status]);
 
+        if ($order->user) {
+            $order->user->notify(new OrderStatusUpdatedNotification($order));
+        }
+        
         event(new OrderStatusUpdated($order));
 
         return $order;

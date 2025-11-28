@@ -31,8 +31,8 @@ class ApiOrderService
                 $productId = $item['product_id'];
                 $quantity = $item['quantity'];
 
-                $product = $products->get($productId);
-
+                $product = $products->get($productId); 
+// form request 
                 if (!$product) {
                     throw ValidationException::withMessages([
                         'product_id' => "Sản phẩm ID {$productId} không tồn tại",
@@ -57,8 +57,8 @@ class ApiOrderService
 
                 foreach ($items as $item) {
                     $productId = $item['product_id'];
-                    $product = $products->get($productId);
-
+                    $product = $products->get($productId); //
+// dung insert
                     $this->orderRepo->createOrderItems([
                         'order_id' => $order->id,
                         'product_id' => $item['product_id'],

@@ -11,6 +11,7 @@ use App\Models\OrderShipping;
 use App\Models\Order;
 use Illuminate\Support\Facades\Log;
 use App\Events\OrderShipped;
+use App\Notifications\OrderStatusUpdatedNotification;
 
 class OrderShippingObserver
 {
@@ -47,6 +48,10 @@ class OrderShippingObserver
         }
             // Đồng bộ trạng thái đơn hàng tương ứng
         $this->syncOrderStatus($shipping);
+
+        $order->user->notify(new OrderStatusUpdatedNotification($order));
+
+        \Log::info("🔔 Notification sent to user #{$order->user_id} for order #{$order->id}, status: {$shipping->status}");
     }
 
     protected function syncOrderStatus(OrderShipping $shipping)
