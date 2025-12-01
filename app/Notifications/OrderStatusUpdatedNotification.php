@@ -4,8 +4,9 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notification\Messages\BroadcastMessage;
-use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\BroadcastMessage;
+use NotificationChannels\WebPush\WebPushMessage;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Notifications\Notification;
 
 class OrderStatusUpdatedNotification extends Notification implements ShouldQueue
@@ -26,9 +27,9 @@ class OrderStatusUpdatedNotification extends Notification implements ShouldQueue
      *
      * @return array<int, string>
      */
-    public function via(object $notifiable): array
+    public function via($notifiable): array
     {
-        return ['database', 'broadcast'];
+        return ['database', 'broadcast', 'webpush'];
     }
 
     /**
@@ -44,7 +45,7 @@ class OrderStatusUpdatedNotification extends Notification implements ShouldQueue
         ];
     }
 
-    public function toBroadcast(object $notifiable): MailMessage
+    public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
             'order_id' => $this->order->id,
@@ -53,15 +54,33 @@ class OrderStatusUpdatedNotification extends Notification implements ShouldQueue
         ]);
     }
 
+    public function toWebPush($notifiable, $notification)
+    {
+        return (new WebPushMessage)
+            ->title('Đơn hàng mới')
+            ->icon('/icon.png')
+            ->body("Đơn hàng #{$this->order->id} đã cập nhật sang: {$this->order->status}")
+            ->action('Xem chi tiết', url("/orders/{$this->order->id}"));
+    }
+
+
     /**
      * Get the array representation of the notification.
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
+    public function toArray($notifiable): array
     {
         return [
-            //
+            'order_id' => $this->order->id,
+            'status'   => $this->order->status,
+            'message'  => "Đơn hàng #{$this->order->id} đã cập nhật sang: {$this->order->status}",
         ];
     }
+
+    public function broadcastOn()
+    {
+        return new PrivateChannel('user.' . $this->order->user_id);
+    }
+
 }

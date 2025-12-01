@@ -124,8 +124,8 @@ class OrderRepository
         if ($order->user) {
             $order->user->notify(new OrderStatusUpdatedNotification($order));
         }
-        
-        event(new OrderStatusUpdated($order));
+
+        // event(new OrderStatusUpdated($order));
 
         return $order;
     }

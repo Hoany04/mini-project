@@ -17,6 +17,30 @@ use App\Http\Controllers\Client\ClientShippingController;
 use App\Http\Controllers\Client\StripePaymentController;
 use App\Http\Controllers\Client\AccountController;
 
+Route::get('/test-notify', function () {
+    $user = \App\Models\User::first();
+    $order = \App\Models\Order::first();
+
+    $user->notify(new \App\Notifications\OrderStatusUpdatedNotification($order));
+
+    return "Notification sent!";
+});
+
+Route::post('/push-subscribe', function (\Illuminate\Http\Request $request) {
+    $user = auth()->user();
+    if ($user) { 
+        $user->updatePushSubscription(
+            $request->endpoint,
+            $request->keys['p256dh'],
+            $request->keys['auth']
+        );
+        return response()->json(['success' => true]);
+    }
+    return response()->json(['success' => false], 401);
+});
+
+
+
 // use App\Events\NewOrderCreated;
 // use App\Events\OrderStatusUpdated;
 // use App\Models\Order;

@@ -18,11 +18,12 @@ use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Events\NewOrderCreated;
 use App\Models\Order;
+use App\Models\User;
 
 Route::get('/test-notify', function () {
-    $user = App\Models\User::first();
+    $user = User::first();
 
-    $order = App\Models\Order::first();
+    $order = Order::first();
 
     $user->notify(new App\Notifications\OrderStatusUpdatedNotification($order));
 

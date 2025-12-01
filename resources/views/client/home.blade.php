@@ -1,5 +1,5 @@
 @extends('layouts.ClientLayout')
-@vite(['resources/js/app.js'])
+{{-- @vite(['resources/js/app.js']) --}}
 @section('content')
     <section class="slider-area">
         <div class="hero-slider-active slick-arrow-style slick-arrow-style_hero slick-dot-style">
@@ -20,7 +20,7 @@
                 </div>
             </div>
             <!-- single slider item end -->
-            
+
             <!-- single slider item start -->
             <div class="hero-single-slide hero-overlay">
                 <div class="hero-slider-item bg-img" data-bg="{{ asset('assets/client/img/slider/home2-slide2.jpg') }}">
@@ -440,7 +440,7 @@
         <!-- brand logo area end -->
     </section>
 @endsection
-@section('js')
+{{-- @section('js')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
@@ -468,5 +468,5 @@
             });
 
     });
-</script>
-@endsection
+</script> --}}
+{{-- @endsection --}}

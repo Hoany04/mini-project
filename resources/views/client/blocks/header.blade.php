@@ -44,7 +44,7 @@
                                         <li class="position-static"><a href="#">pages <i
                                                     class="fa fa-angle-down"></i></a>
                                             <ul class="megamenu dropdown">
-                                               
+
                                                 <li class="megamenu-banners d-none d-lg-block">
                                                     <a href="product-details.html">
                                                         <img src="{{ asset('assets/client/img/banner/img1-static-menu.jpg') }}"
@@ -60,7 +60,7 @@
                                             </ul>
                                         </li>
                                         <li><a href="{{ route('client.pages.products.index') }}">shop <i class="fa fa-angle-down"></i></a>
-                                        
+
                                         </li>
                                         <li><a href="blog-left-sidebar.html">Blog <i
                                                     class="fa fa-angle-down"></i></a>
@@ -87,7 +87,7 @@
                                     <button class="header-search-btn"><i class="pe-7s-search"></i></button>
                                 </form>
                             </div>
-                            <div class="dropdown">
+                            <div class="nav-item dropdown">
                                 <button id="notification-btn" class="btn btn-light position-relative" data-bs-toggle="dropdown">
                                     🔔
                                     @if(auth()->check())
@@ -97,13 +97,16 @@
                                     @else
                                         <span id="notification-count" class="badge bg-secondary">0</span>
                                     @endif
-                
+
                                 </button>
-                            
-                                <ul id="notification-list" class="dropdown-menu p-2" style="width: 300px;">
+
+                                <ul class="dropdown-menu dropdown-menu-end" style="width: 300px; max-height: 400px; overflow-y: auto;" id="notification-list">
                                     @if(auth()->check())
                                         @forelse(auth()->user()->notifications as $notify)
-                                            <li class="dropdown-item">📦 {{ $notify->data['message'] }}</li>
+                                            <li class="dropdown-item">📦 {{ $notify->data['message'] }}
+                                                <br>
+                                                <small class="text-muted">{{ $notify->created_at->diffForHumans() }}</small>
+                                            </li>
                                         @empty
                                             <li class="dropdown-item text-muted">Không có thông báo</li>
                                         @endforelse
@@ -111,11 +114,12 @@
                                         <li class="dropdown-item text-muted">Đăng nhập để xem thông báo</li>
                                     @endif
                                 </ul>
-                                
-                            
+
+
                                 {{-- <button id="mark-read-btn" class="btn btn-sm btn-link text-primary d-block ms-2 mt-1">
                                     ✔ Đánh dấu đã đọc
                                 </button> --}}
+
                             </div>
                             <div class="header-configure-area">
                                 <ul class="nav justify-content-end">
@@ -239,27 +243,45 @@
 </header>
 @section('js')
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-    
-        @if(auth()->check())
-            const userId = {{ auth()->id() }};
-    
-            window.Echo.private(`user.${userId}`)
-                .notification((notification) => {
-                    console.log("🔔 Notification nhận được:", notification);
-    
-                    // Cập nhật badge
-                    const badge = document.querySelector("#notification-count");
-                    badge.innerText = parseInt(badge.innerText || 0) + 1;
-    
-                    // Cập nhật danh sách notification
-                    const list = document.querySelector("#notification-list");
-                    list.innerHTML = `
-                        <li class="dropdown-item">📦 ${notification.message}</li>
-                    ` + list.innerHTML;
-                });
-        @endif
-    
+document.addEventListener('DOMContentLoaded', () => {
+
+    @if(auth()->check())
+    const userId = {{ auth()->id() }};
+    console.log("📡 Listening to: user." + userId);
+
+    const channel = window.Echo.private(`user.${userId}`);
+
+    // Lắng nghe notification Laravel
+    channel.notification((notification) => {
+
+        console.log("🔔 Notification mới:", notification);
+
+        // Tăng badge
+        const badge = document.querySelector("#notification-count");
+        badge.innerText = parseInt(badge.innerText || 0) + 1;
+
+        // Thêm vào danh sách
+        const list = document.querySelector("#notification-list");
+        list.innerHTML = `
+            <li class="dropdown-item">
+                📦 ${notification.message} <br>
+                <small class="text-muted">${new Date().toLocaleTimeString()}</small>
+            </li>
+        ` + list.innerHTML;
     });
-</script>    
+
+    // Bắt event raw nếu cần debug (không bắt bắt buộc)
+    channel.listen('.Illuminate\\Notifications\\Events\\BroadcastNotificationCreated', (e) => {
+        console.log("📡 Raw event:", e);
+    });
+
+    // Kiểm tra kết nối
+    window.Echo.connector.pusher.connection.bind('connected', () => {
+        console.log("✅ Echo đã kết nối Pusher thành công");
+    });
+
+    @endif
+});
+</script>
 @endsection
+
