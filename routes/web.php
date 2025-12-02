@@ -26,20 +26,6 @@ Route::get('/test-notify', function () {
     return "Notification sent!";
 });
 
-Route::post('/push-subscribe', function (\Illuminate\Http\Request $request) {
-    $user = auth()->user();
-    if ($user) { 
-        $user->updatePushSubscription(
-            $request->endpoint,
-            $request->keys['p256dh'],
-            $request->keys['auth']
-        );
-        return response()->json(['success' => true]);
-    }
-    return response()->json(['success' => false], 401);
-});
-
-
 
 // use App\Events\NewOrderCreated;
 // use App\Events\OrderStatusUpdated;

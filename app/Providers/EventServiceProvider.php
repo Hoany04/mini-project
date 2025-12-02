@@ -19,15 +19,15 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\LogUserLoginLogout::class,
         ],
 
-        \App\Events\OrderShipped::class => [
-            \App\Listeners\SendOrderDeliveredEmail::class,
+        OrderShipped::class => [
+            SendOrderDeliveredEmail::class,
         ],
         //
         // \App\Events\OrderShippingStatusChanged::class => [
         //     \App\Listeners\SendShippingStatusEmail::class,
         // ],
     ];
-   
+
 
     public function boot(): void
     {

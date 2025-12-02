@@ -15,14 +15,19 @@ if ('serviceWorker' in navigator) {
                     console.log("🔔 Quyền notification đã được cấp");
 
                     // Tạo subscription
+                    const applicationServerKey = urlBase64ToUint8Array(import.meta.env.VITE_VAPID_PUBLIC_KEY);
+
                     registration.pushManager.subscribe({
                         userVisibleOnly: true,
-                        applicationServerKey: '<VAPID_PUBLIC_KEY_BASE64>'
+                        applicationServerKey
                     }).then(subscription => {
                         console.log("📡 Subscription:", subscription);
 
                         // Gửi subscription lên server để lưu vào DB
-                        axios.post('/push-subscribe', subscription)
+                        axios.post('/push-subscribe', {
+                            endpoint: subscription.endpoint,
+                            keys: subscription.toJSON().keys
+                        })
                             .then(() => console.log("✅ Subscription đã gửi lên server"))
                             .catch(err => console.error("❌ Lỗi gửi subscription:", err));
                     });

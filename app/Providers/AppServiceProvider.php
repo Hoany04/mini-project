@@ -19,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         // App::register(EventServiceProvider::class);
+        $this->app->register(\NotificationChannels\WebPush\WebPushServiceProvider::class);
     }
 
     /**

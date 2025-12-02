@@ -8,8 +8,9 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use NotificationChannels\WebPush\WebPushMessage;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class OrderStatusUpdatedNotification extends Notification implements ShouldQueue
+class OrderStatusUpdatedNotification extends Notification implements ShouldQueue, ShouldBroadcast
 {
     use Queueable;
 

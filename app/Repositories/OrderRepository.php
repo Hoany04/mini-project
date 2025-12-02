@@ -125,7 +125,7 @@ class OrderRepository
             $order->user->notify(new OrderStatusUpdatedNotification($order));
         }
 
-        // event(new OrderStatusUpdated($order));
+        event(new OrderStatusUpdated($order));
 
         return $order;
     }

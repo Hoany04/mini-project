@@ -20,6 +20,16 @@ use App\Events\NewOrderCreated;
 use App\Models\Order;
 use App\Models\User;
 
+Route::post('/push/subscribe', function (Illuminate\Http\Request $request) {
+    $request->user()->updatePushSubscription(
+        $request->endpoint,
+        $request->keys['p256dh'],
+        $request->keys['auth']
+    );
+
+    return response()->json(['success' => true]);
+})->middleware('auth');
+
 Route::get('/test-notify', function () {
     $user = User::first();
 

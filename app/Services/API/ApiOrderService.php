@@ -126,3 +126,29 @@ class ApiOrderService
 }
 
 }
+?>
+//
+$getProduct [
+    'key' => [value]
+]
+key => id
+value => array infor getProduct
+
+foreach () {
+    $idProductRequest = 1;
+    $getProduct[$idProductRequest]
+
+    $dataInsert[] = [
+        ['product_id' => $idProductRequest,
+        'quantity' => $getProduct[$idProductRequest]['quantity'],
+        'price' => $getProduct[$idProductRequest]['price']],
+        ['product_id' => $idProductRequest,
+        'quantity' => $getProduct[$idProductRequest]['quantity'],
+        'price' => $getProduct[$idProductRequest]['price'],]
+    ];
+}
+
+Product::insert($dataInsert);
+
+//update trong foreach
+// upsert
