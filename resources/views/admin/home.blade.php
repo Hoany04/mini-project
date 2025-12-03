@@ -102,34 +102,18 @@
     </div>
 </div>
 @endsection
-@section('js')
+{{-- @section('js')
 <script>
-    navigator.serviceWorker.register('/sw.js');
-
-    Notification.requestPermission().then(permission => {
-    if (permission === 'granted') {
-        // Sau khi được cấp quyền, tạo subscription
-        navigator.serviceWorker.ready.then(registration => {
-            registration.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: '<VAPID_PUBLIC_KEY>'
-            }).then(subscription => {
-                // Gửi subscription lên server để lưu vào DB
-                axios.post('/push-subscribe', subscription);
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.Echo) {
+            window.Echo.channel('orders')
+            .listen('.new-order', (e) => {
+                console.log('🛒 Có đơn hàng mới:', e);
+                alert('Có đơn hàng mới #' + e.order.id);
             });
-        });
-    }
-});
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     if (window.Echo) {
-    //         window.Echo.channel('orders')
-    //         .listen('.new-order', (e) => {
-    //             console.log('🛒 Có đơn hàng mới:', e);
-    //             alert('Có đơn hàng mới #' + e.order.id);
-    //         });
-    //     } else {
-    //         console.error('Echo chưa load xong!');
-    //     }
-    // });
+        } else {
+            console.error('Echo chưa load xong!');
+        }
+    });
 </script>
-@endsection
+@endsection --}}

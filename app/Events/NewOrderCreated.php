@@ -35,7 +35,7 @@ class NewOrderCreated implements ShouldBroadcast
 
     public function broadcastAs()
     {
-        return 'new-order';
+        return 'NewOrderNotification';
     }
 
     public function broadcastWith(): array

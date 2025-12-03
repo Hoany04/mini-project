@@ -31,6 +31,8 @@
     <!-- Canonical SEO -->
     <link rel="canonical" href="https://1.envato.market/frest_admin">
     {{-- @vite(['resources/js/app.js', 'resources/css/app.css']) --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     @vite(['resources/js/app.js'])
 
 
@@ -186,6 +188,8 @@
 
   <!-- Page JS -->
   <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   @yield('js')
 </body>
 

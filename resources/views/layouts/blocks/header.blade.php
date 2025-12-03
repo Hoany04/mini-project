@@ -1,16 +1,17 @@
+@vite(['resources/js/app.js'])
 <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
     <div class="container-xxl">
-      
+
       <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0   d-xl-none ">
         <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
           <i class="bx bx-menu bx-sm"></i>
         </a>
       </div>
-      
+
 
       <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
 
-        
+
         <!-- Search -->
         <div class="navbar-nav align-items-center">
           <div class="nav-item navbar-search-wrapper mb-0">
@@ -21,10 +22,10 @@
           </div>
         </div>
         <!-- /Search -->
-        
+
 
         <ul class="navbar-nav flex-row align-items-center ms-auto">
-          
+
           <!-- Language -->
           <li class="nav-item dropdown-language dropdown me-2 me-xl-0">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
@@ -55,9 +56,9 @@
           </li>
           <!--/ Language -->
 
-          
 
-          
+
+
           <!-- Style Switcher -->
           <li class="nav-item dropdown-style-switcher dropdown me-2 me-xl-0">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
@@ -82,7 +83,7 @@
             </ul>
           </li>
           <!-- / Style Switcher-->
-          
+
 
           <!-- Quick links  -->
           <li class="nav-item dropdown-shortcuts navbar-dropdown dropdown me-2 me-xl-0">
@@ -167,191 +168,30 @@
           <!-- Quick links -->
 
           <!-- Notification -->
-          <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">
-            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-              <i class="bx bx-bell bx-sm"></i>
-              <span class="badge bg-danger rounded-pill badge-notifications">5</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end py-0">
-              <li class="dropdown-menu-header border-bottom">
-                <div class="dropdown-header d-flex align-items-center py-3">
-                  <h5 class="text-body mb-0 me-auto">Notification</h5>
-                  <a href="javascript:void(0)" class="dropdown-notifications-all text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark all as read"><i class="bx fs-4 bx-envelope-open"></i></a>
-                </div>
-              </li>
-              <li class="dropdown-notifications-list scrollable-container">
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item list-group-item-action dropdown-notifications-item">
-                    <div class="d-flex">
-                      <div class="flex-shrink-0 me-3">
-                        <div class="avatar">
-                          <img src="{{ asset('assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle">
-                        </div>
-                      </div>
-                      <div class="flex-grow-1">
-                        <h6 class="mb-1">Congratulation Lettie 🎉</h6>
-                        <p class="mb-0">Won the monthly best seller gold badge</p>
-                        <small class="text-muted">1h ago</small>
-                      </div>
-                      <div class="flex-shrink-0 dropdown-notifications-actions">
-                        <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                        <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="bx bx-x"></span></a>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item list-group-item-action dropdown-notifications-item">
-                    <div class="d-flex">
-                      <div class="flex-shrink-0 me-3">
-                        <div class="avatar">
-                          <span class="avatar-initial rounded-circle bg-label-danger">CF</span>
-                        </div>
-                      </div>
-                      <div class="flex-grow-1">
-                        <h6 class="mb-1">Charles Franklin</h6>
-                        <p class="mb-0">Accepted your connection</p>
-                        <small class="text-muted">12hr ago</small>
-                      </div>
-                      <div class="flex-shrink-0 dropdown-notifications-actions">
-                        <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                        <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="bx bx-x"></span></a>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read">
-                    <div class="d-flex">
-                      <div class="flex-shrink-0 me-3">
-                        <div class="avatar">
-                          <img src="{{ asset('assets/img/avatars/2.png') }}" alt class="w-px-40 h-auto rounded-circle">
-                        </div>
-                      </div>
-                      <div class="flex-grow-1">
-                        <h6 class="mb-1">New Message ✉️</h6>
-                        <p class="mb-0">You have new message from Natalie</p>
-                        <small class="text-muted">1h ago</small>
-                      </div>
-                      <div class="flex-shrink-0 dropdown-notifications-actions">
-                        <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                        <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="bx bx-x"></span></a>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item list-group-item-action dropdown-notifications-item">
-                    <div class="d-flex">
-                      <div class="flex-shrink-0 me-3">
-                        <div class="avatar">
-                          <span class="avatar-initial rounded-circle bg-label-success"><i class="bx bx-cart"></i></span>
-                        </div>
-                      </div>
-                      <div class="flex-grow-1">
-                        <h6 class="mb-1">Whoo! You have new order 🛒 </h6>
-                        <p class="mb-0">ACME Inc. made new order $1,154</p>
-                        <small class="text-muted">1 day ago</small>
-                      </div>
-                      <div class="flex-shrink-0 dropdown-notifications-actions">
-                        <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                        <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="bx bx-x"></span></a>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read">
-                    <div class="d-flex">
-                      <div class="flex-shrink-0 me-3">
-                        <div class="avatar">
-                          <img src="{{ asset('assets/img/avatars/9.png') }}" alt class="w-px-40 h-auto rounded-circle">
-                        </div>
-                      </div>
-                      <div class="flex-grow-1">
-                        <h6 class="mb-1">Application has been approved 🚀 </h6>
-                        <p class="mb-0">Your ABC project application has been approved.</p>
-                        <small class="text-muted">2 days ago</small>
-                      </div>
-                      <div class="flex-shrink-0 dropdown-notifications-actions">
-                        <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                        <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="bx bx-x"></span></a>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read">
-                    <div class="d-flex">
-                      <div class="flex-shrink-0 me-3">
-                        <div class="avatar">
-                          <span class="avatar-initial rounded-circle bg-label-success"><i class="bx bx-pie-chart-alt"></i></span>
-                        </div>
-                      </div>
-                      <div class="flex-grow-1">
-                        <h6 class="mb-1">Monthly report is generated</h6>
-                        <p class="mb-0">July monthly financial report is generated </p>
-                        <small class="text-muted">3 days ago</small>
-                      </div>
-                      <div class="flex-shrink-0 dropdown-notifications-actions">
-                        <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                        <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="bx bx-x"></span></a>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read">
-                    <div class="d-flex">
-                      <div class="flex-shrink-0 me-3">
-                        <div class="avatar">
-                          <img src="{{ asset('assets/img/avatars/5.png') }}" alt class="w-px-40 h-auto rounded-circle">
-                        </div>
-                      </div>
-                      <div class="flex-grow-1">
-                        <h6 class="mb-1">Send connection request</h6>
-                        <p class="mb-0">Peter sent you connection request</p>
-                        <small class="text-muted">4 days ago</small>
-                      </div>
-                      <div class="flex-shrink-0 dropdown-notifications-actions">
-                        <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                        <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="bx bx-x"></span></a>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item list-group-item-action dropdown-notifications-item">
-                    <div class="d-flex">
-                      <div class="flex-shrink-0 me-3">
-                        <div class="avatar">
-                          <img src="{{ asset('assets/img/avatars/6.png') }}" alt class="w-px-40 h-auto rounded-circle">
-                        </div>
-                      </div>
-                      <div class="flex-grow-1">
-                        <h6 class="mb-1">New message from Jane</h6>
-                        <p class="mb-0">Your have new message from Jane</p>
-                        <small class="text-muted">5 days ago</small>
-                      </div>
-                      <div class="flex-shrink-0 dropdown-notifications-actions">
-                        <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                        <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="bx bx-x"></span></a>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read">
-                    <div class="d-flex">
-                      <div class="flex-shrink-0 me-3">
-                        <div class="avatar">
-                          <span class="avatar-initial rounded-circle bg-label-warning"><i class="bx bx-error"></i></span>
-                        </div>
-                      </div>
-                      <div class="flex-grow-1">
-                        <h6 class="mb-1">CPU is running high</h6>
-                        <p class="mb-0">CPU Utilization Percent is currently at 88.63%,</p>
-                        <small class="text-muted">5 days ago</small>
-                      </div>
-                      <div class="flex-shrink-0 dropdown-notifications-actions">
-                        <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
-                        <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="bx bx-x"></span></a>
-                      </div>
-                    </div>
-                  </li>
+          <li class="nav-item dropdown">
+                <button class="btn btn-light position-relative" id="admin-noti-btn" data-bs-toggle="dropdown">
+                    🔔
+                    <span id="admin-noti-count" class="badge bg-danger">
+                        {{ auth()->user()->unreadNotifications->count() }}
+                    </span>
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end"
+                    id="admin-noti-list"
+                    style="width:300px; max-height:400px; overflow-y:auto;">
+
+                    @forelse(auth()->user()->notifications as $notify)
+                        <li class="dropdown-item {{ $notify->read_at ? 'noti-read' : 'noti-unread' }}">
+                            🛒 {{ $notify->data['message'] }}
+                            <br>
+                            <small class="text-muted">{{ $notify->created_at->diffForHumans() }}</small>
+                        </li>
+                    @empty
+                        <li class="dropdown-item text-muted">Không có thông báo</li>
+                    @endforelse
                 </ul>
-              </li>
-              <li class="dropdown-menu-footer border-top">
-                <a href="javascript:void(0);" class="dropdown-item d-flex justify-content-center p-3">
-                  View all notifications
-                </a>
-              </li>
-            </ul>
-          </li>
+            </li>
+
           <!--/ Notification -->
 
           <!-- User -->
@@ -427,18 +267,148 @@
             </ul>
           </li>
           <!--/ User -->
-          
+
 
         </ul>
       </div>
 
-      
+
       <!-- Search Small Screens -->
       <div class="navbar-search-wrapper search-input-wrapper container-xxl d-none">
         <input type="text" class="form-control search-input border-0" placeholder="Search..." aria-label="Search...">
         <i class="bx bx-x bx-sm search-toggler cursor-pointer"></i>
       </div>
-      
-      
+
+
     </div>
   </nav>
+@section('js')
+
+@if(auth()->check())
+<script>
+    window.LaravelUserId = {{ auth()->id() }};
+</script>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@endif
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    console.log("📡 Admin Notification JS Loaded");
+
+    /**
+     * ===========================================
+     * 1) JOIN CHANNEL: admin.notifications
+     * ===========================================
+     */
+    const channelName = 'admin.notifications';
+    console.log("📺 Subscribing to channel:", channelName);
+
+    const channel = window.Echo.private(channelName);
+
+    /**
+     * ===========================================
+     * 2) LẮNG NGHE REALTIME
+     *    Event = .NewOrderNotification
+     * ===========================================
+     */
+    channel.listen('.NewOrderNotification', (data) => {
+        console.log("🔔 Realtime Notification received:", data);
+
+        const orderId    = data.order_id;
+        const userName   = data.user_name || "Khách hàng";
+        const total      = data.total || 0;
+        const message    = data.message || `Đơn hàng #${orderId} mới`;
+
+        /**
+         * Hiển thị alert đẹp
+         */
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'info',
+            title: message,
+            text: `Tổng tiền: ${total}₫`,
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+
+        /**
+         * Badge tăng số lượng
+         */
+        const badge = document.querySelector("#admin-noti-count");
+        badge.innerText = (parseInt(badge.innerText) || 0) + 1;
+
+        /**
+         * Thêm vào list noti
+         */
+        const list = document.querySelector("#admin-noti-list");
+        list.insertAdjacentHTML('afterbegin', `
+            <li class="list-group-item list-group-item-action dropdown-notifications-item marked-as-new">
+                <div class="d-flex">
+                    <div class="flex-shrink-0 me-3">
+                        <div class="avatar">
+                            <img src="/assets/img/avatars/1.png" class="w-px-40 h-auto rounded-circle">
+                        </div>
+                    </div>
+
+                    <div class="flex-grow-1">
+                        <h6 class="mb-1">Đơn hàng mới #${orderId}</h6>
+                        <p class="mb-0">Khách: ${userName}</p>
+                        <small class="text-muted">${new Date().toLocaleString()}</small>
+                    </div>
+
+                    <div class="flex-shrink-0 dropdown-notifications-actions">
+                        <span class="badge badge-dot"></span>
+                    </div>
+                </div>
+            </li>
+        `);
+    });
+
+    /**
+     * ===========================================
+     * 3) Khi mở dropdown → mark as read
+     * ===========================================
+     */
+    const dropdownBtn = document.getElementById("admin-noti-btn");
+
+    if (dropdownBtn) {
+        dropdownBtn.addEventListener("click", () => {
+
+            fetch("/admin/notifications/mark-as-read", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": window.csrfToken || document.querySelector('meta[name="csrf-token"]').content,
+                    "Accept": "application/json"
+                }
+            }).then(() => {
+                console.log("✔ Admin notifications marked-as-read");
+
+                // Reset badge
+                const badge = document.getElementById("admin-noti-count");
+                badge.innerText = 0;
+
+                // Remove highlight
+                document.querySelectorAll("#admin-noti-list .marked-as-new")
+                    .forEach((item) => item.classList.remove("marked-as-new"));
+            });
+        });
+    }
+
+    /**
+     * ===========================================
+     * 4) Debug kết nối pusher
+     * ===========================================
+     */
+    if (window.Echo && window.Echo.connector && window.Echo.connector.pusher) {
+        window.Echo.connector.pusher.connection.bind('connected', () => {
+            console.log("✅ Pusher connected successfully");
+        });
+    }
+});
+</script>
+
+@endsection
+

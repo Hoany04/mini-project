@@ -46,12 +46,11 @@ class OrderRepository
                 'status' => $data['status'] ?? 'pending',
             ]);
 
-            $admins = User::where('role_id', 'admin')->get();
-            if ($admins->isNotEmpty()) {
-                Notification::send($admins, new NewOrderNotification($order));
-            }
+             $order->loadMissing('user');
 
-            event(new NewOrderCreated($order));
+            // Gửi notification cho tất cả admin
+            $admins = User::where('role_id', 1)->get();
+            Notification::send($admins, new NewOrderNotification($order));
 
             return $order;
         });

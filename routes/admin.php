@@ -16,35 +16,10 @@ use App\Http\Controllers\Admin\ShippingMethodController;
 use App\Http\Controllers\Admin\PaymentTransactionController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Events\NewOrderCreated;
-use App\Models\Order;
-use App\Models\User;
 
-Route::post('/push/subscribe', function (Illuminate\Http\Request $request) {
-    $request->user()->updatePushSubscription(
-        $request->endpoint,
-        $request->keys['p256dh'],
-        $request->keys['auth']
-    );
-
+Route::post('/admin/notifications/mark-as-read', function () {
+    auth()->user()->unreadNotifications->markAsRead();
     return response()->json(['success' => true]);
-})->middleware('auth');
-
-Route::get('/test-notify', function () {
-    $user = User::first();
-
-    $order = Order::first();
-
-    $user->notify(new App\Notifications\OrderStatusUpdatedNotification($order));
-
-    return "Sent!";
-});
-
-Route::get('/test-realtime', function () {
-    $order = Order::first();
-    event(new NewOrderCreated($order));
-
-    return "Event sent";
 });
 
 

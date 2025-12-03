@@ -36,6 +36,7 @@
     <!-- main style css -->
     <link rel="stylesheet" href="{{ asset('assets/client/css/style.css') }}">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     @vite(['resources/js/app.js'])
 </head>
@@ -213,6 +214,8 @@
     <!-- Main JS -->
     <script src="{{ asset('assets/client/js/main.js') }}"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     @yield('js')

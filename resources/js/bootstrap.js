@@ -3,44 +3,6 @@ import axios from 'axios';
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 
-// Đăng ký service worker
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
-        .then(registration => {
-            console.log("✅ Service Worker đã đăng ký:", registration);
-
-            // Xin quyền hiển thị notification
-            Notification.requestPermission().then(permission => {
-                if (permission === 'granted') {
-                    console.log("🔔 Quyền notification đã được cấp");
-
-                    // Tạo subscription
-                    const applicationServerKey = urlBase64ToUint8Array(import.meta.env.VITE_VAPID_PUBLIC_KEY);
-
-                    registration.pushManager.subscribe({
-                        userVisibleOnly: true,
-                        applicationServerKey
-                    }).then(subscription => {
-                        console.log("📡 Subscription:", subscription);
-
-                        // Gửi subscription lên server để lưu vào DB
-                        axios.post('/push-subscribe', {
-                            endpoint: subscription.endpoint,
-                            keys: subscription.toJSON().keys
-                        })
-                            .then(() => console.log("✅ Subscription đã gửi lên server"))
-                            .catch(err => console.error("❌ Lỗi gửi subscription:", err));
-                    });
-                } else {
-                    console.warn("⚠️ Người dùng chưa cấp quyền notification");
-                }
-            });
-        })
-        .catch(err => console.error("❌ Lỗi đăng ký service worker:", err));
-}
-
-
-
 window.Pusher = Pusher;
 // console.log("🔧 Echo đang chạy...");
 

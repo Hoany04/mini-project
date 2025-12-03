@@ -25,34 +25,11 @@ Route::get('/test-notify', function () {
 
     return "Notification sent!";
 });
+Route::post('/notifications/mark-as-read', function () {
+    auth()->user()->unreadNotifications->markAsRead();
+    return response()->json(['status' => 'ok']);
+})->middleware('auth');
 
-
-// use App\Events\NewOrderCreated;
-// use App\Events\OrderStatusUpdated;
-// use App\Models\Order;
-
-// Route::get('/test-status-update', function () {
-//     $user = auth()->user();
-//     $order = Order::where('user_id', $user->id)->latest()->first();
-
-//     if (!$order) {
-//         return "Không có đơn hàng nào của bạn";
-//     }
-
-//     $order->status = 'shipped';
-//     $order->save();
-
-//     event(new OrderStatusUpdated($order));
-
-//     return "Đã phát event cập nhật trạng thái";
-// });
-
-// Route::get('/test-realtime', function () {
-//     $order = Order::first();
-//     event(new NewOrderCreated($order));
-
-//     return "Event sent";
-// });
 
 
 Route::get('/', [HomeController::class, 'index'])->name('client.home');

@@ -1,4 +1,15 @@
 @vite(['resources/js/app.js'])
+<style>
+    #notification-list li.noti-unread {
+        background: #eef7ff;
+        border-left: 4px solid #0d6efd;
+        font-weight: 600;
+    }
+    #notification-list li.noti-read {
+        opacity: 0.7;
+    }
+</style>
+
 <header class="header-area header-wide bg-gray">
     <!-- main header start -->
     <div class="main-header d-none d-lg-block">
@@ -103,7 +114,8 @@
                                 <ul class="dropdown-menu dropdown-menu-end" style="width: 300px; max-height: 400px; overflow-y: auto;" id="notification-list">
                                     @if(auth()->check())
                                         @forelse(auth()->user()->notifications as $notify)
-                                            <li class="dropdown-item">📦 {{ $notify->data['message'] }}
+                                            <li class="dropdown-item {{ $notify->read_at ? 'noti-read' : 'noti-unread' }}">
+                                                📦 {{ $notify->data['message'] }}
                                                 <br>
                                                 <small class="text-muted">{{ $notify->created_at->diffForHumans() }}</small>
                                             </li>
@@ -245,43 +257,67 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
+    // ---- KHI MỞ DROPDOWN -> MARK AS READ ----
+    const dropdownBtn = document.getElementById("notification-btn");
+    dropdownBtn.addEventListener("click", () => {
+
+        fetch("/notifications/mark-as-read", {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                "Accept": "application/json"
+            }
+        }).then(() => {
+
+            // Reset badge
+            document.querySelector("#notification-count").innerText = 0;
+
+            // Chuyển toàn bộ thành đã đọc
+            document.querySelectorAll("#notification-list li").forEach(li => {
+                li.classList.remove("noti-unread");
+                li.classList.add("noti-read");
+            });
+        });
+    });
+
+
+    // ---- LẮNG NGHE PUSHER ----
     @if(auth()->check())
     const userId = {{ auth()->id() }};
-    console.log("📡 Listening to: user." + userId);
-
     const channel = window.Echo.private(`user.${userId}`);
 
-    // Lắng nghe notification Laravel
     channel.notification((notification) => {
 
-        console.log("🔔 Notification mới:", notification);
+        // Toast đẹp bằng SweetAlert2
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'info',
+            title: notification.message,
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
 
         // Tăng badge
         const badge = document.querySelector("#notification-count");
         badge.innerText = parseInt(badge.innerText || 0) + 1;
 
-        // Thêm vào danh sách
+        // Thêm item mới – ở trạng thái chưa đọc
         const list = document.querySelector("#notification-list");
-        list.innerHTML = `
-            <li class="dropdown-item">
-                📦 ${notification.message} <br>
+        list.insertAdjacentHTML('afterbegin', `
+            <li class="dropdown-item noti-unread">
+                📦 ${notification.message}<br>
                 <small class="text-muted">${new Date().toLocaleTimeString()}</small>
             </li>
-        ` + list.innerHTML;
-    });
-
-    // Bắt event raw nếu cần debug (không bắt bắt buộc)
-    channel.listen('.Illuminate\\Notifications\\Events\\BroadcastNotificationCreated', (e) => {
-        console.log("📡 Raw event:", e);
-    });
-
-    // Kiểm tra kết nối
-    window.Echo.connector.pusher.connection.bind('connected', () => {
-        console.log("✅ Echo đã kết nối Pusher thành công");
+        `);
     });
 
     @endif
+
 });
 </script>
 @endsection
+
+
 

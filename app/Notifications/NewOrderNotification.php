@@ -2,72 +2,52 @@
 
 namespace App\Notifications;
 
-use App\Models\Order;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 
-class NewOrderNotification extends Notification implements ShouldQueue
+class NewOrderNotification extends Notification implements ShouldQueue, ShouldBroadcast
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     */
-
     public $order;
-    public function __construct( Order $order )
+
+    public function __construct($order)
     {
         $this->order = $order;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
-    public function via(object $notifiable): array
+    public function via($notifiable)
     {
         return ['database', 'broadcast'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toDatabase($notifiable)
+    public function toArray($notifiable)
     {
         return [
+            'message'  => "Đơn hàng #{$this->order->id} mới từ khách {$this->order->user->username}",
             'order_id' => $this->order->id,
-            'user_id' => $this->order->user_id,
-            'total' => $this->order->total_amount ?? $this->order->total,
-            'created_at' => $this->order->created_at->toDateTimeString(),
-            'message' => "Don hang moi #{$this->order->id}",
+            'user_name'=> $this->order->user->username,
+            'total'    => $this->order->total,
         ];
     }
 
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
+            'message'  => "Đơn hàng #{$this->order->id} mới từ khách {$this->order->user->username}",
             'order_id' => $this->order->id,
-            'user_id' => $this->order->user_id,
-            'total' => $this->order->total_amount ?? $this->order->total,
-            'created_at' => $this->order->created_at->toDateTimeString(),
-            'message' => "Don hang moi #{$this->order->id}",
+            'user_name'=> $this->order->user->username,
+            'total'    => $this->order->total,
         ]);
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toMail($notifiable)
+    public function broadcastOn()
     {
-        return (new MailMessage)
-            ->subject('Don hang moi')
-            ->line("Co don hang moi #{$this->order->id}")
-            ->action('Xem don hang', url('/admin/orders/'. $this->order->id));
+        // Phát ra chung cho tất cả admin
+        return new PrivateChannel('admin.notifications');
     }
 }
