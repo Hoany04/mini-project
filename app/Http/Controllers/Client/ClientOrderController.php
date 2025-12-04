@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 
 class ClientOrderController extends Controller
 {
-    protected $orderService;
-    protected $shippingService;
-    protected $addressService;
+    protected ClientOrderService $orderService;
+    protected ClientShippingService $shippingService;
+    protected ShippingAddressService $addressService;
 
     public function __construct(
         ClientOrderService $orderService,

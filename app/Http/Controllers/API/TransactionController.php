@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
-    protected $transactionService;
+    protected ApiTransactionService $transactionService;
 
     public function __construct(ApiTransactionService $transactionService)
     {

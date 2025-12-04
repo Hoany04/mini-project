@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class ClientShippingAddressController extends Controller
 {
-    protected $addressService;
+    protected ShippingAddressService $addressService;
 
     public function __construct(ShippingAddressService $addressService)
     {

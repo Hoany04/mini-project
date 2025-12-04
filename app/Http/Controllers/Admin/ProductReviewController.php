@@ -12,7 +12,7 @@ class ProductReviewController extends Controller
      * Display a listing of the resource.
      */
 
-    protected $productReviewService;
+    protected ProductReviewService $productReviewService;
 
     public function __construct(ProductReviewService $productReviewService)
     {
@@ -43,5 +43,5 @@ class ProductReviewController extends Controller
             return back()->with('error', $e->getMessage());
         }
     }
-    
+
 }

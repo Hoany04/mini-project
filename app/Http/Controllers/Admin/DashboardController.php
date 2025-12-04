@@ -7,7 +7,7 @@ use App\Services\DashboardService;
 
 class DashboardController extends Controller
 {
-    protected $dashboardService;
+    protected DashboardService $dashboardService;
 
     public function __construct(DashboardService $dashboardService)
     {

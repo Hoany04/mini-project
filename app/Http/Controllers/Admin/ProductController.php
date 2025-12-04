@@ -18,8 +18,8 @@ class ProductController extends Controller
      * Display a listing of the resource.
      */
 
-     protected $productService;
-     protected $productRepo;
+     protected ProductService $productService;
+     protected ProductRepository $productRepo;
 
     public function __construct(
         ProductService $productService,

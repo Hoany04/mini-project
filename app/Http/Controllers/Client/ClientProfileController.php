@@ -6,7 +6,7 @@ use App\Http\Requests\UpdateProfileRequest;
 use App\Services\Client\UserProfileService;
 class ClientProfileController extends Controller
 {
-    protected $userProfileService;
+    protected UserProfileService $userProfileService;
 
     public function __construct(UserProfileService $userProfileService)
     {

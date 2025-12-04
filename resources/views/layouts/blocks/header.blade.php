@@ -294,35 +294,49 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+            .then(() => console.log("Service Worker registered"))
+            .catch(err => console.error("SW failed:", err));
+    }
     console.log("📡 Admin Notification JS Loaded");
 
-    /**
-     * ===========================================
-     * 1) JOIN CHANNEL: admin.notifications
-     * ===========================================
-     */
+    //   1) JOIN CHANNEL: admin.notifications
+
     const channelName = 'admin.notifications';
     console.log("📺 Subscribing to channel:", channelName);
 
     const channel = window.Echo.private(channelName);
 
-    /**
-     * ===========================================
-     * 2) LẮNG NGHE REALTIME
-     *    Event = .NewOrderNotification
-     * ===========================================
-     */
+    //   2) LẮNG NGHE REALTIME
+    //     Event = .NewOrderNotification
+
     channel.listen('.NewOrderNotification', (data) => {
-        console.log("🔔 Realtime Notification received:", data);
+            console.log("🔔 Nhận realtime:", data);
 
         const orderId    = data.order_id;
         const userName   = data.user_name || "Khách hàng";
         const total      = data.total || 0;
         const message    = data.message || `Đơn hàng #${orderId} mới`;
 
-        /**
-         * Hiển thị alert đẹp
-         */
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                navigator.serviceWorker.ready.then(reg => {
+                    reg.showNotification(message, {
+                        body: `Tổng tiền: ${total}₫`,
+                        icon: '/icons/order.png',
+                        data: {
+                            order_id: orderId,
+                            type: "admin"
+                        }
+                    });
+                });
+            }
+
+        });
+
+        //  Hiển thị alert đẹp
+
         Swal.fire({
             toast: true,
             position: 'top-end',
@@ -335,13 +349,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         /**
-         * Badge tăng số lượng
+         Badge tăng số lượng
          */
         const badge = document.querySelector("#admin-noti-count");
         badge.innerText = (parseInt(badge.innerText) || 0) + 1;
 
         /**
-         * Thêm vào list noti
+          Thêm vào list noti
          */
         const list = document.querySelector("#admin-noti-list");
         list.insertAdjacentHTML('afterbegin', `
@@ -368,9 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /**
-     * ===========================================
      * 3) Khi mở dropdown → mark as read
-     * ===========================================
      */
     const dropdownBtn = document.getElementById("admin-noti-btn");
 
@@ -398,9 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * ===========================================
      * 4) Debug kết nối pusher
-     * ===========================================
      */
     if (window.Echo && window.Echo.connector && window.Echo.connector.pusher) {
         window.Echo.connector.pusher.connection.bind('connected', () => {

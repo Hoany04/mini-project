@@ -11,12 +11,7 @@ Broadcast::channel('user.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('admin.notifications', function ($user) {
-    // Chỉ admin mới được subscribe
-    return $user->role === 'admin';
+    return $user->role_id === 1;   // chỉ admin mới nghe được
 });
 
-
-// Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-//     return (int) $user->id === (int) $id;
-// });
 ?>

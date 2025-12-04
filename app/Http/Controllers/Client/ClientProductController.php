@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 
 class ClientProductController extends Controller
 {
-    protected $productService;
-    protected $categoryService;
+    protected ClientProductService $productService;
+    protected ClientCategoryService $categoryService;
 
     public function __construct(ClientProductService $productService, ClientCategoryService $categoryService)
     {

@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Services\Client\AccountService;
 
-class AccountController extends Controller 
+class AccountController extends Controller
 {
-    protected $accountService;
+    protected AccountService $accountService;
 
     public function __construct(AccountService $accountService)
     {

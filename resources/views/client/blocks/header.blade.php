@@ -257,6 +257,14 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+            .then(() => console.log("Service Worker registered"))
+            .catch(err => console.error("SW failed:", err));
+    }
+    console.log("📡 User Notification JS Loaded");
+
+
     // ---- KHI MỞ DROPDOWN -> MARK AS READ ----
     const dropdownBtn = document.getElementById("notification-btn");
     dropdownBtn.addEventListener("click", () => {
@@ -287,6 +295,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const channel = window.Echo.private(`user.${userId}`);
 
     channel.notification((notification) => {
+        console.log("User nhận noti realtime: ", notification);
+
+        const message = notification.message;
+        const orderId = notification.order_id;
+
+        Notification.requestPermission().then(permissions => {
+            if (permissions === 'granted') {
+                navigator.serviceWorker.ready.then(reg => {
+                    reg.showNotification(message, {
+                        body: `Don hang #${orderId} da cap nhat trang thai.`,
+                        icon: '/icons/order.png',
+                        data: {
+                            order_id: orderId,
+                            type: "user"
+                        }
+                    });
+                });
+            }
+        });
 
         // Toast đẹp bằng SweetAlert2
         Swal.fire({

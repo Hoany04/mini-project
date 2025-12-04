@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class ClientCouponController extends Controller
 {
-    protected $couponService;
+    protected ClientCouponService $couponService;
 
     public function __construct(ClientCouponService $couponService)
     {

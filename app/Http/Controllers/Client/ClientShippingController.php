@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class ClientShippingController extends Controller
 {
-    protected $shippingService;
+    protected ClientShippingService $shippingService;
 
     public function __construct(ClientShippingService $shippingService)
     {

@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class ShippingMethodController extends Controller
 {
-    protected $service;
+    protected ShippingMethodService $service;
 
     public function __construct(ShippingMethodService $service)
     {

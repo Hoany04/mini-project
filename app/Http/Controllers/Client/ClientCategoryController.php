@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class ClientCategoryController extends Controller
 {
-    protected $categoryService;
+    protected ClientCategoryService $categoryService;
 
     public function __construct(ClientCategoryService $categoryService)
     {

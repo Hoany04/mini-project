@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ClientProductReviewController extends controller
 {
-    protected $reviewService;
+    protected ProductReviewService $reviewService;
 
     public function __construct(ProductReviewService $reviewService)
     {

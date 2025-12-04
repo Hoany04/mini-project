@@ -9,7 +9,7 @@ use App\Http\Requests\UpdatePaymentMethodRequest;
 
 class PaymentMethodController extends Controller
 {
-    protected $service;
+    protected PaymentMethodService $service;
 
     public function __construct(PaymentMethodService $service)
     {

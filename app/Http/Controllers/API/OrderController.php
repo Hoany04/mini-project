@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    protected $orderService;
+    protected ApiOrderService $orderService;
 
     public function __construct(ApiOrderService $orderService)
     {

@@ -25,23 +25,40 @@ class NewOrderNotification extends Notification implements ShouldQueue, ShouldBr
         return ['database', 'broadcast'];
     }
 
+    public function toDatabase($notifiable)
+    {
+        return [
+            'message'  => "Đơn hàng #{$this->order->id} mới từ khách {$this->order->user->username}",
+            'order_id' => $this->order->id,
+            'user_name'=> $this->order->user->username,
+            'total'    => $this->order->total_amount,
+        ];
+    }
+
+     /**
+     * Get the array representation of the notification.
+     *
+     * @return array<string, mixed>
+     */
+
     public function toArray($notifiable)
     {
         return [
             'message'  => "Đơn hàng #{$this->order->id} mới từ khách {$this->order->user->username}",
             'order_id' => $this->order->id,
             'user_name'=> $this->order->user->username,
-            'total'    => $this->order->total,
+            'total'    => $this->order->total_amount,
         ];
     }
 
     public function toBroadcast($notifiable)
     {
+        \Log::info("🎯 Broadcasting NewOrderNotification");
         return new BroadcastMessage([
             'message'  => "Đơn hàng #{$this->order->id} mới từ khách {$this->order->user->username}",
             'order_id' => $this->order->id,
             'user_name'=> $this->order->user->username,
-            'total'    => $this->order->total,
+            'total'    => $this->order->total_amount,
         ]);
     }
 
@@ -49,5 +66,9 @@ class NewOrderNotification extends Notification implements ShouldQueue, ShouldBr
     {
         // Phát ra chung cho tất cả admin
         return new PrivateChannel('admin.notifications');
+    }
+    public function broadcastAs()
+    {
+        return 'NewOrderNotification';
     }
 }

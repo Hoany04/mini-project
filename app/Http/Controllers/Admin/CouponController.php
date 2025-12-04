@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class CouponController extends Controller
 {
-    protected $couponService;
+    protected CouponService $couponService;
 
     public function __construct(CouponService $couponService)
     {

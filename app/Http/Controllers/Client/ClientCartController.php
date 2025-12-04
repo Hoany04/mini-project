@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class ClientCartController extends Controller
 {
-    protected $cartService;
+    protected ClientCartService $cartService;
     public function __construct(ClientCartService $cartService)
     {
         $this->cartService = $cartService;

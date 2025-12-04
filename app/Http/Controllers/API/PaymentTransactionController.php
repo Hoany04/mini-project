@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class PaymentTransactionController extends Controller
 {
-    protected $transactionService;
+    protected ApiTransactionService $transactionService;
 
     public function __construct(ApiTransactionService $transactionService)
     {

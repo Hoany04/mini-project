@@ -15,7 +15,7 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
 
-     protected $userService;
+     protected UserService $userService;
      public function __construct(UserService $userService)
      {
         $this->userService = $userService;
