@@ -26,12 +26,12 @@ use Carbon\Carbon;
         <tbody>
             @foreach($reviews as $key => $review)
                 <tr>
-                    <td>{{ $key + 1 }}</td>
+                    <td>{{ ($reviews->currentPage() - 1) * $reviews->perPage() + $key + 1 }}</td>
                     <td>{{ $review->product->name ?? 'N/A' }}</td>
                     <td>{{ $review->user->username ?? 'Ẩn danh' }}</td>
                     <td>{{ $review->rating }} ⭐</td>
                     <td>{{ $review->comment ?? 'Không có' }}</td>
-                    <td>{{ Carbon::parse($review->created_at)->setTimezone('Asia/Ho_Chi_Minh')->format('Y/m/d H:i') }}</td>
+                    <td>{{ $review->created_at->format('Y/m/d H:i') }}</td>
                     <td>
                         <form action="{{ route('admin.product_reviews.toggle', $review->id) }}" method="POST">
                             @csrf

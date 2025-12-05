@@ -48,14 +48,14 @@ use Carbon\Carbon;
         <tbody>
         @foreach($logs as $key=>$log)
             <tr>
-                <td>{{ $key+1 }}</td>
+                <td>{{ ($logs->currentPage() - 1) * $logs->perPage() + $key + 1 }}</td>
                 <td>{{ $log->user->username ?? 'System' }} ({{ $log->user_id }})</td>
                 <td><span class="badge bg-info text-dark">{{ $log->action }}</span></td>
                 <td>{{ $log->table_name }}</td>
                 <td>{{ $log->record_id }}</td>
                 <td><pre style="max-width:300px;white-space:pre-wrap;">{{ json_encode($log->old_data, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) }}</pre></td>
                 <td><pre style="max-width:300px;white-space:pre-wrap;">{{ json_encode($log->new_data, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) }}</pre></td>
-                <td>{{ Carbon::parse($log->created_at)->format('Y-m-d H:i') }}</td>
+                <td>{{ Carbon::parse($log->created_at)->setTimezone('Asia/Ho_Chi_Minh')->format('Y/m/d H:i') }}</td>
             </tr>
         @endforeach
         </tbody>

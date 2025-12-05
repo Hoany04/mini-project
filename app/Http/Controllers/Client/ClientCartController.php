@@ -21,6 +21,7 @@ class ClientCartController extends Controller
     {
         $cart = $this->cartService->getCart(auth()->id());
         $items = $cart->items;
+
         return view('client.pages.cart.index', compact('cart', 'items'));
     }
 
@@ -91,7 +92,6 @@ class ClientCartController extends Controller
                 $discount = $coupon['discount_amount'] ?? $coupon['discount_value'];
             }
         }
-
 
         $finalTotal = $cartTotal - $discount;
 

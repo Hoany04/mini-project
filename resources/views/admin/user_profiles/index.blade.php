@@ -20,7 +20,7 @@
             <tbody>
                 @foreach ($profiles as $key => $p)
                     <tr>
-                        <td>{{ $key + 1 }}</td>
+                        <td>{{ ($profiles->currentPage() - 1) * $profiles->perPage() + $key + 1 }}</td>
                         <td>{{ $p->user->username ?? 'N/A' }}</td>
                         <td>{{ $p->phone ?? '—' }}</td>
                         <td>{{ $p->address ?? '—' }}</td>

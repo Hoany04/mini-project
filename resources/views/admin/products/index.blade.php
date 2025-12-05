@@ -75,9 +75,9 @@ use App\Enums\ProductStatus;
                 </tr>
             </thead>
             <tbody>
-                @forelse ($products as $product)
+                @forelse ($products as $key => $product)
                     <tr class="text-center">
-                        <td>{{ $product->id }}</td>
+                        <td>{{ ($products->currentPage() - 1) * $products->perPage() + $key + 1 }}</td>
                         <td class="text-start">{{ $product->name }}</td>
                         <td>{{ $product->category?->name ?? 'Không có' }}</td>
                         <td>

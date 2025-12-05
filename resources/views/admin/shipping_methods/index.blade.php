@@ -25,7 +25,7 @@
         <tbody>
             @foreach($methods as $key => $m)
             <tr>
-                <td>{{ $key + 1 }}</td>
+                <td>{{ ($methods->currentPage() - 1) * $methods->perPage() + $key + 1 }}</td>
                 <td>{{ $m->name }}</td>
                 <td>{{ number_format($m->fee, 0, ',', '.') }} đ</td>
                 <td>

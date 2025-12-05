@@ -21,7 +21,7 @@ use Carbon\Carbon;
         <tbody>
             @foreach($transactions as $key=>$item)
             <tr>
-                <td>{{ $key+1 }}</td>
+                <td>{{ ($transactions->currentPage() - 1) * $transactions->perPage() + $key + 1 }}</td>
                 <td>#{{ $item->order_id }}</td>
                 <td>{{ $item->paymentMethod->name }}</td>
                 <td>{{ number_format($item->amount) }} đ</td>
@@ -32,7 +32,7 @@ use Carbon\Carbon;
                     </span>
                 </td>
 
-                <td>{{ Carbon::parse($item->created_at)->format('d/m/Y H:i') }}</td>
+                <td>{{ $item->created_at->format('Y/m/d H:i') }}</td>
                 <td>
                     <a href="{{ route('admin.payment-transactions.show', $item->id) }}" class="btn btn-info btn-sm">
                         👁️

@@ -68,7 +68,7 @@ use App\Enums\UserStatus;
             <tbody>
                 @forelse ($users as $key=>$user)
                     <tr>
-                        <td>{{ $key+1 }}</td>
+                        <td>{{ ($users->currentPage() - 1) * $users->perPage() + $key + 1 }}</td>
                         <td>{{ $user->username }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->role->name ?? 'Not available' }}</td>

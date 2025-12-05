@@ -41,12 +41,12 @@ use Carbon\Carbon;
             <tbody>
                 @forelse ($categories as $key=>$item)
                     <tr class="text-center">
-                        <td>{{ $key+1 }}</td>
+                        <td>{{ ($categories->currentPage() - 1) * $categories->perPage() + $key + 1 }}</td>
                         <td class="text-start fw-bold">{{ $item->name }}</td>
                         <td>{{ $item->parent?->name ?? 'Không có' }}</td>
                         <td>{{ $item->creator?->username ?? 'N/A' }}</td>
                         <td class="text-start">{{ Str::limit($item->description, 40) }}</td>
-                        <td>{{ Carbon::parse($item->created_at)->format('Y-m-d H:i') }}</td>
+                        <td>{{ $item->created_at->format('Y/m/d H:i') }}</td>
                         <td>
                             <a href="{{ route('admin.categorys.edit', $item->id) }}" class="btn btn-sm btn-warning">✏️</a>
                             <form method="POST" action="{{ route('admin.categorys.destroy', $item->id) }}"

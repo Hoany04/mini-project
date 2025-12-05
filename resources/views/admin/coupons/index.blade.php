@@ -28,7 +28,7 @@
         <tbody>
             @foreach ($coupons as $key=>$coupon)
                 <tr class="align-middle text-center">
-                    <td>{{ $key+1 }}</td>
+                    <td>{{ ($coupons->currentPage() - 1) * $coupons->perPage() + $key + 1 }}</td>
                     <td>{{ $coupon->code }}</td>
                     <td>{{ ucfirst($coupon->discount_type) }}</td>
                     <td>{{ $coupon->discount_value }}</td>

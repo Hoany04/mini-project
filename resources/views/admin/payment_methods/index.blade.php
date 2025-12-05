@@ -24,7 +24,7 @@
     <tbody>
         @foreach($methods as $key=>$method)
         <tr>
-            <td>{{ $key+1 }}</td>
+            <td>{{ ($methods->currentPage() - 1) * $methods->perPage() + $key + 1 }}</td>
             <td>{{ $method->name }}</td>
             <td>
                 <span class="badge bg-{{ $method->status->badgeColor() }}">

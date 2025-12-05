@@ -27,7 +27,7 @@ use Carbon\Carbon;
                     <td>{{ $cart->user->username ?? 'N/A' }}</td>
                     <td>{{ $cart->items->sum('quantity') }}</td>
                     <td>{{ number_format($cart->items->sum(fn($i) => $i->price * $i->quantity)) }}₫</td>
-                    <td>{{ Carbon::parse($cart->updated_at)->format('Y-m-d H:i') }}</td>
+                    <td>{{ $cart->created_at->format('Y/m/d H:i') }}</td>
                     <td>
                         <a href="{{ route('admin.carts.show', $cart->id) }}" class="btn btn-sm btn-primary">👁️</a>
                         <form method="POST" action="{{ route('admin.carts.destroy', $cart->id) }}" class="d-inline">

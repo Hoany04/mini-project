@@ -301,14 +301,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     console.log("📡 Admin Notification JS Loaded");
 
-    //   1) JOIN CHANNEL: admin.notifications
+    //    JOIN CHANNEL: admin.notifications
 
     const channelName = 'admin.notifications';
     console.log("📺 Subscribing to channel:", channelName);
 
     const channel = window.Echo.private(channelName);
 
-    //   2) LẮNG NGHE REALTIME
+    //    LẮNG NGHE REALTIME
     //     Event = .NewOrderNotification
 
     channel.listen('.NewOrderNotification', (data) => {
@@ -334,8 +334,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
         });
-
-        //  Hiển thị alert đẹp
 
         Swal.fire({
             toast: true,
@@ -382,7 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /**
-     * 3) Khi mở dropdown → mark as read
+     * Khi mở dropdown → mark as read
      */
     const dropdownBtn = document.getElementById("admin-noti-btn");
 
@@ -410,7 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * 4) Debug kết nối pusher
+     * Debug kết nối pusher
      */
     if (window.Echo && window.Echo.connector && window.Echo.connector.pusher) {
         window.Echo.connector.pusher.connection.bind('connected', () => {

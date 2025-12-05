@@ -315,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Toast đẹp bằng SweetAlert2
+        // SweetAlert2
         Swal.fire({
             toast: true,
             position: 'top-end',

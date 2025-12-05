@@ -61,11 +61,11 @@
                             <form action="{{ route('client.pages.cart.update', $item->id) }}" method="POST" class="d-flex">
                                 @csrf @method('PUT')
                                 <input type="number" name="quantity" class="form-control text-center cart-quantity"
-                                data-item-id="{{ $item->id }}" value="{{ $item->quantity }}" min="1" class="form-control w-50 me-2">
+                                data-item-id="{{ $item->id }}" data-price="{{ $item->price }}" value="{{ $item->quantity }}" min="1" class="form-control w-50 me-2">
                                 <button class="btn btn-sm btn-outline-success">Cập nhật</button>
                             </form>
                         </td>
-                        <td>{{ number_format($item->price * $item->quantity, 0, ',', '.') }}₫</td>
+                        <td id="subtotal-{{ $item->id }}">{{ number_format($item->price * $item->quantity, 0, ',', '.') }}₫</td>
                         <td>
                             <form action="{{ route('client.pages.cart.destroy', $item->id) }}" method="POST">
                                 @csrf @method('DELETE')
@@ -127,10 +127,12 @@
                     </table>
 
                     <div class="text-center my-3">
-                        <a href="{{ route('client.pages.checkout.order') }}"
-                            class="btn btn-cart2">
+                        <button id="checkout-btn" class="btn btn-cart2">
                             Tiến hành thanh toán
-                        </a>
+                        </button>
+                        
+                        <form id="checkout-form" action="{{ route('client.pages.checkout.order') }}" method="GET" style="display:none;"></form>
+                        
                     </div>
                 </div>
         @else
@@ -156,6 +158,7 @@
             input.addEventListener("change", function() {
                 const itemId = this.dataset.itemId;
                 const quantity = this.value;
+                const price = this.dataset.price;
 
                 fetch("{{ route('client.pages.cart.updateAjax') }}", {
                     method: "POST",
@@ -168,8 +171,16 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        document.querySelector("#cart-total").innerText = data.cart_total + "đ";
-                        document.querySelector("#discount").innerText = "-" + data.discount + "đ";
+                        const subtotal = price * quantity;
+                        document.querySelector("#subtotal-" + itemId).innerText = 
+                        subtotal.toLocaleString('vi-VN') + "đ";
+
+                        document.querySelector("#cart-total").innerText = 
+                        data.cart_total + "đ";
+
+                        document.querySelector("#discount").innerText = 
+                        "-" + data.discount + "đ";
+                        
                         document.querySelector("#final-total").innerText = data.final_total + "đ";
                     }
                 });
@@ -177,4 +188,27 @@
         });
     });
     </script>
+    <script>
+        let isQuantityChanged = false;
+        
+        // Khi thay đổi số lượng
+        document.querySelectorAll('.cart-quantity').forEach(input => {
+            input.addEventListener('change', function () {
+                isQuantityChanged = true;
+            });
+        });
+        
+        document.getElementById('checkout-btn').addEventListener('click', function () {
+        
+            if (isQuantityChanged) {
+                alert('Bạn đã thay đổi số lượng nhưng chưa bấm nút CẬP NHẬT!');
+                return;
+            }
+        
+            if (confirm('Bạn đã chắc chắn cập nhật đúng số lượng sản phẩm trước khi thanh toán chưa?')) {
+                document.getElementById('checkout-form').submit();
+            }
+        });
+        </script>
+        
 @endsection

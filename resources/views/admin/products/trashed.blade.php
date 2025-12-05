@@ -54,7 +54,7 @@ use Carbon\Carbon;
                                     <td>{{ $product->name }}</td>
                                     <td>{{ $product->category->name ?? 'Chưa có' }}</td>
                                     <td>{{ $product->user->username ?? 'N/A' }}</td>
-                                    <td>{{ Carbon::parse($product->deleted_at)->setTimezone('Asia/Ho_Chi_Minh')->format('Y-m-d H:i') }}</td>
+                                    <td>{{ $product->created_at->format('Y/m/d H:i') }}</td>
                                     <td>
                                         <form action="{{ route('admin.products.restore', $product->id) }}" method="POST" class="d-inline">
                                             @csrf

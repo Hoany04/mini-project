@@ -56,7 +56,7 @@ use Carbon\Carbon;
                             </select>
                         </form>
                     </td>
-                    <td>{{ Carbon::parse($order->created_at)->format('d/m/Y H:i') }}</td>
+                    <td>{{ $order->created_at->format('Y/m/d H:i') }}</td>
                     <td>
                         <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-sm btn-primary">👁️</a>
                         <form method="POST" action="{{ route('admin.orders.destroy', $order->id) }}" class="d-inline">

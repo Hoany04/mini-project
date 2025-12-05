@@ -11,7 +11,7 @@ use Carbon\Carbon;
         <h2 class="text-success">🎉 Đặt hàng thành công!</h2>
         <p>Cảm ơn bạn đã mua hàng cùng chúng tôi.</p>
         <h5>Mã đơn hàng: <strong>#{{ $order->id }}</strong></h5>
-        <p>Ngày đặt: {{ Carbon::parse($order->created_at)->format('Y/m/d H:i') }}</p>
+        <p>Ngày đặt: {{ $order->created_at->format('Y/m/d H:i') }}</p>
     </div>
 
     <!-- Thông tin người đặt -->
@@ -100,16 +100,16 @@ use Carbon\Carbon;
             @if($payment)
                 <p><strong>Phương thức:</strong> {{ $payment->paymentMethod->name }}</p>
                 <p><strong>Mã giao dịch:</strong> {{ $payment->transaction_code }}</p>
-                <p><strong>Trạng thái:</strong><td>{{ $payment->paymentMethod->status ?? 'Chưa thanh toán' }}</td>
+                <p><strong>Trạng thái:</strong><td>{{ $payment->status ?? 'Chưa thanh toán' }}</td>
                             <td>
                                 @if($order->status === 'pending')
-                                    <span class="badge bg-warning text-dark">Chờ xử lý</span>
+                                    {{-- <span class="badge bg-warning text-dark">Chờ xử lý</span> --}}
                                 @elseif($order->status === 'paid')
-                                    <span class="badge bg-success">Đã thanh toán</span>
+                                    {{-- <span class="badge bg-success">Đã thanh toán</span> --}}
                                 @elseif($order->status === 'shipped')
-                                    <span class="badge bg-info text-dark">Đang giao</span>
+                                    {{-- <span class="badge bg-info text-dark">Đang giao</span> --}}
                                 @elseif($order->status === 'completed')
-                                    <span class="badge bg-primary">Hoàn tất</span>
+                                    {{-- <span class="badge bg-primary">Hoàn tất</span> --}}
                                 @else
                                     <span class="badge bg-danger">Đã hủy</span>
                                 @endif
