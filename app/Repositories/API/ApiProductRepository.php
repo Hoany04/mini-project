@@ -3,6 +3,7 @@ namespace App\Repositories\API;
 
 use App\Models\Product;
 use App\Enums\ProductStatus;
+use Illuminate\Support\Facades\DB;
 
 class ApiProductRepository
 {
@@ -41,6 +42,48 @@ class ApiProductRepository
     public function getProductsByIds(array $ids)
     {
         return Product::whereIn('id', $ids)->get()->keyBy('id');
+    }
+
+    public function updateStockBatch(array $stockUpdates)
+    {
+        if (empty($stockUpdates)) return;
+
+        $ids = array_column($stockUpdates, 'id');
+
+        $case = "CASE id";
+        foreach ($stockUpdates as $item) {
+            $case .= " WHEN {$item['id']} THEN {$item['stock']}";
+        }
+        $case .= " END";
+
+        $idList = implode(',', $ids);
+
+        DB::statement("
+            UPDATE products 
+            SET stock = $case
+            WHERE id IN ($idList)
+        ");
+    }
+
+    public function updateSoldBatch(array $soldUpdates)
+    {
+        if (empty($soldUpdates)) return;
+
+        $ids = array_column($soldUpdates, 'id');
+
+        $case = "CASE id";
+        foreach ($soldUpdates as $item) {
+            $case .= " WHEN {$item['id']} THEN {$item['sold']}";
+        }
+        $case .= " END";
+
+        $idList = implode(',', $ids);
+
+        DB::statement("
+            UPDATE products 
+            SET sold = $case
+            WHERE id IN ($idList)
+        ");
     }
 
     public function decreaseStock($productId, $qty)

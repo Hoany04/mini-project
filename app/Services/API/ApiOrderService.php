@@ -11,7 +11,7 @@ use App\Enums\OrderStatus;
 class ApiOrderService
 {
     protected ApiOrderRepository $orderRepo;
-    protected $productRepo;
+    protected ApiProductRepository $productRepo;
 
     public function __construct(ApiOrderRepository $orderRepo, ApiProductRepository $productRepo)
     {
@@ -20,135 +20,103 @@ class ApiOrderService
     }
 
     public function createOrder($data)
-{
-    try {
-        $items = collect($data['items']);
-        $productIds = $items->pluck('product_id')->toArray();
+    {
+        try {
+            $items = collect($data['items']);
+            $productIds = $items->pluck('product_id')->toArray();
 
-        // Lấy product 1 lần
-        $products = $this->productRepo->getProductsByIds($productIds)->keyBy('id');
+            // Lấy product 1 lần — không query trong foreach
+            $products = $this->productRepo->getProductsByIds($productIds);
 
-        // Validate tồn tại & số lượng
-        foreach ($items as $item) {
-            $product = $products->get($item['product_id']);
+            // Build dạng map: id => product object
+            $productMap = $products->keyBy('id');
 
-            if (!$product) {
-                throw ValidationException::withMessages([
-                    'product_id' => "Sản phẩm ID {$item['product_id']} không tồn tại",
-                ]);
-            }
-
-            if ($product->stock < $item['quantity']) {
-                throw ValidationException::withMessages([
-                    'stock' => "Không đủ hàng: {$product->name}",
-                ]);
-            }
-        }
-
-        // Tính tổng tiền
-        $total = $items->sum(fn ($item) =>
-            $products[$item['product_id']]->price * $item['quantity']
-        );
-
-        $order = DB::transaction(function () use ($data, $items, $products, $total) {
-
-            // Tạo order
-            $order = $this->orderRepo->createOrder([
-                'user_id' => $data['user_id'],
-                'total_amount' => $total,
-                'status' => OrderStatus::PENDING->value,
-            ]);
-
-            // Build mảng order_items
-            $orderItems = [];
-            $stockCases = "";
-            $soldCases = "";
-            $ids = [];
-
+            // Validate tồn kho — không query thêm
             foreach ($items as $item) {
-                $product = $products[$item['product_id']];
+                $productId = $item['product_id'];
 
-                $orderItems[] = [
-                    'order_id' => $order->id,
-                    'product_id' => $product->id,
-                    'quantity' => $item['quantity'],
-                    'price' => $product->price,
-                ];
+                if (!isset($productMap[$productId])) {
+                    throw ValidationException::withMessages([
+                        'product_id' => "Sản phẩm ID {$productId} không tồn tại",
+                    ]);
+                }
 
-                // Tối ưu update stock (CASE WHEN)
-                $stockCases .= "WHEN {$product->id} THEN stock - {$item['quantity']} ";
-                $soldCases  .= "WHEN {$product->id} THEN sold + {$item['quantity']} ";
-
-                $ids[] = $product->id;
+                if ($productMap[$productId]->stock < $item['quantity']) {
+                    throw ValidationException::withMessages([
+                        'stock' => "Không đủ hàng: {$productMap[$productId]->name}",
+                    ]);
+                }
             }
 
-            // Insert order item batch
-            DB::table('order_items')->insert($orderItems);
+            // Tính tổng giá
+            $total = $items->sum(fn ($item) =>
+                $productMap[$item['product_id']]->price * $item['quantity']
+            );
 
-            // Bulk update stock
-            DB::update("
-                UPDATE products
-                SET stock = CASE id
-                    $stockCases
-                END
-                WHERE id IN (" . implode(',', $ids) . ")
-            ");
+            $order = DB::transaction(function () use ($data, $items, $productMap, $total) {
 
-            // Bulk update sold
-            DB::update("
-                UPDATE products
-                SET sold = CASE id
-                    $soldCases
-                END
-                WHERE id IN (" . implode(',', $ids) . ")
-            ");
+                $order = $this->orderRepo->createOrder([
+                    'user_id' => $data['user_id'],
+                    'total_amount' => $total,
+                    'status' => OrderStatus::PENDING->value,
+                ]);
 
-            return $order;
-        });
+                // Build order items array để insert 1 lần
+                $orderItems = [];
 
-        return response()->json([
-            'message' => 'Tạo order thành công',
-            'order' => $order->load('items.product'),
-        ], 201);
+                // Build update stock & sold
+                $updatesStock = [];
+                $updatesSold = [];
 
-    } catch (ValidationException $e) {
-        return response()->json([
-            'message' => 'Dữ liệu không hợp lệ',
-            'errors' => $e->errors(),
-        ], 422);
+                foreach ($items as $item) {
+                    $product = $productMap[$item['product_id']];
 
-    } catch (\Exception $e) {
-        return response()->json([
-            'message' => 'Lỗi tạo order',
-            'error' => $e->getMessage(),
-        ], 500);
+                    $orderItems[] = [
+                        'order_id'   => $order->id,
+                        'product_id' => $product->id,
+                        'quantity'   => $item['quantity'],
+                        'price'      => $product->price,
+                    ];
+
+                    // Upsert giảm tồn kho
+                    $updatesStock[] = [
+                        'id'    => $product->id,
+                        'stock' => $product->stock - $item['quantity']
+                    ];
+
+                    // Upsert tăng sold
+                    $updatesSold[] = [
+                        'id'   => $product->id,
+                        'sold' => $product->sold + $item['quantity']
+                    ];
+                }
+
+                // Insert toàn bộ order_items — không dùng create trong foreach
+                $this->orderRepo->insertOrderItems($orderItems);
+
+                // Update tồn kho & sold bằng upsert
+                $this->productRepo->updateStockBatch($updatesStock);
+                $this->productRepo->updateSoldBatch($updatesSold);
+
+                return $order;
+            });
+
+            return response()->json([
+                'message' => 'Tạo order thành công',
+                'order' => $order->load('items.product'),
+            ], 201);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Dữ liệu không hợp lệ',
+                'errors' => $e->errors(),
+            ], 422);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Lỗi tạo order',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }
-
-}
-?>
-//
-$getProduct [
-    'key' => [value]
-]
-key => id
-value => array infor getProduct
-
-foreach () {
-    $idProductRequest = 1;
-    $getProduct[$idProductRequest]
-
-    $dataInsert[] = [
-        ['product_id' => $idProductRequest,
-        'quantity' => $getProduct[$idProductRequest]['quantity'],
-        'price' => $getProduct[$idProductRequest]['price']],
-        ['product_id' => $idProductRequest,
-        'quantity' => $getProduct[$idProductRequest]['quantity'],
-        'price' => $getProduct[$idProductRequest]['price'],]
-    ];
-}
-
-Product::insert($dataInsert);
-
-//update trong foreach
-// upsert

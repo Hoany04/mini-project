@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Services\API\ApiOrderService;
+use App\Http\Requests\ApiOrderRequest;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -15,14 +16,9 @@ class OrderController extends Controller
         $this->orderService = $orderService;
     }
 
-    public function store(Request $request)
+    public function store(ApiOrderRequest $request)
     {
-         $data = $request->validate([
-            'user_id' => 'required|integer',
-            'items' => 'required|array|min:1',
-            'items.*.product_id' => 'required|integer',
-            'items.*.quantity' => 'required|integer|min:1'
-        ]);
+        $data = $request->validated();
 
         return $this->orderService->createOrder($data);
     }
