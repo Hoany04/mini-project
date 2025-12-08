@@ -16,10 +16,15 @@ use App\Http\Controllers\Admin\ShippingMethodController;
 use App\Http\Controllers\Admin\PaymentTransactionController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\ChatController;
 
 Route::post('/admin/notifications/mark-as-read', function () {
     auth()->user()->unreadNotifications->markAsRead();
     return response()->json(['success' => true]);
+});
+
+Route::middleware(['auth', 'is_admin'])->group(function () {
+
 });
 
 
@@ -39,6 +44,10 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
     Route::get('home', [DashboardController::class, 'index'])->name('home');
 
     Route::get('access-logs', [AccessLogController::class, 'index'])->name('access-logs.index');
+
+    Route::get('/chat', [ChatController::class, 'userList'])->name('chat.index');
+    Route::get('/chat/{userId}', [ChatController::class, 'index'])->name('chat.show');
+    Route::post('/chat/send', [ChatController::class, 'sendAdmin'])->name('chat.send');
 
     Route::prefix('users')
     ->as('users.')

@@ -177,6 +177,11 @@
                   <div data-i18n="Payment Method">Payment Method</div>
                 </a>
               </li>
+              <li class="menu-item">
+                <a href="{{ route('admin.chat.index') }}" class="menu-link">
+                  <div data-i18n="Chat">Chat</div>
+                </a>
+              </li>
             </ul>
           </li>
         </ul>

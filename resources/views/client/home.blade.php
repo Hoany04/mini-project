@@ -440,33 +440,3 @@
         <!-- brand logo area end -->
     </section>
 @endsection
-{{-- @section('js')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-
-        // Đảm bảo Echo đã load
-        if (!window.Echo) {
-            console.error("⚠️ Echo chưa ready!");
-            return;
-        }
-
-        // Lấy user ID từ Laravel
-        const userId = "{{ auth()->id() }}";
-
-        if (!userId) {
-            console.error("⚠️ Không có user đăng nhập -> bỏ lắng nghe realtime");
-            return;
-        }
-
-        // Lắng nghe Private Channel
-        window.Echo.private(`user.${userId}`)
-            .subscribed(() => console.log(`✅ Đã join channel user.${userId}`))
-            .error(err => console.error('❌ Lỗi join channel:', err))
-            .listen('.order-status-updated', (data) => {
-                console.log('🔔 Cập nhật đơn hàng:', data);
-                alert(`📦 Đơn hàng #${data.id} đã chuyển sang trạng thái: ${data.status}`);
-            });
-
-    });
-</script> --}}
-{{-- @endsection --}}

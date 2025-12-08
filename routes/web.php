@@ -16,6 +16,7 @@ use App\Http\Controllers\Client\ClientShippingAddressController;
 use App\Http\Controllers\Client\ClientShippingController;
 use App\Http\Controllers\Client\StripePaymentController;
 use App\Http\Controllers\Client\AccountController;
+use App\Http\Controllers\ChatController;
 
 Route::get('/test-notify', function () {
     $user = \App\Models\User::first();
@@ -52,6 +53,13 @@ Route::post('forgot-password', [AuthController::class, 'sendResetLink'])->name('
 
 Route::get('/reset-password/{token}', [AuthController::class, 'showFormReset'])->name('password.reset');
 Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
+Route::middleware('auth')->group(function () {
+    Route::post('/chat/send', [ChatController::class, 'send']);
+    Route::get('/chat/messages/{userId}', [ChatController::class, 'getMessages']);
+    Route::get('/chat/history', [ChatController::class, 'history']);
+});
+
 
 // ======================== CLIENT SITE ========================
 Route::prefix('client')->name('client.')->group(function () {

@@ -39,6 +39,90 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     @vite(['resources/js/app.js'])
+    <style>
+    /* Bong bóng chat */
+        #chat-bubble {
+            position: fixed;
+            bottom: 20px;
+            top: 750px;
+            right: 18px;
+            width: 54px;
+            height: 54px;
+            background: #4a90e2;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 99999;
+        }
+
+        /* Cửa sổ chat */
+        #chat-widget {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 320px;
+            height: 420px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            overflow: hidden;
+            display: none; /* Ẩn ban đầu */
+            flex-direction: column;
+            font-family: sans-serif;
+            z-index: 99999;
+            animation: fadeIn 0.25s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #chat-header {
+            background: #4a90e2;
+            color: white;
+            padding: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #chat-body {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            background: #f7f7f7;
+        }
+
+        #chat-input {
+            padding: 10px;
+            display: flex;
+            background: white;
+        }
+
+        #chat-input input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        #chat-input button {
+            margin-left: 8px;
+            padding: 8px 12px;
+            border: none;
+            background: #4a90e2;
+            color: white;
+            border-radius: 8px;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -55,7 +139,25 @@
     <div class="scroll-top not-visible">
         <i class="fa fa-angle-up"></i>
     </div>
-    
+
+    <!-- Bong bóng -->
+    <div id="chat-bubble">💬</div>
+
+    <!-- Cửa sổ chat -->
+    <div id="chat-widget">
+        <div id="chat-header">
+            <span>Hỗ trợ trực tuyến</span>
+            <span id="chat-close" style="cursor:pointer;">✖</span>
+        </div>
+
+        <div id="chat-body"></div>
+
+        <div id="chat-input">
+            <input type="text" id="chat-message" placeholder="Nhập tin nhắn...">
+            <button id="chat-send">Gửi</button>
+        </div>
+    </div>
+
     <!-- Scroll to Top End -->
 
     <!-- footer area start -->
@@ -73,52 +175,6 @@
                     <!-- product details inner end -->
                     <div class="product-details-inner">
                         <div class="row">
-                            {{-- <div class="col-lg-5">
-                                <div class="product-large-slider">
-                                    <div class="pro-large-img img-zoom">
-                                        <img src="assets/img/product/product-details-img1.jpg"
-                                            alt="product-details" />
-                                    </div>
-                                    <div class="pro-large-img img-zoom">
-                                        <img src="assets/img/product/product-details-img2.jpg"
-                                            alt="product-details" />
-                                    </div>
-                                    <div class="pro-large-img img-zoom">
-                                        <img src="assets/img/product/product-details-img3.jpg"
-                                            alt="product-details" />
-                                    </div>
-                                    <div class="pro-large-img img-zoom">
-                                        <img src="assets/img/product/product-details-img4.jpg"
-                                            alt="product-details" />
-                                    </div>
-                                    <div class="pro-large-img img-zoom">
-                                        <img src="assets/img/product/product-details-img5.jpg"
-                                            alt="product-details" />
-                                    </div>
-                                </div>
-                                <div class="pro-nav slick-row-10 slick-arrow-style">
-                                    <div class="pro-nav-thumb">
-                                        <img src="assets/img/product/product-details-img1.jpg"
-                                            alt="product-details" />
-                                    </div>
-                                    <div class="pro-nav-thumb">
-                                        <img src="assets/img/product/product-details-img2.jpg"
-                                            alt="product-details" />
-                                    </div>
-                                    <div class="pro-nav-thumb">
-                                        <img src="assets/img/product/product-details-img3.jpg"
-                                            alt="product-details" />
-                                    </div>
-                                    <div class="pro-nav-thumb">
-                                        <img src="assets/img/product/product-details-img4.jpg"
-                                            alt="product-details" />
-                                    </div>
-                                    <div class="pro-nav-thumb">
-                                        <img src="assets/img/product/product-details-img5.jpg"
-                                            alt="product-details" />
-                                    </div>
-                                </div>
-                            </div> --}}
                             <div class="col-lg-7">
                                 <div class="product-details-des">
                                     <div class="manufacturer-name">
@@ -185,6 +241,118 @@
 
     <!-- JS
 ============================================ -->
+    <script>
+        const chatBubble = document.getElementById('chat-bubble');
+        const chatWidget = document.getElementById('chat-widget');
+        const chatClose  = document.getElementById('chat-close');
+        const chatBody   = document.getElementById('chat-body');
+        const chatInput  = document.getElementById('chat-message');
+        const chatSend   = document.getElementById('chat-send');
+
+        // Mở/đóng popup
+        chatBubble.onclick = () => {
+            chatWidget.style.display = 'flex';
+            chatBubble.style.display = 'none';
+        };
+        chatClose.onclick = () => {
+            chatWidget.style.display = 'none';
+            chatBubble.style.display = 'flex';
+        };
+
+        chatBubble.onclick = () => {
+            chatWidget.style.display = 'flex';
+            chatBubble.style.display = 'none';
+            loadOldMessages(); // LOAD LẠI TIN CŨ
+        };
+
+        // GỬI TIN NHẮN
+        chatSend.onclick = sendMessage;
+        chatInput.addEventListener("keydown", e => {
+            if (e.key === "Enter") sendMessage();
+        });
+
+        function sendMessage() {
+            let msg = chatInput.value.trim();
+            if (!msg) return;
+
+            // HIỂN THỊ NGAY Ở UI
+            appendMessage(msg, "me");
+
+            chatInput.value = "";
+
+            fetch("/chat/send", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({
+                    message: msg,
+                    to_id: 1
+                })
+            });
+        }
+
+        // Thêm tin nhắn vào khung chat
+        function appendMessage(msg, type = "other", senderName = null) {
+
+            let bubble = `
+                <div style="margin-bottom:8px; width:100%; display:flex; ${type === 'me' ? 'justify-content:right' : 'justify-content:left'}">
+                    <div style="
+                        background:${type === 'me' ? '#4a90e2' : '#fff'};
+                        color:${type === 'me' ? '#fff' : '#333'};
+                        padding:8px 12px;
+                        border-radius:10px;
+                        max-width:75%;
+                        box-shadow:0 2px 6px rgba(0,0,0,0.1)
+                    ">
+                        ${senderName ? `<b>${senderName}</b><br>` : ""}
+                        ${msg}
+                    </div>
+                </div>
+            `;
+
+            chatBody.insertAdjacentHTML("beforeend", bubble);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function loadOldMessages() {
+            fetch("/chat/history")
+                .then(res => res.json())
+                .then(data => {
+                    chatBody.innerHTML = "";
+
+                    data.forEach(msg => {
+
+                        let type = (msg.from_id == userId) ? "me" : "other";
+                        let name = (type === "other")
+                            ? (msg.sender?.name ?? "Admin")
+                            : null;
+
+                        appendMessage(msg.message, type, name);
+                    });
+                });
+        }
+
+        // NHẬN TIN NHẮN REALTIME
+
+        @if(auth()->check())
+        const userId = {{ auth()->id() }};
+
+        window.Echo.private(`chat.${userId}`)
+            .listen("MessageSent", (e) => {
+
+                // CHỈ HIỂN THỊ NẾU KHÔNG PHẢI TIN MÌNH GỬI
+                if (e.message.from_id != userId) {
+                    appendMessage(
+                        e.message.message,
+                        "other",
+                        e.message.sender?.name ?? "Admin"
+                    );
+                }
+            });
+        @endif
+    </script>
 
     <!-- Modernizer JS -->
     <script src="{{ asset('assets/client/js/vendor/modernizr-3.6.0.min.js') }}"></script>
