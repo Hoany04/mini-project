@@ -1,13 +1,13 @@
 @extends('layouts.AdminLayout')
 @section('content')
     <div class="container mt-4 card">
-    <h4 class="mb-3 p-4">Danh sách User để Chat</h4>
+    <h4 class="mb-3 p-4">List of Users to Chat</h4>
 
     <div class="card">
         <div class="card-body">
 
             @if($users->count() == 0)
-                <p>Không có user nào.</p>
+                <p>No users.</p>
             @else
             <table class="table table-bordered table-hover align-middle">
                 <thead class="table-light">
@@ -15,7 +15,7 @@
                         <th>STT</th>
                         <th>User</th>
                         <th>Email</th>
-                        <th>Trạng thái</th>
+                        <th>Status</th>
                         <th>Chat</th>
                     </tr>
                 </thead>
@@ -31,7 +31,7 @@
                         </td>
                         <td>
                             <a href="{{ route('admin.chat.show', $user->id) }}" class="btn btn-primary btn-sm">
-                                Chat ngay →
+                                Chat now →
                             </a>
                         </td>
                     </tr>

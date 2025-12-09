@@ -9,21 +9,21 @@
         @csrf
 
         <div class="mb-3">
-          <label for="name" class="form-label">Tên danh mục</label>
+          <label for="name" class="form-label">Category name</label>
           <input type="text" name="name" id="name" value="{{ old('name') }}" class="form-control">
           @error('name') <span class="text-danger small">{{ $message }}</span> @enderror
         </div>
 
         <div class="mb-3">
-          <label for="description" class="form-label">Mô tả</label>
+          <label for="description" class="form-label">Describe</label>
           <textarea name="description" id="description" rows="3" class="form-control">{{ old('description') }}</textarea>
           @error('description') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
 
         <div class="mb-3">
-          <label for="parent_id" class="form-label">Danh mục cha</label>
+          <label for="parent_id" class="form-label">Parent category</label>
           <select name="parent_id" id="parent_id" class="form-select">
-            <option value="">-- Không có --</option>
+            <option value="">-- Do not have --</option>
             @foreach ($parentCategories as $parent)
               <option value="{{ $parent->id }}" {{ old('parent_id') == $parent->id ? 'selected' : '' }}>
                 {{ $parent->name }}
@@ -32,7 +32,7 @@
           </select>
         </div>
 
-        <button type="submit" class="btn btn-primary w-100">Thêm mới</button>
+        <button type="submit" class="btn btn-primary w-100">Add new</button>
       </form>
       <div class="mt-3"></div>
     {{-- </div> --}}

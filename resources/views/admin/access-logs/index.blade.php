@@ -4,7 +4,7 @@ use Carbon\Carbon;
 ?>
 @section('content')
 <div class="container-fluid card">
-    <h3 class="p-4">Nhật ký truy cập / thay đổi</h3>
+    <h3 class="p-4">Access/Change Log</h3>
 
     <form class="row g-2 mb-3" method="GET">
         <div class="col-auto">
@@ -28,7 +28,7 @@ use Carbon\Carbon;
             <input type="date" name="to" value="{{ request('to') }}" class="form-control">
         </div>
         <div class="col-auto">
-            <button class="btn btn-primary">Lọc</button>
+            <button class="btn btn-primary">Filter</button>
         </div>
     </form>
 

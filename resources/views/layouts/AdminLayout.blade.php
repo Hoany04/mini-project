@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 
 
 <!-- =========================================================
@@ -37,7 +37,7 @@
 
 
     <!-- ? PROD Only: Google Tag Manager (Default ThemeSelection: GTM-5DDHKGP, PixInvent: GTM-5J3LMKC) -->
-    <script>
+    {{-- <script>
         (function(w, d, s, l, i) {
             w[l] = w[l] || [];
             w[l].push({
@@ -52,7 +52,7 @@
                 '../../../../www.googletagmanager.com/gtm5445.html?id=' + i + dl;
             f.parentNode.insertBefore(j, f);
         })(window, document, 'script', 'dataLayer', 'GTM-5J3LMKC');
-    </script>
+    </script> --}}
     <!-- End Google Tag Manager -->
 
     <!-- Favicon -->
@@ -85,7 +85,6 @@
     <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-    <script src="{{ asset('assets/vendor/js/template-customizer.js') }}"></script>
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('assets/js/config.js') }}"></script>
 
@@ -167,14 +166,11 @@
 
   <!-- Core JS -->
   <!-- build:js assets/vendor/js/core.js -->
-
-  <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
+  @stack('script')
   <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
   <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
   <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
   <script src="{{ asset('assets/vendor/libs/hammer/hammer.js') }}"></script>
-  <script src="{{ asset('assets/vendor/libs/i18n/i18n.js') }}"></script>
-  <script src="{{ asset('assets/vendor/libs/typeahead-js/typeahead.js') }}"></script>
   <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
 
   <!-- endbuild -->

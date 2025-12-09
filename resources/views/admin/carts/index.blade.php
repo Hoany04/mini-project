@@ -4,7 +4,7 @@ use Carbon\Carbon;
 ?>
 @section('content')
 <div class="container mt-4 card">
-    <h3 class="p-4">Danh sách giỏ hàng</h3>
+    <h3 class="p-4">Shopping cart list</h3>
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
@@ -13,11 +13,11 @@ use Carbon\Carbon;
         <thead class="table-light">
             <tr>
                 <th>#</th>
-                <th>Người dùng</th>
-                <th>Tổng sản phẩm</th>
-                <th>Tổng tiền</th>
-                <th>Ngày cập nhật</th>
-                <th>Thao tác</th>
+                <th>Users</th>
+                <th>Total product</th>
+                <th>Total amount</th>
+                <th>Update date</th>
+                <th>Operation</th>
             </tr>
         </thead>
         <tbody>

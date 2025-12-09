@@ -54,7 +54,7 @@
                                         </li>
                                         <li class="position-static"><a href="#">pages <i
                                                     class="fa fa-angle-down"></i></a>
-                                            <ul class="megamenu dropdown">
+                                            {{-- <ul class="megamenu dropdown">
 
                                                 <li class="megamenu-banners d-none d-lg-block">
                                                     <a href="product-details.html">
@@ -68,7 +68,7 @@
                                                             alt="">
                                                     </a>
                                                 </li>
-                                            </ul>
+                                            </ul> --}}
                                         </li>
                                         <li><a href="{{ route('client.pages.products.index') }}">shop <i class="fa fa-angle-down"></i></a>
 
@@ -76,7 +76,7 @@
                                         <li><a href="blog-left-sidebar.html">Blog <i
                                                     class="fa fa-angle-down"></i></a>
                                         </li>
-                                        <li><a href="contact-us.html">Contact us</a></li>
+                                        {{-- <li><a href="contact-us.html">Contact us</a></li> --}}
                                     </ul>
                                 </nav>
                                 <!-- main menu navbar end -->

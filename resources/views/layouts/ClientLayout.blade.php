@@ -1,7 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="en">
 
-
 <!-- Mirrored from htmldemo.net/corano/corano/index-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 29 Jun 2024 09:53:49 GMT -->
 
 <head>
@@ -38,7 +37,6 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    @vite(['resources/js/app.js'])
     <style>
     /* Bong bóng chat */
         #chat-bubble {
@@ -130,7 +128,6 @@
         @include('client.blocks.header')
     <!-- end Header Area -->
 
-
     <main>
         @yield('content')
     </main>
@@ -157,7 +154,6 @@
             <button id="chat-send">Gửi</button>
         </div>
     </div>
-
     <!-- Scroll to Top End -->
 
     <!-- footer area start -->
@@ -236,124 +232,10 @@
     </div>
     <!-- Quick view modal end -->
 
-    <!-- offcanvas mini cart start -->
-    <!-- offcanvas mini cart end -->
-
     <!-- JS
 ============================================ -->
-    <script>
-        const chatBubble = document.getElementById('chat-bubble');
-        const chatWidget = document.getElementById('chat-widget');
-        const chatClose  = document.getElementById('chat-close');
-        const chatBody   = document.getElementById('chat-body');
-        const chatInput  = document.getElementById('chat-message');
-        const chatSend   = document.getElementById('chat-send');
 
-        // Mở/đóng popup
-        chatBubble.onclick = () => {
-            chatWidget.style.display = 'flex';
-            chatBubble.style.display = 'none';
-        };
-        chatClose.onclick = () => {
-            chatWidget.style.display = 'none';
-            chatBubble.style.display = 'flex';
-        };
-
-        chatBubble.onclick = () => {
-            chatWidget.style.display = 'flex';
-            chatBubble.style.display = 'none';
-            loadOldMessages(); // LOAD LẠI TIN CŨ
-        };
-
-        // GỬI TIN NHẮN
-        chatSend.onclick = sendMessage;
-        chatInput.addEventListener("keydown", e => {
-            if (e.key === "Enter") sendMessage();
-        });
-
-        function sendMessage() {
-            let msg = chatInput.value.trim();
-            if (!msg) return;
-
-            // HIỂN THỊ NGAY Ở UI
-            appendMessage(msg, "me");
-
-            chatInput.value = "";
-
-            fetch("/chat/send", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                body: JSON.stringify({
-                    message: msg,
-                    to_id: 1
-                })
-            });
-        }
-
-        // Thêm tin nhắn vào khung chat
-        function appendMessage(msg, type = "other", senderName = null) {
-
-            let bubble = `
-                <div style="margin-bottom:8px; width:100%; display:flex; ${type === 'me' ? 'justify-content:right' : 'justify-content:left'}">
-                    <div style="
-                        background:${type === 'me' ? '#4a90e2' : '#fff'};
-                        color:${type === 'me' ? '#fff' : '#333'};
-                        padding:8px 12px;
-                        border-radius:10px;
-                        max-width:75%;
-                        box-shadow:0 2px 6px rgba(0,0,0,0.1)
-                    ">
-                        ${senderName ? `<b>${senderName}</b><br>` : ""}
-                        ${msg}
-                    </div>
-                </div>
-            `;
-
-            chatBody.insertAdjacentHTML("beforeend", bubble);
-            chatBody.scrollTop = chatBody.scrollHeight;
-        }
-
-        function loadOldMessages() {
-            fetch("/chat/history")
-                .then(res => res.json())
-                .then(data => {
-                    chatBody.innerHTML = "";
-
-                    data.forEach(msg => {
-
-                        let type = (msg.from_id == userId) ? "me" : "other";
-                        let name = (type === "other")
-                            ? (msg.sender?.name ?? "Admin")
-                            : null;
-
-                        appendMessage(msg.message, type, name);
-                    });
-                });
-        }
-
-        // NHẬN TIN NHẮN REALTIME
-
-        @if(auth()->check())
-        const userId = {{ auth()->id() }};
-
-        window.Echo.private(`chat.${userId}`)
-            .listen("MessageSent", (e) => {
-
-                // CHỈ HIỂN THỊ NẾU KHÔNG PHẢI TIN MÌNH GỬI
-                if (e.message.from_id != userId) {
-                    appendMessage(
-                        e.message.message,
-                        "other",
-                        e.message.sender?.name ?? "Admin"
-                    );
-                }
-            });
-        @endif
-    </script>
-
+    @vite(['resources/js/app.js'])
     <!-- Modernizer JS -->
     <script src="{{ asset('assets/client/js/vendor/modernizr-3.6.0.min.js') }}"></script>
     <!-- jQuery JS -->
@@ -377,9 +259,6 @@
     <!-- contact form dynamic js -->
     <script src="{{ asset('assets/client/js/plugins/ajax-mail.js') }}"></script>
     <!-- google map api -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfmCVTjRI007pC1Yk2o2d_EhgkjTsFVN8"></script>
-    <!-- google map active js -->
-    <script src="{{ asset('assets/client/js/plugins/google-map.js') }}"></script>
     <!-- Main JS -->
     <script src="{{ asset('assets/client/js/main.js') }}"></script>
 
@@ -389,6 +268,113 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     @yield('js')
     {{-- End Js --}}
+    @vite(['resources/js/app.js'])
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const chatBubble = document.getElementById('chat-bubble');
+            const chatWidget = document.getElementById('chat-widget');
+            const chatClose  = document.getElementById('chat-close');
+            const chatBody   = document.getElementById('chat-body');
+            const chatInput  = document.getElementById('chat-message');
+            const chatSend   = document.getElementById('chat-send');
+
+            @if(auth()->check())
+            const userId = {{ auth()->id() }};
+            @endif
+
+            // mở
+            chatBubble.onclick = () => {
+                chatWidget.style.display = 'flex';
+                chatBubble.style.display = 'none';
+                loadOldMessages();
+            };
+
+            // đóng
+            chatClose.onclick = () => {
+                chatWidget.style.display = 'none';
+                chatBubble.style.display = 'flex';
+            };
+
+            // gửi tin nhắn
+            chatSend.onclick = sendMessage;
+            chatInput.addEventListener("keydown", e => {
+                if (e.key === "Enter") sendMessage();
+            });
+
+            function sendMessage() {
+                let msg = chatInput.value.trim();
+                if (!msg) return;
+
+                appendMessage(msg, "me");
+                chatInput.value = "";
+
+                fetch("/chat/send", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({
+                        message: msg,
+                        to_id: 1
+                    })
+                });
+            }
+
+            function appendMessage(msg, type = "other", senderName = null) {
+                let bubble = `
+                    <div style="margin-bottom:8px; width:100%; display:flex; ${type === 'me' ? 'justify-content:right' : 'justify-content:left'}">
+                        <div style="
+                            background:${type === 'me' ? '#4a90e2' : '#fff'};
+                            color:${type === 'me' ? '#fff' : '#333'};
+                            padding:8px 12px;
+                            border-radius:10px;
+                            max-width:75%;
+                            box-shadow:0 2px 6px rgba(0,0,0,0.1)
+                        ">
+                            ${senderName ? `<b>${senderName}</b><br>` : ""}
+                            ${msg}
+                        </div>
+                    </div>
+                `;
+
+                chatBody.insertAdjacentHTML("beforeend", bubble);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+
+            function loadOldMessages() {
+                fetch("/chat/history")
+                    .then(res => res.json())
+                    .then(messages => {
+                        chatBody.innerHTML = "";
+                        messages.forEach(m => {
+                            let type = (m.from_id == userId) ? 'me' : 'other';
+                            let name = type === 'other' ? (m.sender?.name ?? 'Admin') : null;
+                            appendMessage(m.message, type, name);
+                        });
+                    });
+            }
+
+            // REALTIME RECEIVING
+            @if(auth()->check())
+            window.Echo.private(`chat.${userId}`)
+                .listen('.MessageSent', (e) => {
+
+                    if (e.message.from_id != userId) {
+                        appendMessage(
+                            e.message.message,
+                            "other",
+                            e.message.sender?.name ?? "Admin"
+                        );
+                    }
+                });
+            @endif
+
+        });
+    </script>
+
 </body>
 
 

@@ -26,6 +26,8 @@ class ChatController extends Controller
 
     public function index($userId)
     {
+        $userInfo = User::with('profile')->findOrFail($userId);
+
         $messages = Message::where(function ($q) use ($userId) {
                 $q->where('from_id', auth()->id())
                   ->orWhere('to_id', auth()->id());
@@ -37,7 +39,7 @@ class ChatController extends Controller
             ->orderBy('id','ASC')
             ->get();
 
-        return view('admin.chat.index', compact('messages', 'userId'));
+        return view('admin.chat.index', compact('messages', 'userId', 'userInfo'));
     }
 
     public function sendAdmin(Request $request)
@@ -48,8 +50,8 @@ class ChatController extends Controller
             'message' => $request->message,
             'is_read' => 0,
         ])->load('sender');
-        \Log::info('NEW MESSAGE: ', $msg->toArray());
 
+        \Log::info('NEW MESSAGE: ', $msg->toArray());
 
         broadcast(new MessageSent($msg))->toOthers();
 

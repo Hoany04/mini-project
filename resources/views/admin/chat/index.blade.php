@@ -1,27 +1,124 @@
 @extends('layouts.AdminLayout')
-
 @section('content')
-<div id="chat-box"
-    data-admin_id="{{ auth()->id() }}"
-    data-user_id="{{ $userId }}">
+<style>
+    .chat-messages {
+        height: 420px;
+        overflow-y: auto;
+        padding: 15px;
+        background: #e5ddd5;
+        border-radius: 10px;
+    }
 
-    <div id="chat-messages" style="height: 400px; overflow-y: auto; background:#f4f4f4; padding:10px;">
+    .chat-row {
+        display: flex;
+        margin-bottom: 10px;
+        align-items: flex-end;
+    }
+
+    .chat-row.me {
+        justify-content: flex-end;
+    }
+
+    .chat-row.other {
+        justify-content: flex-start;
+    }
+
+    .chat-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        margin-right: 6px;
+    }
+
+    .chat-bubble {
+        max-width: 70%;
+        padding: 10px 14px;
+        border-radius: 18px;
+        font-size: 14px;
+        line-height: 1.4;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+
+    .chat-row.me .chat-bubble {
+        background: #0084ff;
+        color: #fff;
+        border-bottom-right-radius: 4px;
+    }
+
+    .chat-row.other .chat-bubble {
+        background: #fff;
+        color: #333;
+        border-bottom-left-radius: 4px;
+    }
+
+    .chat-input-wrapper {
+        display: flex;
+        margin-top: 12px;
+    }
+
+    .chat-input {
+        flex: 1;
+        border-radius: 20px;
+        padding-left: 15px;
+    }
+
+    .chat-btn {
+        border-radius: 20px;
+        padding: 0 20px;
+        margin-left: 10px;
+    }
+</style>
+
+<div class="chat-header d-flex align-items-center p-2 border-bottom" style="background:#fff;">
+    @if($userInfo->profile && $userInfo->profile->avatar)
+        <img src="{{ asset('storage/' . $userInfo->profile->avatar) }}"
+             class="rounded-circle me-2" width="40" height="40">
+    @else
+        <img src="/default-avatar.png"
+             class="rounded-circle me-2" width="40" height="40">
+    @endif
+
+    <div style="line-height: 1;">
+        <strong>{{ $userInfo->username }}</strong><br>
+        <small style="color: {{ $userInfo->status === 'online' ? 'green' : 'green' }};">
+            ● {{ $userInfo->status === 'online' ? 'Active' : 'Active' }}
+        </small>
+    </div>
+
+</div>
+
+<div id="chat-box"
+     data-admin_id="{{ auth()->id() }}"
+     data-user_id="{{ $userId }}">
+
+    <!-- KHUNG TIN NHẮN -->
+    <div id="chat-messages" class="chat-messages">
         @foreach($messages as $msg)
-            <div style="margin:6px 0; text-align: {{ $msg->from_id == auth()->id() ? 'right' : 'left' }}">
-                <span style="background:#fff; padding:6px 10px; border-radius:6px;">
+            <div class="chat-row {{ $msg->from_id == auth()->id() ? 'me' : 'other' }}">
+
+                @php
+                    $avatar = $msg->sender->profile->avatar ?? null;
+                    $avatarUrl = $avatar ? asset('storage/' . $avatar) : asset('default-avatar.png');
+                @endphp
+
+                {{-- <img class="chat-avatar" src="{{ $avatarUrl }}" alt="Avatar"> --}}
+
+                <div class="chat-bubble">
                     {{ $msg->message }}
-                </span>
+                </div>
             </div>
         @endforeach
     </div>
 
-    <div style="display:flex; margin-top:10px;">
-        <input id="chat-input" class="form-control" placeholder="Nhập tin nhắn...">
-        <button id="chat-send" class="btn btn-primary ms-2">Gửi</button>
+    <!-- INPUT -->
+    <div class="chat-input-wrapper">
+        <input id="chat-input" class="form-control chat-input" placeholder="Nhập tin nhắn...">
+        <button id="chat-send" class="btn btn-primary chat-btn">Send</button>
     </div>
 </div>
+
 @endsection
-@section('js')
+@push('script')
   <script>
     document.addEventListener("DOMContentLoaded", () => {
 
@@ -64,20 +161,21 @@
         }
 
         // Hiển thị tin nhắn của admin
-        function appendMyMessage(text) {
-            messages.insertAdjacentHTML("beforeend", `
-                <div style="text-align:right; margin:6px 0;">
-                    <span style="background:#d1efff; padding:6px 10px; border-radius:6px;">
-                        ${text}
-                    </span>
+        function appendMyMessage(text, type = "other", avatar = null) {
+            let html = `
+                <div class="chat-row ${type}">
+                    <img class="chat-avatar" src="${avatar}" alt="Avatar">
+                    <div class="chat-bubble">${text}</div>
                 </div>
-            `);
+            `;
+
+            document.getElementById("chat-messages").insertAdjacentHTML("beforeend", html);
             messages.scrollTop = messages.scrollHeight;
         }
 
         // Nhận realtime từ user → admin
-        const channel = window.Echo.private("chat." + userId);
-        channel.listen(".message.sent", (e) => {
+        const channel = window.Echo.private("chat." + adminId);
+        channel.listen(".MessageSent", (e) => {
             if (e.message.from_id == userId) {
                 messages.insertAdjacentHTML("beforeend", `
                     <div style="text-align:left; margin:6px 0;">
@@ -93,4 +191,4 @@
     });
     </script>
 
-@endsection
+@endpush
