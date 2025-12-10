@@ -58,6 +58,18 @@
             z-index: 99999;
         }
 
+        #chat-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: red;
+            color: white;
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 50%;
+            display: none;
+        }
+
         /* Cửa sổ chat */
         #chat-widget {
             position: fixed;
@@ -119,6 +131,13 @@
             color: white;
             border-radius: 8px;
         }
+
+        .timestamp {
+            display: block;
+            font-size: 11px;
+            margin-top: 4px;
+            opacity: .7;
+        }
     </style>
 
 </head>
@@ -138,7 +157,10 @@
     </div>
 
     <!-- Bong bóng -->
-    <div id="chat-bubble">💬</div>
+    <div id="chat-bubble">
+        💬
+        <span id="chat-badge" class="badge">0</span>
+    </div>
 
     <!-- Cửa sổ chat -->
     <div id="chat-widget">
@@ -273,21 +295,46 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
 
+            let unreadCount = 0;
             const chatBubble = document.getElementById('chat-bubble');
+            const badge = document.getElementById("chat-badge");
             const chatWidget = document.getElementById('chat-widget');
             const chatClose  = document.getElementById('chat-close');
             const chatBody   = document.getElementById('chat-body');
             const chatInput  = document.getElementById('chat-message');
             const chatSend   = document.getElementById('chat-send');
 
+            let typingTimeout;
+
             @if(auth()->check())
             const userId = {{ auth()->id() }};
             @endif
+
+            // Hàm format giờ: 13:02
+            function formatTime() {
+                const d = new Date();
+                return d.getHours().toString().padStart(2,'0') + ":" +
+                    d.getMinutes().toString().padStart(2,'0');
+            }
+
+            // Ham tang so tin chua doc
+            function increaseUnread() {
+                unreadCount++;
+                badge.innerText = unreadCount;
+                badge.style.display = "inline-block";
+            }
+
+            function resetUnread() {
+                unreadCount = 0;
+                badge.innerText = "0";
+                badge.style.display = "none";
+            }
 
             // mở
             chatBubble.onclick = () => {
                 chatWidget.style.display = 'flex';
                 chatBubble.style.display = 'none';
+                resetUnread();
                 loadOldMessages();
             };
 
@@ -324,6 +371,9 @@
             }
 
             function appendMessage(msg, type = "other", senderName = null) {
+
+                let time = formatTime();
+
                 let bubble = `
                     <div style="margin-bottom:8px; width:100%; display:flex; ${type === 'me' ? 'justify-content:right' : 'justify-content:left'}">
                         <div style="
@@ -336,6 +386,7 @@
                         ">
                             ${senderName ? `<b>${senderName}</b><br>` : ""}
                             ${msg}
+                            <div class="timestamp">${time}</div>
                         </div>
                     </div>
                 `;
@@ -363,6 +414,13 @@
                 .listen('.MessageSent', (e) => {
 
                     if (e.message.from_id != userId) {
+
+                        const widgetOpen = chatWidget.style.display === "flex";
+
+                        if (!widgetOpen) {
+                            increaseUnread();
+                        }
+
                         appendMessage(
                             e.message.message,
                             "other",

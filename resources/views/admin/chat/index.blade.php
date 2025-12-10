@@ -5,71 +5,101 @@
         height: 420px;
         overflow-y: auto;
         padding: 15px;
-        background: #e5ddd5;
+        background: #f5f5f5;
         border-radius: 10px;
     }
 
     .chat-row {
         display: flex;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
         align-items: flex-end;
+        width: 100%;
     }
 
+    /* Tin nhắn của mình */
     .chat-row.me {
         justify-content: flex-end;
     }
 
+    /* Tin nhắn của người khác */
     .chat-row.other {
         justify-content: flex-start;
     }
 
+    /* Avatar */
     .chat-avatar {
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        margin-right: 6px;
+        margin-right: 8px;
     }
 
+    /* Bong bóng tin nhắn */
     .chat-bubble {
         max-width: 70%;
         padding: 10px 14px;
         border-radius: 18px;
         font-size: 14px;
         line-height: 1.4;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        word-break: break-word;
     }
 
+    /* Bong bóng của mình */
     .chat-row.me .chat-bubble {
         background: #0084ff;
         color: #fff;
-        border-bottom-right-radius: 4px;
+        border-bottom-right-radius: 6px;
     }
 
+    /* Bong bóng của người khác */
     .chat-row.other .chat-bubble {
-        background: #fff;
+        background: #ffffff;
         color: #333;
-        border-bottom-left-radius: 4px;
+        border-bottom-left-radius: 6px;
     }
 
+    /* Khung nhập tin nhắn */
     .chat-input-wrapper {
         display: flex;
         margin-top: 12px;
+        gap: 10px;
     }
 
     .chat-input {
         flex: 1;
-        border-radius: 20px;
+        border-radius: 25px;
         padding-left: 15px;
     }
 
     .chat-btn {
-        border-radius: 20px;
-        padding: 0 20px;
-        margin-left: 10px;
+        border-radius: 25px;
+        padding: 0 22px;
+    }
+
+    /* Header */
+    .chat-header {
+        background: #fff;
+        border-bottom: 1px solid #eee;
+    }
+
+    .online-dot {
+        color: #4caf50;
+        font-weight: bold;
+    }
+
+    /* Typing indicator */
+    .typing-indicator {
+        display: none;
+        font-size: 13px;
+        color: #777;
+        margin: 6px 0 10px 4px;
+        font-style: italic;
     }
 </style>
 
-<div class="chat-header d-flex align-items-center p-2 border-bottom" style="background:#fff;">
+
+<div class="chat-header d-flex align-items-center p-2">
     @if($userInfo->profile && $userInfo->profile->avatar)
         <img src="{{ asset('storage/' . $userInfo->profile->avatar) }}"
              class="rounded-circle me-2" width="40" height="40">
@@ -80,42 +110,45 @@
 
     <div style="line-height: 1;">
         <strong>{{ $userInfo->username }}</strong><br>
-        <small style="color: {{ $userInfo->status === 'online' ? 'green' : 'green' }};">
-            ● {{ $userInfo->status === 'online' ? 'Active' : 'Active' }}
-        </small>
+        <small class="online-dot">● {{ $userInfo->status }}</small>
     </div>
-
 </div>
 
 <div id="chat-box"
      data-admin_id="{{ auth()->id() }}"
      data-user_id="{{ $userId }}">
 
-    <!-- KHUNG TIN NHẮN -->
     <div id="chat-messages" class="chat-messages">
         @foreach($messages as $msg)
-            <div class="chat-row {{ $msg->from_id == auth()->id() ? 'me' : 'other' }}">
 
-                @php
-                    $avatar = $msg->sender->profile->avatar ?? null;
-                    $avatarUrl = $avatar ? asset('storage/' . $avatar) : asset('default-avatar.png');
-                @endphp
+        @php
+            $avatar = $msg->sender->profile->avatar ?? null;
+            $avatarUrl = $avatar ? asset('storage/' . $avatar) : asset('default-avatar.png');
+        @endphp
 
-                {{-- <img class="chat-avatar" src="{{ $avatarUrl }}" alt="Avatar"> --}}
+        <div class="chat-row {{ $msg->from_id == auth()->id() ? 'me' : 'other' }}">
 
-                <div class="chat-bubble">
-                    {{ $msg->message }}
-                </div>
+            @if($msg->from_id != auth()->id())
+                <img class="chat-avatar" src="{{ $avatarUrl }}" alt="Avatar">
+            @endif
+
+            <div class="chat-bubble">
+                {{ $msg->message }}
             </div>
+        </div>
+
         @endforeach
+        <div id="typing-indicator" class="typing-indicator">
+        User is typing…
+    </div>
     </div>
 
-    <!-- INPUT -->
     <div class="chat-input-wrapper">
         <input id="chat-input" class="form-control chat-input" placeholder="Nhập tin nhắn...">
         <button id="chat-send" class="btn btn-primary chat-btn">Send</button>
     </div>
 </div>
+
 
 @endsection
 @push('script')
@@ -129,11 +162,33 @@
         const input = document.getElementById("chat-input");
         const sendBtn = document.getElementById("chat-send");
         const messages = document.getElementById("chat-messages");
+        const typingBox = document.getElementById('typing-indicator');
+
+        let typingTimeout;
+
+        // format gio
+        function formatTime() {
+            const d = new Date();
+            return d.getHours().toString().padStart(2, "0") + ":" +
+                   d.getMinutes().toString().padStart(2, "0");
+        }
 
         // Gửi tin nhắn
         sendBtn.addEventListener("click", sendMessage);
         input.addEventListener("keypress", e => {
             if (e.key === "Enter") sendMessage();
+        });
+
+        // Bat typing khi admin dang nhap
+        input.addEventListener("input", () => {
+            window.Echo.private("chat." + userId)
+                .whisper("typing", { typing: true, from: adminId });
+
+            clearTimeout(typingTimeout);
+            typingTimeout = setTimeout(() => {
+                window.Echo.private("chat." + userId)
+                    .whisper("typing", { typing: false, from: adminId });
+            }, 1200);
         });
 
         function sendMessage() {
@@ -158,36 +213,63 @@
                     input.value = "";
                 }
             });
+
+            window.Echo.private("chat." + adminId)
+                .whisper("typing", { typing: false });
         }
 
         // Hiển thị tin nhắn của admin
-        function appendMyMessage(text, type = "other", avatar = null) {
+        function appendMyMessage(text) {
+
+            let time = formatTime();
+
             let html = `
-                <div class="chat-row ${type}">
-                    <img class="chat-avatar" src="${avatar}" alt="Avatar">
-                    <div class="chat-bubble">${text}</div>
+                <div class="chat-row me">
+                    <div class="chat-bubble">
+                        ${text}
+                        <div style="font-size:11px; text-align:right; margin-top:4px; opacity:0.7;">
+                            ${time}
+                        </div>
+                    </div>
                 </div>
             `;
 
-            document.getElementById("chat-messages").insertAdjacentHTML("beforeend", html);
+            messages.insertAdjacentHTML("beforeend", html);
             messages.scrollTop = messages.scrollHeight;
         }
 
         // Nhận realtime từ user → admin
         const channel = window.Echo.private("chat." + adminId);
         channel.listen(".MessageSent", (e) => {
+
             if (e.message.from_id == userId) {
+
+                let time = formatTime();
+
                 messages.insertAdjacentHTML("beforeend", `
-                    <div style="text-align:left; margin:6px 0;">
-                        <span style="background:white; padding:6px 10px; border-radius:6px;">
+                    <div class="chat-row other">
+                        <img class="chat-avatar" src="${e.avatar}" alt="Avatar">
+                        <div class="chat-bubble">
                             ${e.message.message}
-                        </span>
+                            <div style="font-size:11px; margin-top:4px; opacity:0.7;">
+                                ${time}
+                            </div>
+                        </div>
                     </div>
                 `);
+
+                typingBox.style.display = "none";
                 messages.scrollTop = messages.scrollHeight;
             }
         });
 
+        channel.listenForWhisper("typing", (e) => {
+            if (e.typing) {
+                typingBox.style.display = "block";
+            } else {
+                typingBox.style.display = "none";
+            }
+        });
     });
     </script>
 

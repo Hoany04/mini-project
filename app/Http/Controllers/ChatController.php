@@ -6,6 +6,7 @@ use App\Models\Message;
 use App\Models\User;
 use App\Events\MessageSent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ChatController extends Controller
 {
@@ -64,6 +65,33 @@ class ChatController extends Controller
         $users = User::where('role_id', 3)->get();
 
         return view('admin.chat.user-list', compact('users'));
+    }
+
+    public function listUsers()
+    {
+        $users = DB::table('messages')
+            ->join('users', 'messages.from_id', '=', 'users.id')
+            ->select(
+                'users.id',
+                'users.username as name',
+                DB::raw('(SELECT message
+                    FROM messages m2
+                    WHERE m2.from_id = users.id
+                    OR m2.to_id = users.id
+                    ORDER BY id DESC LIMIT 1
+                ) as last_message'),
+                DB::raw('(SELECT created_at
+                    FROM messages m3
+                    WHERE m3.from_id = users.id
+                    OR m3.to_id = users.id
+                    ORDER BY id DESC LIMIT 1
+                ) as last_time')
+            )
+            ->groupBy('users.id', 'users.username')
+            ->orderBy('last_time', 'DESC')
+            ->get();
+
+        return response()->json($users);
     }
 
     public function history()
