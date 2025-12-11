@@ -46,6 +46,7 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
     Route::get('access-logs', [AccessLogController::class, 'index'])->name('access-logs.index');
 
     Route::get('/chat/users', [ChatController::class, 'listUsers'])->name('chat.users');
+    Route::post('/chat/reset-unread/{id}', [ChatController::class, 'resetUnread']);
 
     Route::get('/chat', [ChatController::class, 'userList'])->name('chat.index');
     Route::get('/chat/{userId}', [ChatController::class, 'index'])->name('chat.show');

@@ -1,19 +1,24 @@
 @extends('layouts.AdminLayout')
 @section('content')
+
 <style>
+        /* KHUNG TIN NHẮN */
     .chat-messages {
         height: 420px;
         overflow-y: auto;
         padding: 15px;
         background: #f5f5f5;
         border-radius: 10px;
+        display: flex;
+        flex-direction: column;
     }
 
+        /* DÒNG TIN NHẮN */
     .chat-row {
         display: flex;
-        margin-bottom: 12px;
         align-items: flex-end;
         width: 100%;
+        margin-bottom: 10px;
     }
 
     /* Tin nhắn của mình */
@@ -30,46 +35,49 @@
     .chat-avatar {
         width: 32px;
         height: 32px;
+        flex-shrink: 0;
         border-radius: 50%;
         margin-right: 8px;
     }
 
-    /* Bong bóng tin nhắn */
+    /* Bubble */
     .chat-bubble {
         max-width: 70%;
         padding: 10px 14px;
         border-radius: 18px;
         font-size: 14px;
         line-height: 1.4;
+        background: #fff;
+        color: #333;
         box-shadow: 0 1px 3px rgba(0,0,0,0.15);
         word-break: break-word;
     }
 
-    /* Bong bóng của mình */
+    /* My bubble */
     .chat-row.me .chat-bubble {
         background: #0084ff;
         color: #fff;
+        margin-left: 8px;
         border-bottom-right-radius: 6px;
     }
 
-    /* Bong bóng của người khác */
+    /* Their bubble */
     .chat-row.other .chat-bubble {
         background: #ffffff;
-        color: #333;
         border-bottom-left-radius: 6px;
     }
 
-    /* Khung nhập tin nhắn */
+        /* INPUT */
     .chat-input-wrapper {
         display: flex;
-        margin-top: 12px;
         gap: 10px;
+        margin-top: 12px;
     }
 
     .chat-input {
         flex: 1;
-        border-radius: 25px;
         padding-left: 15px;
+        border-radius: 25px;
     }
 
     .chat-btn {
@@ -77,7 +85,7 @@
         padding: 0 22px;
     }
 
-    /* Header */
+        /* HEADER */
     .chat-header {
         background: #fff;
         border-bottom: 1px solid #eee;
@@ -88,27 +96,24 @@
         font-weight: bold;
     }
 
-    /* Typing indicator */
+        /* TYPING */
     .typing-indicator {
         display: none;
         font-size: 13px;
+        font-style: italic;
         color: #777;
         margin: 6px 0 10px 4px;
-        font-style: italic;
     }
 </style>
 
-
 <div class="chat-header d-flex align-items-center p-2">
     @if($userInfo->profile && $userInfo->profile->avatar)
-        <img src="{{ asset('storage/' . $userInfo->profile->avatar) }}"
-             class="rounded-circle me-2" width="40" height="40">
+        <img src="{{ asset('storage/'.$userInfo->profile->avatar) }}" class="rounded-circle me-2" width="40" height="40">
     @else
-        <img src="/default-avatar.png"
-             class="rounded-circle me-2" width="40" height="40">
+        <img src="/default-avatar.png" class="rounded-circle me-2" width="40" height="40">
     @endif
 
-    <div style="line-height: 1;">
+    <div style="line-height:1;">
         <strong>{{ $userInfo->username }}</strong><br>
         <small class="online-dot">● {{ $userInfo->status }}</small>
     </div>
@@ -119,28 +124,26 @@
      data-user_id="{{ $userId }}">
 
     <div id="chat-messages" class="chat-messages">
+
         @foreach($messages as $msg)
+            @php
+                $avatar = $msg->sender->profile->avatar ?? null;
+                $avatarUrl = $avatar ? asset('storage/'.$avatar) : asset('default-avatar.png');
+            @endphp
 
-        @php
-            $avatar = $msg->sender->profile->avatar ?? null;
-            $avatarUrl = $avatar ? asset('storage/' . $avatar) : asset('default-avatar.png');
-        @endphp
+            <div class="chat-row {{ $msg->from_id == auth()->id() ? 'me' : 'other' }}">
 
-        <div class="chat-row {{ $msg->from_id == auth()->id() ? 'me' : 'other' }}">
+                @if($msg->from_id != auth()->id())
+                    <img class="chat-avatar" src="{{ $avatarUrl }}">
+                @endif
 
-            @if($msg->from_id != auth()->id())
-                <img class="chat-avatar" src="{{ $avatarUrl }}" alt="Avatar">
-            @endif
-
-            <div class="chat-bubble">
-                {{ $msg->message }}
+                <div class="chat-bubble">
+                    {{ $msg->message }}
+                </div>
             </div>
-        </div>
-
         @endforeach
-        <div id="typing-indicator" class="typing-indicator">
-        User is typing…
-    </div>
+
+        <div id="typing-indicator" class="typing-indicator">User is typing…</div>
     </div>
 
     <div class="chat-input-wrapper">
@@ -149,10 +152,10 @@
     </div>
 </div>
 
-
 @endsection
+
 @push('script')
-  <script>
+<script>
     document.addEventListener("DOMContentLoaded", () => {
 
         const box = document.getElementById("chat-box");
@@ -166,29 +169,17 @@
 
         let typingTimeout;
 
-        // format gio
+        // Format giờ
         function formatTime() {
             const d = new Date();
-            return d.getHours().toString().padStart(2, "0") + ":" +
-                   d.getMinutes().toString().padStart(2, "0");
+            return d.getHours().toString().padStart(2,"0") + ":" +
+                d.getMinutes().toString().padStart(2,"0");
         }
 
-        // Gửi tin nhắn
+        // SEND MESSAGE
         sendBtn.addEventListener("click", sendMessage);
         input.addEventListener("keypress", e => {
             if (e.key === "Enter") sendMessage();
-        });
-
-        // Bat typing khi admin dang nhap
-        input.addEventListener("input", () => {
-            window.Echo.private("chat." + userId)
-                .whisper("typing", { typing: true, from: adminId });
-
-            clearTimeout(typingTimeout);
-            typingTimeout = setTimeout(() => {
-                window.Echo.private("chat." + userId)
-                    .whisper("typing", { typing: false, from: adminId });
-            }, 1200);
         });
 
         function sendMessage() {
@@ -203,7 +194,7 @@
                 },
                 body: JSON.stringify({
                     message: text,
-                    user_id: userId
+                    user_id: userId,
                 })
             })
             .then(res => res.json())
@@ -214,21 +205,19 @@
                 }
             });
 
-            window.Echo.private("chat." + adminId)
-                .whisper("typing", { typing: false });
+            window.Echo.private("chat."+adminId)
+                .whisper("typing", { typing:false });
         }
 
-        // Hiển thị tin nhắn của admin
+        // UI: Append tin nhắn admin
         function appendMyMessage(text) {
-
-            let time = formatTime();
 
             let html = `
                 <div class="chat-row me">
                     <div class="chat-bubble">
                         ${text}
-                        <div style="font-size:11px; text-align:right; margin-top:4px; opacity:0.7;">
-                            ${time}
+                        <div style="font-size:11px;text-align:right;margin-top:4px;opacity:.7;">
+                            ${formatTime()}
                         </div>
                     </div>
                 </div>
@@ -238,21 +227,20 @@
             messages.scrollTop = messages.scrollHeight;
         }
 
-        // Nhận realtime từ user → admin
-        const channel = window.Echo.private("chat." + adminId);
+        // REALTIME: Nhận từ user
+        const channel = window.Echo.private("chat."+adminId);
+
         channel.listen(".MessageSent", (e) => {
 
             if (e.message.from_id == userId) {
 
-                let time = formatTime();
-
                 messages.insertAdjacentHTML("beforeend", `
                     <div class="chat-row other">
-                        <img class="chat-avatar" src="${e.avatar}" alt="Avatar">
+                        <img class="chat-avatar" src="${e.avatar}">
                         <div class="chat-bubble">
                             ${e.message.message}
-                            <div style="font-size:11px; margin-top:4px; opacity:0.7;">
-                                ${time}
+                            <div style="font-size:11px;margin-top:4px;opacity:.7;">
+                                ${formatTime()}
                             </div>
                         </div>
                     </div>
@@ -263,14 +251,23 @@
             }
         });
 
-        channel.listenForWhisper("typing", (e) => {
-            if (e.typing) {
-                typingBox.style.display = "block";
-            } else {
-                typingBox.style.display = "none";
-            }
-        });
-    });
-    </script>
+        // REALTIME TYPING
+        input.addEventListener("input", () => {
 
+            window.Echo.private("chat."+userId)
+                .whisper("typing", { typing:true });
+
+            clearTimeout(typingTimeout);
+            typingTimeout = setTimeout(() => {
+                window.Echo.private("chat."+userId)
+                    .whisper("typing", { typing:false });
+            }, 1200);
+        });
+
+        channel.listenForWhisper("typing", (e) => {
+            typingBox.style.display = e.typing ? "block" : "none";
+        });
+
+    });
+</script>
 @endpush

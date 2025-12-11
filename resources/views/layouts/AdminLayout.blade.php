@@ -19,11 +19,10 @@
     @vite(['resources/js/app.js'])
 
     <style>
-    /* Bong bóng chat */
-        #chat-bubble {
+        #chat-admin-open {
             position: fixed;
             bottom: 20px;
-            top: 750px;
+            top: 850px;
             right: 18px;
             width: 54px;
             height: 54px;
@@ -38,107 +37,64 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             z-index: 99999;
         }
-
-        #chat-badge {
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            background: red;
-            color: white;
-            font-size: 12px;
-            padding: 2px 6px;
-            border-radius: 50%;
-            display: none;
-        }
-
-        /* Cửa sổ chat */
-        #chat-widget {
+        #chat-admin-popup {
             position: fixed;
-            bottom: 90px;
             right: 20px;
+            bottom: 80px;
             width: 320px;
-            height: 420px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            overflow: hidden;
-            display: none; /* Ẩn ban đầu */
+            height: 450px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: none;
             flex-direction: column;
-            font-family: sans-serif;
-            z-index: 99999;
-            animation: fadeIn 0.25s ease;
+            overflow: hidden;
+            z-index: 9999;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        #chat-header {
+        .popup-header {
+            padding: 10px 15px;
             background: #4a90e2;
             color: white;
-            padding: 12px;
+            font-size: 17px;
             font-weight: bold;
-            cursor: pointer;
-            display: flex;
+            display:flex;
             justify-content: space-between;
+            align-items:center;
         }
-
-        #chat-body {
-            flex: 1;
-            padding: 10px;
-            overflow-y: auto;
-            background: #f7f7f7;
+        .user-row {
+            padding: 12px;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            cursor:pointer;
+            border-bottom: 1px solid #eee;
         }
-/*
-        #chat-input {
-            padding: 10px;
-            display: flex;
-            background: white;
+        .user-row:hover {
+            background:#f8f8f8;
         }
-
-        #chat-input input {
-            flex: 1;
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
+        .user-avatar {
+            width:45px; height:45px;
+            border-radius:50%;
+            object-fit:cover;
         }
-
-        #chat-input button {
-            margin-left: 8px;
-            padding: 8px 12px;
-            border: none;
-            background: #4a90e2;
-            color: white;
-            border-radius: 8px;
-        } */
-
-        .timestamp {
-            display: block;
-            font-size: 11px;
-            margin-top: 4px;
-            opacity: .7;
+        .user-info {
+            flex:1;
+        }
+        .user-name {
+            font-weight:bold;
+        }
+        .user-last {
+            color:#555;
+            font-size:14px;
+        }
+        .badge-unread {
+            background:red;
+            color:white;
+            font-size:12px;
+            padding:3px 8px;
+            border-radius:20px;
         }
     </style>
-
-    <!-- ? PROD Only: Google Tag Manager (Default ThemeSelection: GTM-5DDHKGP, PixInvent: GTM-5J3LMKC) -->
-    {{-- <script>
-        (function(w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({
-                'gtm.start': new Date().getTime(),
-                event: 'gtm.js'
-            });
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s),
-                dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src =
-                '../../../../www.googletagmanager.com/gtm5445.html?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-5J3LMKC');
-    </script> --}}
-    <!-- End Google Tag Manager -->
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="https://demos.pixinvent.com/frest-html-admin-template/assets/img/favicon/favicon.ico" />
@@ -231,31 +187,30 @@
   </div>
 
   {{-- popup chat --}}
-     <!-- Bong bóng -->
-    <div id="chat-bubble">
+    <button id="chat-admin-open" class="btn btn-primary">
         💬
-        <span id="chat-badge" class="badge">0</span>
-    </div>
+        <span id="chat-admin-unread" class="notify-dot" style="
+            position:absolute;
+            top:-5px;
+            right:-5px;
+            background:red;
+            color:white;
+            padding:2px 6px;
+            font-size:12px;
+            border-radius:12px;
+            display:none;
+        "></span>
+    </button>
 
-    <!-- Cửa sổ chat -->
-    <div id="chat-widget">
-        <div id="chat-header">
-            <span>Hỗ trợ trực tuyến</span>
-            <span id="chat-close" style="cursor:pointer;">✖</span>
+    <!-- POPUP LIST -->
+    <div id="chat-admin-popup">
+        <div class="popup-header">
+            <span>Danh sách khách hàng</span>
+            <span id="chat-admin-close" style="cursor:pointer;">✖</span>
         </div>
 
-        <div id="chat-body"></div>
-
-        {{-- <div id="chat-input">
-            <input type="text" id="chat-message" placeholder="Nhập tin nhắn...">
-            <button id="chat-send">Gửi</button>
-        </div> --}}
+        <div id="user-list"></div>
     </div>
-  <!-- / Layout wrapper -->
-
-  {{-- <div class="buy-now">
-    <a href="https://1.envato.market/frest_admin" target="_blank" class="btn btn-danger btn-buy-now">Buy Now</a>
-  </div> --}}
 
   <!-- Core JS -->
   <!-- build:js assets/vendor/js/core.js -->
@@ -280,125 +235,147 @@
   <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   @yield('js')
-  <script>
+<script>
     document.addEventListener("DOMContentLoaded", () => {
 
-        let unreadCount = 0;
-        const chatBubble = document.getElementById('chat-bubble');
-        const badge = document.getElementById("chat-badge");
-        const chatWidget = document.getElementById('chat-widget');
-        const chatClose  = document.getElementById('chat-close');
-        const chatBody   = document.getElementById('chat-body');
+        const popup = document.getElementById("chat-admin-popup");
+        const btnOpen = document.getElementById("chat-admin-open");
+        const btnClose = document.getElementById("chat-admin-close");
+        const userList = document.getElementById("user-list");
+        const badgeTotal = document.getElementById("chat-admin-unread");
 
-        @if(auth()->check())
-        const userId = {{ auth()->id() }};
-        @endif
+        const adminId = {{ auth()->check() ? auth()->id() : 'null' }};
 
-        // Hàm tăng số tin chưa đọc
-        function increaseUnread() {
-            unreadCount++;
-            badge.innerText = unreadCount;
-            badge.style.display = "inline-block";
-        }
+        // biến quản lý số lượng
+        let previousUnreadTotal = 0;
+        let totalUnread = 0;
+        let newMessages = 0;
 
-        function resetUnread() {
-            unreadCount = 0;
-            badge.innerText = "0";
-            badge.style.display = "none";
-        }
-
-        // 👉 Lấy danh sách user đã nhắn tin
+        // Load danh sách user từ server và cập nhật các biến
         function loadUserList() {
-            fetch("/admin/chat/users")
+            return fetch("/admin/chat/users")
                 .then(res => res.json())
-                .then(list => {
-                    chatBody.innerHTML = "";
+                .then(data => {
 
-                    if (list.length === 0) {
-                        chatBody.innerHTML = "<p style='padding:10px; color:#777;'>Chưa có tin nhắn nào.</p>";
-                        return;
-                    }
+                    userList.innerHTML = "";
+                    totalUnread = 0;
 
-                    list.forEach(u => {
-                        chatBody.insertAdjacentHTML("beforeend", `
-                            <div class="chat-user-item"
-                                style="padding:10px; border-bottom:1px solid #eee; cursor:pointer;"
-                                data-id="${u.id}">
-
-                                <b>${u.name}</b><br>
-                                <small>${u.last_message ?? "..."}</small><br>
-                                <small style="color:#777;">${formatTime(u.last_time)}</small>
-                            </div>
-                        `);
+                    data.forEach(u => {
+                        totalUnread += Number(u.unread || 0);
+                        userList.insertAdjacentHTML("beforeend", renderUserRow(u));
                     });
 
-                    attachUserClickEvents();
+                    // tính số tin mới so với lần ghi nhớ trước đó
+                    newMessages = totalUnread - previousUnreadTotal;
+                    if (newMessages < 0) newMessages = 0;
+
+                    updateTotalBadge();
+                })
+                .catch(err => {
+                    console.error("Load users failed:", err);
                 });
         }
 
-        // 👉 Khi click vào 1 user → mở cuộc trò chuyện
-        function attachUserClickEvents() {
-            document.querySelectorAll(".chat-user-item").forEach(item => {
-                item.addEventListener("click", () => {
-                    const uid = item.dataset.id;
-                    loadChatWith(uid);
-                });
+        // Cập nhật hiển thị badge (chỉ hiển thị số 'mới' kể từ lần xem trước)
+        function updateTotalBadge() {
+            if (!badgeTotal) return;
+
+            if (newMessages > 0) {
+                badgeTotal.innerText = newMessages;
+                badgeTotal.style.display = "block";
+            } else {
+                badgeTotal.style.display = "none";
+            }
+        }
+
+        // Template user row (thêm id badge per-user để dễ update khi cần)
+        function renderUserRow(u) {
+            let last = u.last_message ?? "Chưa có tin nhắn";
+            let time = u.last_time
+                ? new Date(u.last_time).toLocaleTimeString("vi-VN",
+                {
+                    timeZone: "Asia/Ho_Chi_Minh",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false
+                })
+                : "";
+
+            // mỗi badge user có id để có thể cập nhật realtime từng user nếu muốn
+            return `
+                <div class="user-row" onclick="openChatWith(${u.id})">
+                    <img src="${u.avatar ?? '/default-avatar.png'}" class="user-avatar">
+
+                    <div class="user-info">
+                        <div class="user-name">${u.name}</div>
+                        <div class="user-last">${last}</div>
+                    </div>
+
+                    <div style="text-align:right;">
+                        <small style="font-size:12px; color:#888;">${time}</small><br>
+
+                        ${u.unread > 0
+                            ? `<span id="badge-user-${u.id}" class="badge-unread">${u.unread}</span>`
+                            : `<span id="badge-user-${u.id}" class="badge-unread" style="display:none;">0</span>`
+                        }
+                    </div>
+                </div>
+            `;
+        }
+
+        // Mở chat với user -> gọi reset unread trên server rồi chuyển trang
+        window.openChatWith = (id) => {
+            fetch(`/admin/chat/reset-unread/${id}`, {
+                method: "POST",
+                headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" }
+            })
+            .then(() => {
+                // sau khi reset, tải lại danh sách để cập nhật badge và tổng
+                return loadUserList();
+            })
+            .finally(() => {
+                // chuyển trang sau khi đã gọi API (không chặn nếu muốn nhanh)
+                window.location.href = "/admin/chat/" + id;
             });
-        }
+        };
 
-        // 👉 Hàm mở cửa sổ chat với user
-        function loadChatWith(userId) {
-            // Hiển thị giao diện chat
-            chatWidget.style.display = "flex";
-            chatBubble.style.display = "none";
+        // Mở popup: lưu trạng thái current unread tổng là đã xem từ đây
+        btnOpen && (btnOpen.onclick = () => {
+            popup.style.display = "flex";
 
-            // Reset badge
-            resetUnread();
+            // lưu trạng thái hiện tại như mốc "đã xem"
+            previousUnreadTotal = totalUnread;
+            newMessages = 0;
+            updateTotalBadge();
 
-            // Gọi API để lấy lịch sử chat
-            fetch(`/admin/chat/${userId}`)
-                .then(res => {
-                    if (res.redirected) {
-                        window.location.href = res.url;
-                        return;
-                    }
-                    return res.text();
-                })
-                .then(html => {
-                    // Thay nội dung cửa sổ chat bằng giao diện chat admin
-                    chatWidget.innerHTML = html;
-                })
-                .catch(err => console.error("Load chat failed:", err));
-        }
-
-
-        function formatTime(timeStr) {
-            const d = new Date(timeStr);
-            return d.getHours().toString().padStart(2,"0") + ":" +
-                d.getMinutes().toString().padStart(2,"0");
-        }
-
-        // 👉 Nhấn bong bóng → mở widget + load danh sách user
-        chatBubble.onclick = () => {
-            chatWidget.style.display = 'flex';
-            chatBubble.style.display = 'none';
-            resetUnread();
-
+            // tải lại danh sách để cập nhật UI user list (không reset unread DB)
             loadUserList();
-        };
+        });
 
-        chatClose.onclick = () => {
-            chatWidget.style.display = 'none';
-            chatBubble.style.display = 'flex';
-        };
+        btnClose && (btnClose.onclick = () => popup.style.display = "none");
+
+        // Realtime: khi có message mới, chỉ reload list để lấy số unread mới từ DB
+        if (adminId && window.Echo && typeof window.Echo.private === "function") {
+            window.Echo.private("chat." + adminId)
+                .listen(".MessageSent", (e) => {
+                    // có thể tối ưu: nếu muốn chỉ cập nhật khi sender khác admin:
+                    // if (e.message.from_id !== adminId) { ... }
+
+                    // tải lại & tính newMessages = totalUnread - previousUnreadTotal
+                    loadUserList();
+                });
+        } else {
+            // nếu không có Echo, có thể poll (tùy chọn)
+            console.warn("Echo không sẵn sàng hoặc adminId null. Realtime tắt.");
+        }
+
+        // Load lần đầu để khởi tạo totalUnread
+        loadUserList();
 
     });
 </script>
 
 </body>
-
-
 <!-- Mirrored from demos.pixinvent.com/frest-html-admin-template/html/vertical-menu-template/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 10 Jul 2024 11:58:46 GMT -->
 </html>
 
-<!-- beautify ignore:end -->

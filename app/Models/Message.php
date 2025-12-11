@@ -16,4 +16,10 @@ class Message extends Model
     public function receiver() {
         return $this->belongsTo(User::class, 'to_id');
     }
+
+    public function lastMessage()
+    {
+        return $this->hasOne(Message::class, 'from_id')->orderBy('id', 'desc');
+    }
+
 }

@@ -69,23 +69,37 @@ class ChatController extends Controller
 
     public function listUsers()
     {
+        $adminId = auth()->id(); // id admin đang login
+
         $users = DB::table('messages')
             ->join('users', 'messages.from_id', '=', 'users.id')
             ->select(
                 'users.id',
                 'users.username as name',
+
+                // Lấy tin nhắn cuối cùng
                 DB::raw('(SELECT message
                     FROM messages m2
-                    WHERE m2.from_id = users.id
-                    OR m2.to_id = users.id
+                    WHERE (m2.from_id = users.id AND m2.to_id = '.$adminId.')
+                    OR (m2.to_id = users.id AND m2.from_id = '.$adminId.')
                     ORDER BY id DESC LIMIT 1
                 ) as last_message'),
+
+                // Lấy thời gian tin nhắn cuối cùng
                 DB::raw('(SELECT created_at
                     FROM messages m3
-                    WHERE m3.from_id = users.id
-                    OR m3.to_id = users.id
+                    WHERE (m3.from_id = users.id AND m3.to_id = '.$adminId.')
+                    OR (m3.to_id = users.id AND m3.from_id = '.$adminId.')
                     ORDER BY id DESC LIMIT 1
-                ) as last_time')
+                ) as last_time'),
+
+                // Số tin nhắn chưa đọc từ user gửi cho admin
+                DB::raw('(SELECT COUNT(*)
+                    FROM messages m4
+                    WHERE m4.from_id = users.id
+                    AND m4.to_id = '.$adminId.'
+                    AND m4.is_read = 0
+                ) as unread')
             )
             ->groupBy('users.id', 'users.username')
             ->orderBy('last_time', 'DESC')
@@ -106,5 +120,16 @@ class ChatController extends Controller
             ->orderBy('id')
             ->get();
     }
+
+    public function resetUnread($id)
+    {
+        Message::where('from_id', $id)
+        ->where('to_id', auth()->id())
+        ->where('is_read', 0)
+        ->update(['is_read' => 1]);
+
+    return response()->json(['success' => true]);
+    }
+
 }
 
