@@ -23,11 +23,6 @@ Route::post('/admin/notifications/mark-as-read', function () {
     return response()->json(['success' => true]);
 });
 
-Route::middleware(['auth', 'is_admin'])->group(function () {
-
-});
-
-
 Route::prefix('admin')->group(function () {
     Route::resource('roles', RoleController::class);
     // Route::resource('users', UserController::class);

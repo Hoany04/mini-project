@@ -246,6 +246,24 @@
 
         const adminId = {{ auth()->check() ? auth()->id() : 'null' }};
 
+        // format time
+        function formatAdminTime(ts) {
+            if (!ts) return "";
+
+            let d = new Date(ts);
+
+            if (isNaN(d.getTime())) {
+                const parts = ts.split(" ");
+                if (parts.length === 2) {
+                    return parts[1].substring(0, 5);
+                }
+                return "";
+            }
+
+            return d.getHours().toString().padStart(2,'0') + ":" +
+                    d.getMinutes().toString().padStart(2,'0');
+        }
+
         // biến quản lý số lượng
         let previousUnreadTotal = 0;
         let totalUnread = 0;
@@ -291,15 +309,7 @@
         // Template user row (thêm id badge per-user để dễ update khi cần)
         function renderUserRow(u) {
             let last = u.last_message ?? "Chưa có tin nhắn";
-            let time = u.last_time
-                ? new Date(u.last_time).toLocaleTimeString("vi-VN",
-                {
-                    timeZone: "Asia/Ho_Chi_Minh",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: false
-                })
-                : "";
+            let time = formatAdminTime(u.last_time);
 
             // mỗi badge user có id để có thể cập nhật realtime từng user nếu muốn
             return `
@@ -361,6 +371,21 @@
                     // có thể tối ưu: nếu muốn chỉ cập nhật khi sender khác admin:
                     // if (e.message.from_id !== adminId) { ... }
 
+                    Notification.requestPermission().then(p => {
+                        if (p === "granted") {
+                            navigator.serviceWorker.ready.then(reg => {
+                                reg.showNotification("Bạn có tin nhắn mới", {
+                                    body: `Bạn vừa nhận tin nhắn mới từ ${e.message.from_name}`,
+                                    icon: "/icons/chat.png",
+                                    data: {
+                                        type: "chat_admin",
+                                        user_id: e.message.from_id
+                                    }
+                                });
+                            });
+                        }
+                    });
+
                     // tải lại & tính newMessages = totalUnread - previousUnreadTotal
                     loadUserList();
                 });
@@ -371,7 +396,6 @@
 
         // Load lần đầu để khởi tạo totalUnread
         loadUserList();
-
     });
 </script>
 

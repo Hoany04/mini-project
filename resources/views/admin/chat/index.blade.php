@@ -139,6 +139,9 @@
 
                 <div class="chat-bubble">
                     {{ $msg->message }}
+                    <div style="font-size:11px;margin-top:4px;opacity:.7;">
+                        {{ $msg->created_at->format('H:i') }}
+                    </div>
                 </div>
             </div>
         @endforeach
@@ -169,11 +172,15 @@
 
         let typingTimeout;
 
-        // Format giờ
-        function formatTime() {
-            const d = new Date();
-            return d.getHours().toString().padStart(2,"0") + ":" +
-                d.getMinutes().toString().padStart(2,"0");
+        function formatServerTime(ts) {
+            if (!ts) return "";
+
+            let d = new Date(ts);
+
+            if (isNaN(d.getTime())) return "";
+
+            return d.getHours().toString().padStart(2,'0') + ":" +
+                    d.getMinutes().toString().padStart(2,'0');
         }
 
         // SEND MESSAGE
@@ -194,13 +201,13 @@
                 },
                 body: JSON.stringify({
                     message: text,
-                    user_id: userId,
+                    to_id: userId,
                 })
             })
             .then(res => res.json())
             .then(res => {
-                if (res.success) {
-                    appendMyMessage(text);
+                if (res.message) {
+                    appendMyMessage(text, res.message.created_at);
                     input.value = "";
                 }
             });
@@ -210,14 +217,15 @@
         }
 
         // UI: Append tin nhắn admin
-        function appendMyMessage(text) {
+        function appendMyMessage(text, created_at) {
+            let time = formatServerTime(created_at);
 
             let html = `
                 <div class="chat-row me">
                     <div class="chat-bubble">
                         ${text}
                         <div style="font-size:11px;text-align:right;margin-top:4px;opacity:.7;">
-                            ${formatTime()}
+                            ${time}
                         </div>
                     </div>
                 </div>
@@ -234,13 +242,15 @@
 
             if (e.message.from_id == userId) {
 
+                let time = formatServerTime(e.message.created_at);
+
                 messages.insertAdjacentHTML("beforeend", `
                     <div class="chat-row other">
-                        <img class="chat-avatar" src="${e.avatar}">
+                        <img class="chat-avatar" src="${e.message.avatar}">
                         <div class="chat-bubble">
                             ${e.message.message}
                             <div style="font-size:11px;margin-top:4px;opacity:.7;">
-                                ${formatTime()}
+                                ${time}
                             </div>
                         </div>
                     </div>

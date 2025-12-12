@@ -5,18 +5,35 @@ self.addEventListener("notificationclick", function(event) {
 
     const data = event.notification.data || {};
     const orderId = data.order_id;
-    const type = data.type || "user";  // default = user
+    // const type = data.type || "user";  // default = user
+    const userId = data.user_id;
+    const adminId = data.admin_id;
+
+    const type = data.type;
 
     let url = "/";  // fallback
 
-    // ---- URL cho admin ----
-    if (type === "admin") {
-        url = `/admin/orders/${orderId}/show`;
-    }
+    switch (type) {
 
-    // ---- URL cho user ----
-    if (type === "user") {
-        url = `/client/${orderId}`;
+        case "admin":
+            url = `/admin/orders/${orderId}/show`;
+            break;
+
+        case "user":
+            url = `/client/${orderId}`;
+            break;
+
+        case "chat_admin":
+            url = `/admin/chat/${userId}`;
+            break;
+
+        case "chat_user":
+            url = `/`;
+            break;
+
+        default:
+            console.warn("Không có type hợp lệ → fallback /");
+            break;
     }
 
     event.waitUntil(
@@ -25,14 +42,12 @@ self.addEventListener("notificationclick", function(event) {
 
                 for (let client of windowClients) {
                     // Match URL
-                    if (client.url.endsWith(url) && "focus" in client) {
+                    if (client.url.includes(url) && "focus" in client) {
                         return client.focus();
                     }
                 }
 
-                if (clients.openWindow) {
                     return clients.openWindow(url);
-                }
             })
     );
 });

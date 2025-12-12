@@ -304,8 +304,6 @@
             const chatInput  = document.getElementById('chat-message');
             const chatSend   = document.getElementById('chat-send');
 
-            let typingTimeout;
-
             @if(auth()->check())
             const userId = {{ auth()->id() }};
             @endif
@@ -313,6 +311,12 @@
             // Hàm format giờ: 13:02
             function formatTime() {
                 const d = new Date();
+                return d.getHours().toString().padStart(2,'0') + ":" +
+                    d.getMinutes().toString().padStart(2,'0');
+            }
+
+            function formatServerTime(ts) {
+                const d = new Date(ts);
                 return d.getHours().toString().padStart(2,'0') + ":" +
                     d.getMinutes().toString().padStart(2,'0');
             }
@@ -370,9 +374,9 @@
                 });
             }
 
-            function appendMessage(msg, type = "other", senderName = null) {
+            function appendMessage(msg, type = "other", senderName = null, time = null) {
 
-                let time = formatTime();
+                time = time ?? formatTime();
 
                 let bubble = `
                     <div style="margin-bottom:8px; width:100%; display:flex; ${type === 'me' ? 'justify-content:right' : 'justify-content:left'}">
@@ -403,7 +407,8 @@
                         messages.forEach(m => {
                             let type = (m.from_id == userId) ? 'me' : 'other';
                             let name = type === 'other' ? (m.sender?.name ?? 'Admin') : null;
-                            appendMessage(m.message, type, name);
+                            let time = formatServerTime(m.created_at);
+                            appendMessage(m.message, type, name, time);
                         });
                     });
             }
@@ -412,6 +417,21 @@
             @if(auth()->check())
             window.Echo.private(`chat.${userId}`)
                 .listen('.MessageSent', (e) => {
+
+                    Notification.requestPermission().then(p => {
+                        if (p === "granted") {
+                            navigator.serviceWorker.ready.then(reg => {
+                                reg.showNotification("Bạn có tin nhắn mới", {
+                                    body: `Bạn vừa nhận tin nhắn mới từ Admin`,
+                                    icon: "/icons/chat.png",
+                                    data: {
+                                        type: "chat_user",
+                                        admin_id: e.message.from_id
+                                    }
+                                });
+                            });
+                        }
+                    });
 
                     if (e.message.from_id != userId) {
 
@@ -434,7 +454,6 @@
     </script>
 
 </body>
-
 
 <!-- Mirrored from htmldemo.net/corano/corano/index-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 29 Jun 2024 09:53:50 GMT -->
 
