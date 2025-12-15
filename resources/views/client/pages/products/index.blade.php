@@ -36,10 +36,10 @@
                     <aside class="sidebar-wrapper">
                         <!-- single sidebar start -->
                         <div class="sidebar-single">
-                            <h5 class="sidebar-title">Danh mục</h5>
+                            <h5 class="sidebar-title">Category</h5>
                             @if(isset($category))
                                 <div class="mb-3">
-                                    <h4>Sản phẩm thuộc danh mục: <strong>{{ $category->name }}</strong></h4>
+                                    <h4>The product belongs to the category: <strong>{{ $category->name }}</strong></h4>
                                 </div>
                             @endif
                             <div class="sidebar-body">
@@ -75,7 +75,7 @@
 
                         <!-- single sidebar start -->
                         <div class="sidebar-single">
-                            <h5 class="sidebar-title">Lọc theo giá</h5>
+                            <h5 class="sidebar-title">Filter by price</h5>
                             <div class="sidebar-body">
 
                                 <form action="{{ route('client.pages.products.index') }}" method="GET">
@@ -84,10 +84,10 @@
 
                                     <div class="d-flex align-items-center justify-content-between mt-3">
                                         <div class="price-input">
-                                            <label for="amount">Giá: </label>
+                                            <label for="amount">Price: </label>
                                             <input type="text" id="amount" readonly style="border: none; color:#333; font-weight:bold;">
                                         </div>
-                                        <button type="submit" class="filter-btn btn btn-primary">Lọc</button>
+                                        <button type="submit" class="filter-btn btn btn-primary">Filter</button>
                                     </div>
 
                                     {{-- Hidden fields gửi dữ liệu dạng số --}}

@@ -36,12 +36,12 @@ class StripePaymentController extends Controller
             'customer' => $customer->id,
             'amount' => (int)($order->total_amount * 100),
             'currency' => 'vnd',
-            'description' => 'Thanh toán đơn hàng #' . $order->id,
+            'description' => 'Pay for your order #' . $order->id,
             'shipping' => [
                 'address' => [
                     'postal_code' => '70000',
                 ],
-                'name' => $user->name ?? 'Khách hàng',
+                'name' => $user->name ?? 'Client',
             ],
         ]);
 
@@ -57,6 +57,6 @@ class StripePaymentController extends Controller
         $order->update(['status' => 'paid']);
 
         return redirect()->route('client.pages.checkout.success', $order->id)
-                        ->with('success', 'Thanh toán Stripe thành công!');
+                        ->with('success', 'Stripe payment successful!');
     }
 }

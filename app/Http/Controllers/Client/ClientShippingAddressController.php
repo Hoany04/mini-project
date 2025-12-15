@@ -27,6 +27,6 @@ class ClientShippingAddressController extends Controller
     {
         $this->addressService->addAddress(auth()->id(), $request->validated());
 
-        return back()->with('success', 'Đã thêm địa chỉ giao hàng mới');
+        return back()->with('success', 'New delivery address added.');
     }
 }

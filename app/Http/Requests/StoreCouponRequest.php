@@ -37,36 +37,36 @@ class StoreCouponRequest extends FormRequest
     public function messages()
     {
         return [
-            'code.required' => 'Mã giảm giá là bắt buộc.',
-            'code.string' => 'Mã giảm giá phải là chuỗi ký tự.',
-            'code.max' => 'Mã giảm giá không được vượt quá 50 ký tự.',
-            'code.unique' => 'Mã giảm giá này đã tồn tại.',
+            'code.required' => 'The discount code is required.',
+            'code.string' => 'The discount code must be a string.',
+            'code.max' => 'The discount code must not exceed 50 characters.',
+            'code.unique' => 'This discount code already exists.',
 
-            'description.string' => 'Mô tả phải là chuỗi ký tự.',
+            'description.string' => 'The description must be a string.',
 
-            'discount_type.required' => 'Loại giảm giá là bắt buộc.',
-            'discount_type.in' => 'Loại giảm giá chỉ được chọn “percent” hoặc “fixed”.',
+            'discount_type.required' => 'The discount type is required.',
+            'discount_type.in' => 'The discount type must be either "percent" or "fixed".',
 
-            'discount_value.required' => 'Giá trị giảm là bắt buộc.',
-            'discount_value.numeric' => 'Giá trị giảm phải là số.',
-            'discount_value.min' => 'Giá trị giảm không được nhỏ hơn 0.',
+            'discount_value.required' => 'The discount value is required.',
+            'discount_value.numeric' => 'The discount value must be a number.',
+            'discount_value.min' => 'The discount value must not be less than 0.',
 
-            'min_order_value.numeric' => 'Giá trị đơn hàng tối thiểu phải là số.',
-            'min_order_value.min' => 'Giá trị đơn hàng tối thiểu không được nhỏ hơn 0.',
+            'min_order_value.numeric' => 'The minimum order value must be a number.',
+            'min_order_value.min' => 'The minimum order value must not be less than 0.',
 
-            'max_discount.numeric' => 'Giá trị giảm tối đa phải là số.',
-            'max_discount.min' => 'Giá trị giảm tối đa không được nhỏ hơn 0.',
+            'max_discount.numeric' => 'The maximum discount value must be a number.',
+            'max_discount.min' => 'The maximum discount value must not be less than 0.',
 
-            'start_date.date' => 'Ngày bắt đầu phải có định dạng ngày hợp lệ.',
+            'start_date.date' => 'The start date must be a valid date.',
 
-            'end_date.date' => 'Ngày kết thúc phải có định dạng ngày hợp lệ.',
-            'end_date.after_or_equal' => 'Ngày kết thúc phải sau hoặc bằng ngày bắt đầu.',
+            'end_date.date' => 'The end date must be a valid date.',
+            'end_date.after_or_equal' => 'The end date must be after or equal to the start date.',
 
-            'usage_limit.integer' => 'Giới hạn sử dụng phải là số nguyên.',
-            'usage_limit.min' => 'Giới hạn sử dụng không được nhỏ hơn 0.',
+            'usage_limit.integer' => 'The usage limit must be an integer.',
+            'usage_limit.min' => 'The usage limit must not be less than 0.',
 
-            'status.required' => 'Trạng thái là bắt buộc.',
-            'status.in' => 'Trạng thái chỉ được chọn trong: active, expired, hoặc inactive.',
+            'status.required' => 'The status is required.',
+            'status.in' => 'The status must be one of the following: active, expired, or inactive.',
         ];
     }
 }

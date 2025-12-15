@@ -2,30 +2,30 @@
 
 @section('content')
 <div class="container card">
-    <h4 class="p-4">Thêm phương thức vận chuyển</h4>
+    <h4 class="p-4">Add a shipping method</h4>
     <form action="{{ route('admin.shipping_methods.store') }}" method="POST">
         @csrf
         <div class="mb-3">
-            <label>Tên</label>
+            <label>Name</label>
             <input type="text" name="name" class="form-control" required>
         </div>
         <div class="mb-3">
-            <label>Mô tả</label>
+            <label>Description</label>
             <textarea name="description" class="form-control"></textarea>
         </div>
         <div class="mb-3">
-            <label>Phí vận chuyển</label>
+            <label>Shipping fee</label>
             <input type="number" name="fee" class="form-control" required>
         </div>
         <div class="mb-3">
-            <label>Trạng thái</label>
+            <label>Status</label>
             <select name="status" class="form-select">
-                <option value="active">Kích hoạt</option>
-                <option value="inactive">Tạm ngừng</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
             </select>
         </div>
         <button class="btn btn-success">Lưu</button>
-        <a href="{{ route('admin.shipping_methods.index') }}" class="btn btn-secondary">Hủy</a>
+        <a href="{{ route('admin.shipping_methods.index') }}" class="btn btn-secondary">Cancel</a>
     </form>
     <div class="mt-3"></div>
 </div>

@@ -31,8 +31,8 @@ class StoreCategoryRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Tên danh mục là bắt buộc',
-            'description.string' => 'Mô tả phải là chuỗi ký tự.',
+            'name.required' => 'Category name is required.',
+            'description.string' => 'The description must be a string of characters.',
         ];
     }
 }

@@ -48,7 +48,7 @@ class ClientCartController extends Controller
 
             return redirect()
                 ->route('client.pages.cart.index')
-                ->with('success', 'Đã thêm sản phẩm vào giỏ hàng!');
+                ->with('success', 'Product added to cart!');
         } catch (\Exception $e) {
             // Bắt lỗi và trả lại người dùng
             return back()
@@ -64,7 +64,7 @@ class ClientCartController extends Controller
 
         try {
             $this->cartService->updateQuantity($itemId, $data['quantity']);
-            return redirect()->route('client.pages.cart.index')->with('success', 'Cập nhật số lượng thành công!');
+            return redirect()->route('client.pages.cart.index')->with('success', 'Update successful count!');
         } catch (\Exception $e) {
             return redirect()->route('client.pages.cart.index')->with('error', $e->getMessage());
         }
@@ -108,6 +108,6 @@ class ClientCartController extends Controller
     public function destroy($itemId)
     {
         $this->cartService->deleteItem($itemId);
-        return back()->with('success', 'Đã xóa sản phẩm khỏi giỏ hàng');
+        return back()->with('success', 'The product has been removed from the shopping cart.');
     }
 }

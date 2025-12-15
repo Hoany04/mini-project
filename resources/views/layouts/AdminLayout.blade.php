@@ -205,7 +205,7 @@
     <!-- POPUP LIST -->
     <div id="chat-admin-popup">
         <div class="popup-header">
-            <span>Danh sách khách hàng</span>
+            <span>Customer list</span>
             <span id="chat-admin-close" style="cursor:pointer;">✖</span>
         </div>
 
@@ -308,7 +308,7 @@
 
         // Template user row (thêm id badge per-user để dễ update khi cần)
         function renderUserRow(u) {
-            let last = u.last_message ?? "Chưa có tin nhắn";
+            let last = u.last_message ?? "No message received.";
             let time = formatAdminTime(u.last_time);
 
             // mỗi badge user có id để có thể cập nhật realtime từng user nếu muốn
@@ -374,8 +374,8 @@
                     Notification.requestPermission().then(p => {
                         if (p === "granted") {
                             navigator.serviceWorker.ready.then(reg => {
-                                reg.showNotification("Bạn có tin nhắn mới", {
-                                    body: `Bạn vừa nhận tin nhắn mới từ ${e.message.from_name}`,
+                                reg.showNotification("You have a new message.", {
+                                    body: `You just received a new message from ${e.message.from_name}`,
                                     icon: "/icons/chat.png",
                                     data: {
                                         type: "chat_admin",
@@ -391,7 +391,7 @@
                 });
         } else {
             // nếu không có Echo, có thể poll (tùy chọn)
-            console.warn("Echo không sẵn sàng hoặc adminId null. Realtime tắt.");
+            console.warn("Echo is unavailable or adminId is null. Realtime is off.");
         }
 
         // Load lần đầu để khởi tạo totalUnread

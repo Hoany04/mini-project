@@ -24,7 +24,7 @@ class ClientProductReviewController extends controller
 
         $this->reviewService->createReview(Auth::id(), $productId, $data);
 
-        return redirect()->back()->with('success', 'Cam on ban da danh gia san pham!');
+        return redirect()->back()->with('success', 'Thank you for reviewing the product!');
     }
 }
 ?>

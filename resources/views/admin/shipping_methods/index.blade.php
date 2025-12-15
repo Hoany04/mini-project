@@ -2,10 +2,10 @@
 
 @section('content')
 <div class="container card">
-    <h4 class="p-4">Quản lý phương thức vận chuyển</h4>
+    <h4 class="p-4">Manage transportation methods</h4>
 
     <div class="text-end">
-        <a href="{{ route('admin.shipping_methods.create') }}" class="btn btn-primary mb-3">+ Thêm mới</a>
+        <a href="{{ route('admin.shipping_methods.create') }}" class="btn btn-primary mb-3">+ Add</a>
     </div>
 
     @if(session('success'))
@@ -16,10 +16,10 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Tên</th>
-                <th>Phí vận chuyển</th>
-                <th>Trạng thái</th>
-                <th>Hành động</th>
+                <th>Name</th>
+                <th>Shipping fee</th>
+                <th>Status</th>
+                <th>Act</th>
             </tr>
         </thead>
         <tbody>
@@ -37,7 +37,7 @@
                     <a href="{{ route('admin.shipping_methods.edit', $m->id) }}" class="btn btn-sm btn-warning">✏️</a>
                     <form action="{{ route('admin.shipping_methods.destroy', $m->id) }}" method="POST" style="display:inline-block;">
                         @csrf @method('DELETE')
-                        <button class="btn btn-sm btn-danger" onclick="return confirm('Xác nhận xóa?')">🗑️</button>
+                        <button class="btn btn-sm btn-danger" onclick="return confirm('Confirm deletion?')">🗑️</button>
                     </form>
                 </td>
             </tr>

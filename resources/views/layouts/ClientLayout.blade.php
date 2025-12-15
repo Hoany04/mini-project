@@ -165,15 +165,15 @@
     <!-- Cửa sổ chat -->
     <div id="chat-widget">
         <div id="chat-header">
-            <span>Hỗ trợ trực tuyến</span>
+            <span>Online support</span>
             <span id="chat-close" style="cursor:pointer;">✖</span>
         </div>
 
         <div id="chat-body"></div>
 
         <div id="chat-input">
-            <input type="text" id="chat-message" placeholder="Nhập tin nhắn...">
-            <button id="chat-send">Gửi</button>
+            <input type="text" id="chat-message" placeholder="Enter message...">
+            <button id="chat-send">Send</button>
         </div>
     </div>
     <!-- Scroll to Top End -->
@@ -421,8 +421,8 @@
                     Notification.requestPermission().then(p => {
                         if (p === "granted") {
                             navigator.serviceWorker.ready.then(reg => {
-                                reg.showNotification("Bạn có tin nhắn mới", {
-                                    body: `Bạn vừa nhận tin nhắn mới từ Admin`,
+                                reg.showNotification("You have a new message.", {
+                                    body: `You have just received a new message from the Admin.`,
                                     icon: "/icons/chat.png",
                                     data: {
                                         type: "chat_user",

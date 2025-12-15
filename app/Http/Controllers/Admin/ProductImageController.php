@@ -17,23 +17,23 @@ class ProductImageController extends Controller
     {
         $this->productImageService = $productImageService;
     }
-    
+
     public function store(StoreRequest $request, $productId)
     {
         try {
             $this->productImageService->uploadImages($productId, $request->file('images'));
-            return back()->with('success', 'Đã thêm ảnh cho sản phẩm!');
+            return back()->with('success', 'Product images have been added!');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
-        
+
     }
 
     public function destroy($productId, $id)
     {
         try {
             $this->productImageService->deleteImage($productId, $id);
-            return back()->with('success', 'Đã xóa ảnh sản phẩm!');
+            return back()->with('success', 'Product image has been deleted!');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

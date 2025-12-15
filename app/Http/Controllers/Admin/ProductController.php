@@ -54,7 +54,7 @@ class ProductController extends Controller
     {
         $this->productService->createProduct($request->validated());
 
-        return redirect()->route('admin.products.index')->with('success', 'Them san pham thanh cong');
+        return redirect()->route('admin.products.index')->with('success', 'Product added successfully.');
     }
 
     /**
@@ -73,7 +73,7 @@ class ProductController extends Controller
         $product = $this->productService->getProductById($id);
 
         if (!$product) {
-            return redirect()->route('admin.products.index')->with('error', 'San pham khong tai');
+            return redirect()->route('admin.products.index')->with('error', 'The product does not exist.');
         }
         $categories = Category::all();
         return view('admin.products.edit', compact('product', 'categories'));
@@ -93,7 +93,7 @@ class ProductController extends Controller
             if (!$itemProduct) {
                 return redirect()
                     ->route('admin.products.index')
-                    ->with('error', 'Sản phẩm không tồn tại');
+                    ->with('error', 'The product does not exist.');
             }
 
             $this->productRepo->update($itemProduct, $data);
@@ -101,14 +101,14 @@ class ProductController extends Controller
             DB::commit();
             return redirect()
                 ->route('admin.products.index')
-                ->with('success', 'Cập nhật sản phẩm thành công');
+                ->with('success', 'Product update successful.');
         } catch (\Throwable $th) {
             DB::rollBack();
             // Có thể ghi log lỗi tại đây
             Log::error($th);
             return redirect()
                 ->route('admin.products.index')
-                ->with('error', 'Có lỗi xảy ra khi cập nhật sản phẩm');
+                ->with('error', 'An error occurred while updating the product.');
         }
     }
 
@@ -134,12 +134,12 @@ class ProductController extends Controller
     public function restore($id)
     {
         $this->productService->restoreProduct($id);
-        return redirect()->route('admin.products.trashed')->with('success', 'Đã khôi phục sản phẩm!');
+        return redirect()->route('admin.products.trashed')->with('success', 'Product restored!');
     }
 
     public function forceDelete($id)
     {
         $this->productService->forceDeleteProduct($id);
-        return redirect()->route('admin.products.trashed')->with('success', 'Đã xóa vĩnh viễn sản phẩm!');
+        return redirect()->route('admin.products.trashed')->with('success', 'The product has been permanently removed!');
     }
 }

@@ -24,12 +24,13 @@ class StoreOrderRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'paymentmethod.required' => 'Vui lòng chọn phương thức thanh toán.',
-            'shipping_address_id.required' => 'Vui lòng chọn địa chỉ giao hàng.',
-            'shipping_address_id.exists' => 'Địa chỉ giao hàng không hợp lệ.',
-            'shipping_method_id.required' => 'Vui lòng chọn phương thức vận chuyển.',
-            'shipping_method_id.exists' => 'Phương thức vận chuyển không tồn tại.',
-            'delivery_note.max' => 'Ghi chú không được vượt quá 255 ký tự.',
+            'paymentmethod.required' => 'Please select a payment method.',
+            'shipping_address_id.required' => 'Please select a shipping address.',
+            'shipping_address_id.exists' => 'The selected shipping address is invalid.',
+            'shipping_method_id.required' => 'Please select a shipping method.',
+            'shipping_method_id.exists' => 'The selected shipping method does not exist.',
+            'delivery_note.max' => 'The note must not exceed 255 characters.',
+
         ];
     }
 }

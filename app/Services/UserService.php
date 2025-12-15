@@ -31,7 +31,7 @@ class UserService
             try{
                 $data['status'] = UserStatus::from($data['status'])->value;
             } catch (\ValueError $e) {
-                throw new \Exception("Trạng thái user không hợp lệ");
+                throw new \Exception("Invalid user status");
             }
         }
 
@@ -49,7 +49,7 @@ class UserService
         $user = $this->userRepo->findById($id);
 
         if (!$user) {
-            throw new \Exception("Không tìm thấy user ID: $id");
+            throw new \Exception("User ID not found: $id");
         }
 
         // Nếu có password trong data thì mã hóa lại
@@ -63,7 +63,7 @@ class UserService
             try {
                 $newStatus = UserStatus::from($data['status']);
             } catch (\ValueError $e) {
-                throw new \Exception("Trạng thái user không hợp lệ");
+                throw new \Exception("Invalid user status");
             }
 
             if ($newStatus === UserStatus::INACTIVE) {

@@ -33,7 +33,7 @@ use App\Enums\UserStatus;
 
             <div class="col-md-3">
                 <select name="status" class="form-select">
-                    <option value="">-- Trạng thái --</option>
+                    <option value="">-- Status --</option>
                     @foreach (UserStatus::cases() as $status)
                         <option value="{{ $status->value }}"
                             {{ request('status') == $status->value ? 'selected' : '' }}>
@@ -44,7 +44,7 @@ use App\Enums\UserStatus;
             </div>
 
             <div class="col-md-2">
-                <button class="btn btn-primary w-100">Lọc</button>
+                <button class="btn btn-primary w-100">Filter</button>
             </div>
         </form>
 
@@ -86,7 +86,7 @@ use App\Enums\UserStatus;
                         </td>
                     </tr>
                     @empty
-            <tr><td colspan="6" class="text-center text-muted">Không tìm thấy người dùng nào</td></tr>
+            <tr><td colspan="6" class="text-center text-muted">No users found</td></tr>
                 @endforelse
             </tbody>
         </table>

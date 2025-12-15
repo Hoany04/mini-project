@@ -21,7 +21,7 @@ class UpdateOrderStatusRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'status.required' => 'Trạng thái đơn hàng là bắt buộc.',
+            'status.required' => 'Order status is required.',
         ];
     }
 }

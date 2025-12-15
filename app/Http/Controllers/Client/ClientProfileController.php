@@ -25,7 +25,7 @@ class ClientProfileController extends Controller
 
         $this->userProfileService->updateProfile($user, $validated);
 
-        return redirect()->back()->with('success', 'Cập nhật hồ sơ thành công!');
+        return redirect()->back()->with('success', 'Profile updated successfully!');
     }
 }
 

@@ -40,7 +40,7 @@ class ProductService
             try {
                 $data['status'] = ProductStatus::from($data['status'])->value;
             } catch (\ValueError $e) {
-                throw new \Exception("Trạng thái sản phẩm không hợp lệ");
+                throw new \Exception("Invalid product status");
             }
         }
 
@@ -65,15 +65,15 @@ class ProductService
 
             return [
                 'success' => false,
-                'message' => 'San pham dang ton tai trong don hang, he thong chuyen sang trang thai "Ngung hoat dong" . '
+                'message' => 'The product is currently in the order; the system has switched to "Inactive" status . '
             ];
         }
 
         $this->productRepo->delete($product);
-        
+
         return [
             'success' => true,
-            'message' => 'Da xoa san pham thanh cong.'
+            'message' => 'The product has been successfully removed.'
         ];
     }
 

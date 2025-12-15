@@ -171,12 +171,12 @@
                                             {{ $defaultAddress->district }}, {{ $defaultAddress->province }}
                                         </div>
                                     @else
-                                        <p>Chưa có địa chỉ mặc định. Hãy thêm địa chỉ giao hàng.</p>
+                                        <p>No default address provided. Please add a shipping address.</p>
                                     @endif
 
                                     {{-- Chọn địa chỉ khác --}}
                                     <div class="mb-3">
-                                        <label class="form-label">Chọn địa chỉ giao hàng</label>
+                                        <label class="form-label">Select delivery address</label>
                                         @foreach($addresses as $address)
                                             <div class="form-check">
                                                 <input type="radio"
@@ -194,14 +194,14 @@
                                       </div>
 
                                       <div class="mb-3">
-                                        <label for="delivery_note" class="form-label">Ghi chú giao hàng (tuỳ chọn)</label>
+                                        <label for="delivery_note" class="form-label">Delivery notes (optional)</label>
                                         <textarea name="delivery_note" id="delivery_note" class="form-control" rows="3"
-                                                  placeholder="Ví dụ: Giao hàng trong giờ hành chính, gọi trước khi giao..."></textarea>
+                                                  placeholder="For example: Delivery during business hours, call before delivery..."></textarea>
                                     </div>
 
                                     {{-- Nút mở modal thêm địa chỉ --}}
                                     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
-                                        + Thêm địa chỉ mới
+                                        + Add a new address
                                     </button>
                                 {{-- </div> --}}
                         </div>
@@ -221,8 +221,8 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Sản phẩm</th>
-                                            <th>Thành tiền</th>
+                                            <th>Product</th>
+                                            <th>Total amount</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -235,17 +235,17 @@
                                     </tbody>
                                     @if($cart->coupon)
                                         <tr>
-                                            <td>Mã giảm giá:</td>
+                                            <td>Discount code:</td>
                                             <td class="text-start text-success">{{ $cart->coupon->code }} ({{ $cart->coupon->discount_type == 'percent' ? $cart->coupon->discount_value . '%' : number_format($cart->coupon->discount_value) . 'đ' }})</td>
                                         </tr>
                                         <tr>
-                                            <td>Giảm giá:</td>
+                                            <td>Discount:</td>
                                             <td id="discount" class="text-start text-danger">-{{ number_format($cart->discount) }}đ</td>
                                         </tr>
                                     @endif
                                     <tfoot>
                                         <tr>
-                                            <td>Tổng tạm tính</td>
+                                            <td>Estimated total</td>
                                             <td><strong>{{ number_format($cart->total_price) }}đ</strong></td>
                                         </tr>
                                     </tfoot>
@@ -256,7 +256,7 @@
                             <div class="order-payment-method">
 
                                 <tr>
-                                    <td>Phương thức giao hàng</td>
+                                    <td>Delivery method</td>
                                     <td class="d-flex justify-content-center">
                                         <ul class="shipping-type">
                                             @foreach ($methods as $method)
@@ -281,26 +281,26 @@
 
                                 <div class="custom-control custom-radio">
                                     <input type="radio" id="cashon" name="paymentmethod" value="cash" class="custom-control-input" checked>
-                                    <label class="custom-control-label" for="cashon">Thanh toán khi nhận hàng</label> <br>
+                                    <label class="custom-control-label" for="cashon">Payment upon delivery</label> <br>
                                 </div>
-                                <div class="custom-control custom-radio">
+                                {{-- <div class="custom-control custom-radio">
                                     <input type="radio" id="paypalpayment" name="paymentmethod" value="paypal" class="custom-control-input">
                                     <label class="custom-control-label" for="paypalpayment">Thanh toán qua ví điện tử</label> <br>
-                                </div>
+                                </div> --}}
 
                                 <div class="single-payment-method">
                                     <div class="payment-method-name">
                                         <div class="custom-control custom-radio">
                                             <input type="radio" id="stripe" name="paymentmethod" value="stripe" class="custom-control-input" />
                                             <label class="custom-control-label" for="stripe">
-                                                Thanh toán qua Stripe
+                                                Payment via Stripe
                                                 <img src="{https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Stripe_logo%2C_revised_2016.svg/2560px-Stripe_logo%2C_revised_2016.svg.png}"
                                                      alt="Stripe" style="width:60px; margin-left:5px;">
                                             </label>
                                         </div>
                                     </div>
                                     <div class="payment-method-details" data-method="stripe">
-                                        <p>Thanh toán an toàn bằng thẻ Visa, Mastercard qua Stripe.</p>
+                                        <p>Pay securely with Visa and Mastercard cards via Stripe.</p>
                                     </div>
                                 </div>
 
@@ -312,7 +312,7 @@
                                     </div>
 
                                 <div class="summary-footer-area">
-                                    <button type="submit" class="btn btn-sqr">Đặt hàng</button>
+                                    <button type="submit" class="btn btn-sqr">Order</button>
                                 </div>
                             </div>
                         </div>
@@ -328,47 +328,47 @@
                     <form action="{{ route('client.pages.addresses.store') }}" method="POST">
                         @csrf
                         <div class="modal-header">
-                            <h5 class="modal-title" id="addAddressModalLabel">Thêm địa chỉ giao hàng</h5>
+                            <h5 class="modal-title" id="addAddressModalLabel">Add a delivery address</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-2">
-                                <label>Họ tên</label>
+                                <label>Full name</label>
                                 <input type="text" name="full_name" class="form-control" >
                                 @error('full_name')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="mb-2">
-                                <label>Số điện thoại</label>
+                                <label>Phone number</label>
                                 <input type="text" name="phone" class="form-control">
                                 @error('phone')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="mb-2">
-                                <label>Tỉnh/Thành phố</label>
+                                <label>Province/City</label>
                                 <input type="text" name="province" class="form-control">
                                 @error('province')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="mb-2">
-                                <label>Quận/Huyện</label>
+                                <label>District/County</label>
                                 <input type="text" name="district" class="form-control">
                                 @error('district')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="mb-2">
-                                <label>Phường/Xã</label>
+                                <label>Ward/Commune</label>
                                 <input type="text" name="ward" class="form-control" >
                                 @error('ward')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="mb-2">
-                                <label>Địa chỉ chi tiết</label>
+                                <label>Detailed address</label>
                                 <input type="text" name="address_detail" class="form-control" >
                                 @error('address_detail')
                                     <small class="text-danger">{{ $message }}</small>
@@ -376,12 +376,12 @@
                             </div>
                             <div class="form-check mb-2">
                                 <input type="checkbox" name="is_default" class="form-check-input" id="is_default" value="1">
-                                <label class="form-check-label" for="is_default">Đặt làm mặc định</label>
+                                <label class="form-check-label" for="is_default">Set as default</label>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                            <button type="submit" class="btn btn-primary">Lưu địa chỉ</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save address</button>
                         </div>
                     </form>
                 </div>

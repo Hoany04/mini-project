@@ -187,7 +187,7 @@
                             <small class="text-muted">{{ $notify->created_at->diffForHumans() }}</small>
                         </li>
                     @empty
-                        <li class="dropdown-item text-muted">Không có thông báo</li>
+                        <li class="dropdown-item text-muted">No notification</li>
                     @endforelse
                 </ul>
             </li>
@@ -312,18 +312,18 @@ document.addEventListener('DOMContentLoaded', () => {
     //     Event = .NewOrderNotification
 
     channel.listen('.NewOrderNotification', (data) => {
-            console.log("🔔 Nhận realtime:", data);
+            // console.log("🔔 Nhận realtime:", data);
 
         const orderId    = data.order_id;
-        const userName   = data.user_name || "Khách hàng";
+        const userName   = data.user_name || "Client";
         const total      = data.total || 0;
-        const message    = data.message || `Đơn hàng #${orderId} mới`;
+        const message    = data.message || `Order #${orderId} new`;
 
         Notification.requestPermission().then(permission => {
             if (permission === 'granted') {
                 navigator.serviceWorker.ready.then(reg => {
                     reg.showNotification(message, {
-                        body: `Tổng tiền: ${total}₫`,
+                        body: `Total amount: ${total}₫`,
                         icon: '/icons/order.png',
                         data: {
                             order_id: orderId,
@@ -340,7 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
             position: 'top-end',
             icon: 'info',
             title: message,
-            text: `Tổng tiền: ${total}₫`,
+            text: `Total amount: ${total}₫`,
             showConfirmButton: false,
             timer: 3000,
             timerProgressBar: true
@@ -366,8 +366,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
 
                     <div class="flex-grow-1">
-                        <h6 class="mb-1">Đơn hàng mới #${orderId}</h6>
-                        <p class="mb-0">Khách: ${userName}</p>
+                        <h6 class="mb-1">New order #${orderId}</h6>
+                        <p class="mb-0">Client: ${userName}</p>
                         <small class="text-muted">${new Date().toLocaleString()}</small>
                     </div>
 

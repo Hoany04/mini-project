@@ -32,7 +32,7 @@ class CouponController extends Controller
     public function store(StoreCouponRequest $request)
     {
         $this->couponService->createCoupon($request->validated());
-        return redirect()->route('admin.coupons.index')->with('success', 'Da tao coupon');
+        return redirect()->route('admin.coupons.index')->with('success', 'Coupon created');
     }
 
     public function edit($id)
@@ -40,7 +40,7 @@ class CouponController extends Controller
         $coupon = $this->couponService->getCouponById($id);
 
         if (!$coupon) {
-            return redirect()->route('admin.coupons.index')->with('error', 'Ma giam gia khong ton tai');
+            return redirect()->route('admin.coupons.index')->with('error', 'The discount code does not exist.');
         }
         return view('admin.coupons.edit', compact('coupon'));
     }
@@ -48,12 +48,12 @@ class CouponController extends Controller
     public function update(UpdateCouponRequest $request, $id)
     {
         $this->couponService->updateCoupon($id, $request->validated());
-        return redirect()->route('admin.coupons.index')->with('success', 'Da cap nhat coupon');
+        return redirect()->route('admin.coupons.index')->with('success', 'Coupon has been updated.');
     }
 
     public function destroy($id)
     {
         $this->couponService->deleteCoupon($id);
-        return redirect()->route('admin.coupons.index')->with('success', 'Da xoa coupon');
+        return redirect()->route('admin.coupons.index')->with('success', 'Coupon has been deleted.');
     }
 }

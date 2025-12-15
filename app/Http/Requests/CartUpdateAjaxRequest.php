@@ -22,10 +22,10 @@ class CartUpdateAjaxRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'item_id.required' => 'Không tìm thấy sản phẩm trong giỏ.',
-            'item_id.exists' => 'Sản phẩm trong giỏ không tồn tại.',
-            'quantity.required' => 'Vui lòng nhập số lượng.',
-            'quantity.min' => 'Số lượng phải lớn hơn 0.',
+            'item_id.required' => 'No products were found in the cart.',
+            'item_id.exists' => 'The product in the cart does not exist.',
+            'quantity.required' => 'Please enter the quantity.',
+            'quantity.min' => 'The number must be greater than 0.',
         ];
     }
 }

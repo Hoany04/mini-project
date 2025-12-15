@@ -25,8 +25,8 @@ class ApiOrderRequest extends FormRequest
     public function messages()
     {
         return [
-            'items.*.product_id.exists' => 'Sản phẩm không tồn tại.',
-            'items.*.quantity.min'      => 'Số lượng phải lớn hơn 0.',
+            'items.*.product_id.exists' => 'The product does not exist.',
+            'items.*.quantity.min'      => 'The number must be greater than 0.',
         ];
     }
 }

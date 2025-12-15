@@ -26,14 +26,14 @@ class UpdateProfileRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'phone.required' => 'Số điện thoại là bắt buộc.',
-            'phone.max' => 'Số điện thoại không được vượt quá 15 ký tự.',
-            'address.max' => 'Địa chỉ không được vượt quá 255 ký tự.',
-            'city.max' => 'Tên thành phố không được vượt quá 100 ký tự.',
-            'country.max' => 'Tên quốc gia không được vượt quá 100 ký tự.',
-            'avatar.image' => 'Ảnh đại diện phải là định dạng hình ảnh.',
-            'avatar.mimes' => 'Ảnh đại diện chỉ chấp nhận các định dạng jpeg, png, jpg, gif, webp.',
-            'avatar.max' => 'Ảnh đại diện không được vượt quá 2MB.',
+            'phone.required' => 'The phone number is required.',
+            'phone.max' => 'The phone number must not exceed 15 characters.',
+            'address.max' => 'The address must not exceed 255 characters.',
+            'city.max' => 'The city name must not exceed 100 characters.',
+            'country.max' => 'The country name must not exceed 100 characters.',
+            'avatar.image' => 'The avatar must be an image.',
+            'avatar.mimes' => 'The avatar must be a file of type: jpeg, png, jpg, gif, webp.',
+            'avatar.max' => 'The avatar must not exceed 2MB.',
         ];
     }
 }

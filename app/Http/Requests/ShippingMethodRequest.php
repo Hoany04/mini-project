@@ -24,9 +24,9 @@ class ShippingMethodRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Tên phương thức không được để trống',
-            'fee.required' => 'Phí vận chuyển là bắt buộc',
-            'status.in' => 'Trạng thái không hợp lệ',
+            'name.required' => 'The method name is required.',
+            'fee.required' => 'The shipping fee is required.',
+            'status.in' => 'The selected status is invalid.',
         ];
     }
 }

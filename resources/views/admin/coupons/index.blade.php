@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="container mt-4 card">
-    <h4 class="mb-3 p-4">Danh sách mã giảm giá</h4>
+    <h4 class="mb-3 p-4">List of discount codes</h4>
     <div class="text-end">
-        <a href="{{ route('admin.coupons.create') }}" class="btn btn-primary mb-3">+ Thêm mã mới</a>
+        <a href="{{ route('admin.coupons.create') }}" class="btn btn-primary mb-3">+ Add Coupon</a>
     </div>
 
     @if(session('success'))
@@ -15,14 +15,14 @@
         <thead class="table-light">
             <tr class="text-center">
                 <th>ID</th>
-                <th>Mã</th>
-                <th>Loại</th>
-                <th>Giá trị</th>
-                <th>Đơn tối thiểu</th>
-                <th>Ngày bắt đầu</th>
-                <th>Ngày kết thúc</th>
-                <th>Trạng thái</th>
-                <th width="18%">Hành động</th>
+                <th>Code</th>
+                <th>Type</th>
+                <th>Value</th>
+                <th>Minimum order</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Status</th>
+                <th width="18%">Act</th>
             </tr>
         </thead>
         <tbody>
@@ -44,7 +44,7 @@
                         <a href="{{ route('admin.coupons.edit', $coupon->id) }}" class="btn btn-sm btn-warning">✏️</a>
                         <form action="{{ route('admin.coupons.destroy', $coupon->id) }}" method="POST" style="display:inline-block">
                             @csrf @method('DELETE')
-                            <button class="btn btn-sm btn-danger" onclick="return confirm('Xóa mã này?')">🗑️</button>
+                            <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this code?')">🗑️</button>
                         </form>
                     </td>
                 </tr>

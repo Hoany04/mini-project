@@ -4,7 +4,7 @@ use App\Enums\ProductStatus;
 @endphp
 @section('content')
     <div class="container mt-4 col-md-8 card">
-        <h3 class="p-4">Cập nhật sản phẩm</h3>
+        <h3 class="p-4">Product update</h3>
 
         <form method="POST" action="{{ route('admin.products.update', $product->id) }}">
             @csrf
@@ -12,7 +12,7 @@ use App\Enums\ProductStatus;
 
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Tên sản phẩm</label>
+                    <label class="form-label">Product name</label>
                     <input type="text" name="name" class="form-control" value="{{ old('name', $product->name) }}"
                         required>
                         @error('name')
@@ -21,7 +21,7 @@ use App\Enums\ProductStatus;
                 </div>
 
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Danh mục</label>
+                    <label class="form-label">Category</label>
                     <select name="category_id" class="form-select" required>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}"
@@ -33,7 +33,7 @@ use App\Enums\ProductStatus;
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <label class="form-label">Giá</label>
+                    <label class="form-label">Price</label>
                     <input type="number" name="price" class="form-control" value="{{ old('price', $product->price) }}"
                         required>
                         @error('price')
@@ -42,7 +42,7 @@ use App\Enums\ProductStatus;
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <label class="form-label">Tồn kho</label>
+                    <label class="form-label">Inventory</label>
                     <input type="number" name="stock" class="form-control" value="{{ old('stock', $product->stock) }}"
                         required>
                         @error('stock')
@@ -51,7 +51,7 @@ use App\Enums\ProductStatus;
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <label class="form-label">Trạng thái</label>
+                    <label class="form-label">Status</label>
                     <select name="status" class="form-select" required>
                         @foreach (ProductStatus::cases() as $status)
                             <option value="{{ $status->value }}"
@@ -63,16 +63,16 @@ use App\Enums\ProductStatus;
                 </div>
 
                 <div class="col-12 mb-3">
-                    <label class="form-label">Mô tả</label>
+                    <label class="form-label">Description</label>
                     <textarea name="description" rows="4" class="form-control">{{ old('description', $product->description) }}</textarea>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Cập nhật sản phẩm</button>
+            <button type="submit" class="btn btn-primary w-100">Update Product</button>
         </form>
 
         <hr>
-        <h5>Hình ảnh sản phẩm</h5>
+        <h5>Product images</h5>
 
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
@@ -84,7 +84,7 @@ use App\Enums\ProductStatus;
             <div class="mb-3">
                 <input type="file" name="images[]" multiple class="form-control" required>
             </div>
-            <button class="btn btn-secondary">Thêm ảnh</button>
+            <button class="btn btn-secondary">Add Image</button>
         </form>
 
         <div class="row mt-3">
@@ -95,13 +95,13 @@ use App\Enums\ProductStatus;
                         <img src="{{ asset('storage/' . $img->image_url) }}" class="card-img-top" alt="Ảnh sản phẩm">
                         <div class="card-body p-2">
                             @if ($img->is_main)
-                                <span class="badge bg-success mb-2">Ảnh chính</span>
+                                <span class="badge bg-success mb-2">Main image</span>
                             @endif
                             <form method="POST"
                                 action="{{ route('admin.products.images.destroy', [$product->id, $img->id]) }}"
-                                onsubmit="return confirm('Xóa ảnh này?')">
+                                onsubmit="return confirm('Delete this photo?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger w-100">Xóa</button>
+                                <button class="btn btn-sm btn-danger w-100">Delete</button>
                             </form>
                         </div>
                     </div>

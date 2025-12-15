@@ -28,7 +28,7 @@ class ProductReviewController extends Controller
     {
         try {
             $this->productReviewService->toggleVisibility($id);
-            return back()->with('success', 'Đã cập nhật trạng thái hiển thị của đánh giá');
+            return back()->with('success', 'The display status of the review has been updated.');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -38,7 +38,7 @@ class ProductReviewController extends Controller
     {
         try {
             $this->productReviewService->deleteReview($id);
-            return back()->with('success', 'Đã xóa đánh giá thành công');
+            return back()->with('success', 'Review successfully deleted');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

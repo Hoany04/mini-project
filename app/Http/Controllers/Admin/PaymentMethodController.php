@@ -31,7 +31,7 @@ class PaymentMethodController extends Controller
     {
         $this->service->create($request->validated());
         return redirect()->route('admin.payment-methods.index')
-            ->with('success', 'Thêm phương thức thanh toán thành công!');
+            ->with('success', 'Payment method added successfully.!');
     }
 
     public function edit($id)
@@ -44,12 +44,12 @@ class PaymentMethodController extends Controller
     {
         $this->service->update($id, $request->validated());
         return redirect()->route('admin.payment-methods.index')
-            ->with('success', 'Cập nhật thành công!');
+            ->with('success', 'Update successful!');
     }
 
     public function destroy($id)
     {
         $this->service->delete($id);
-        return back()->with('success', 'Xoá thành công!');
+        return back()->with('success', 'Deleted successfully!');
     }
 }

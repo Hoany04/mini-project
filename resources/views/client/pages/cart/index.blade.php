@@ -30,15 +30,15 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
     <div class="container py-5">
-        <h2 class="mb-4">Giỏ hàng</h2>
+        <h2 class="mb-4">Shopping cart</h2>
         @if($cart && $cart->items->count())
             <table class="table table-bordered align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th>Sản phẩm</th>
-                        <th>Giá</th>
-                        <th>Số lượng</th>
-                        <th>Tạm tính</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Estimate</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -62,14 +62,14 @@
                                 @csrf @method('PUT')
                                 <input type="number" name="quantity" class="form-control text-center cart-quantity"
                                 data-item-id="{{ $item->id }}" data-price="{{ $item->price }}" value="{{ $item->quantity }}" min="1" class="form-control w-50 me-2">
-                                <button class="btn btn-sm btn-outline-success">Cập nhật</button>
+                                <button class="btn btn-sm btn-outline-success">Update</button>
                             </form>
                         </td>
                         <td id="subtotal-{{ $item->id }}">{{ number_format($item->price * $item->quantity, 0, ',', '.') }}₫</td>
                         <td>
                             <form action="{{ route('client.pages.cart.destroy', $item->id) }}" method="POST">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-outline-danger">Xóa</button>
+                                <button class="btn btn-sm btn-outline-danger">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -80,18 +80,18 @@
             <div class="cart-coupon-section">
                 <form action="{{ route('client.pages.coupon.apply') }}" method="POST" class="d-flex">
                     @csrf
-                    <input type="text" name="coupon" class="form-control" placeholder="Nhập mã giảm giá">
-                    <button type="submit" class="btn btn-primary ms-2">Áp dụng</button>
+                    <input type="text" name="coupon" class="form-control" placeholder="Enter discount code">
+                    <button type="submit" class="btn btn-primary ms-2">Apply</button>
                 </form>
 
                 @if(session('coupon'))
                     <div class="alert alert-success mt-2">
-                        Mã <strong>{{ session('coupon.code') }}</strong> được áp dụng! Giảm
+                        Code <strong>{{ session('coupon.code') }}</strong> Discount applied!
                         <span class="text-danger">{{ number_format(session('coupon.discount'), 0, ',', '.') }}₫</span>
                         <form action="{{ route('client.pages.coupon.remove') }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button class="btn btn-sm btn-link text-danger">Xóa</button>
+                            <button class="btn btn-sm btn-link text-danger">Delete</button>
                         </form>
                     </div>
                 @endif
@@ -102,41 +102,41 @@
             </div>
             <br>
                 <div class="cart-summary mt-4">
-                    <h5>Tóm tắt đơn hàng</h5>
+                    <h5>Order Summary</h5>
                     <table class="table">
                         <tr>
-                            <td>Tổng tiền sản phẩm:</td>
+                            <td>Total product price:</td>
                             <td id="cart-total" class="text-end">{{ number_format($cart->items->sum(fn($i) => $i->price * $i->quantity)) }}đ</td>
                         </tr>
 
                         @if($cart->coupon)
                             <tr>
-                                <td>Mã giảm giá:</td>
+                                <td>Discount code:</td>
                                 <td class="text-end text-success">{{ $cart->coupon->code }} ({{ $cart->coupon->discount_type == 'percent' ? $cart->coupon->discount_value . '%' : number_format($cart->coupon->discount_value) . 'đ' }})</td>
                             </tr>
                             <tr>
-                                <td>Giảm giá:</td>
+                                <td>Discount:</td>
                                 <td id="discount" class="text-end text-danger">-{{ number_format($cart->discount) }}đ</td>
                             </tr>
                         @endif
 
                         <tr class="fw-bold border-top">
-                            <td>Tổng thanh toán:</td>
+                            <td>Total payment:</td>
                             <td id="final-total" class="text-end text-danger fs-5">{{ number_format($cart->total_price) }}đ</td>
                         </tr>
                     </table>
 
                     <div class="text-center my-3">
                         <button id="checkout-btn" class="btn btn-cart2">
-                            Tiến hành thanh toán
+                            Proceed with payment
                         </button>
-                        
+
                         <form id="checkout-form" action="{{ route('client.pages.checkout.order') }}" method="GET" style="display:none;"></form>
-                        
+
                     </div>
                 </div>
         @else
-            <p>Giỏ hàng của bạn đang trống.</p>
+            <p>Your shopping cart is empty..</p>
         @endif
     </div>
 </main>
@@ -172,15 +172,15 @@
                 .then(data => {
                     if (data.success) {
                         const subtotal = price * quantity;
-                        document.querySelector("#subtotal-" + itemId).innerText = 
+                        document.querySelector("#subtotal-" + itemId).innerText =
                         subtotal.toLocaleString('vi-VN') + "đ";
 
-                        document.querySelector("#cart-total").innerText = 
+                        document.querySelector("#cart-total").innerText =
                         data.cart_total + "đ";
 
-                        document.querySelector("#discount").innerText = 
+                        document.querySelector("#discount").innerText =
                         "-" + data.discount + "đ";
-                        
+
                         document.querySelector("#final-total").innerText = data.final_total + "đ";
                     }
                 });
@@ -190,25 +190,25 @@
     </script>
     <script>
         let isQuantityChanged = false;
-        
+
         // Khi thay đổi số lượng
         document.querySelectorAll('.cart-quantity').forEach(input => {
             input.addEventListener('change', function () {
                 isQuantityChanged = true;
             });
         });
-        
+
         document.getElementById('checkout-btn').addEventListener('click', function () {
-        
+
             if (isQuantityChanged) {
-                alert('Bạn đã thay đổi số lượng nhưng chưa bấm nút CẬP NHẬT!');
+                alert('You`ve changed the quantity but haven`t clicked the UPDATE button yet!');
                 return;
             }
-        
-            if (confirm('Bạn đã chắc chắn cập nhật đúng số lượng sản phẩm trước khi thanh toán chưa?')) {
+
+            if (confirm('Have you made sure to double-check the product quantities before proceeding with payment?')) {
                 document.getElementById('checkout-form').submit();
             }
         });
         </script>
-        
+
 @endsection

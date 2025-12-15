@@ -43,7 +43,7 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         $this->categoryService->createCategory($request->validated());
-        return redirect()->route('admin.categorys.index')->with('success', 'Them danh muc thanh cong');
+        return redirect()->route('admin.categorys.index')->with('success', 'Category added successfully.');
     }
 
     /**
@@ -62,7 +62,7 @@ class CategoryController extends Controller
         $category = $this->categoryService->getCategoryById($id);
 
         if(!$category) {
-            return redirect()->route('admin.categorys.index')->with('error', 'Danh muc khong ton tai');
+            return redirect()->route('admin.categorys.index')->with('error', 'The category does not exist.');
         }
         $parentCategories = $this->categoryService->getParentCategories();
         return view('admin.categorys.edit', compact('parentCategories', 'category'));
@@ -74,7 +74,7 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, $id)
     {
         $this->categoryService->updateCategory($id, $request->validated());
-        return redirect()->route('admin.categorys.index')->with('success', 'Cap nhat danh muc thanh cong');
+        return redirect()->route('admin.categorys.index')->with('success', 'Catalog update successful');
     }
 
     /**
@@ -83,6 +83,6 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $this->categoryService->deleteCategory($id);
-        return redirect()->route('admin.categorys.index')->with('success', 'Xoa danh muc thanh cong');
+        return redirect()->route('admin.categorys.index')->with('success', 'Category deleted successfully.');
     }
 }

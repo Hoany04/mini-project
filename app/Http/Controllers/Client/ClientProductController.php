@@ -33,7 +33,7 @@ class ClientProductController extends Controller
 
         if (!$product) {
             return redirect()->route('client.pages.products.index')
-                ->with('error', 'Sản phẩm không tồn tại');
+                ->with('error', 'The product does not exist.');
         }
 
         $products = $this->productService->getProductsForList();

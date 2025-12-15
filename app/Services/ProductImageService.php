@@ -23,7 +23,7 @@ class ProductImageService
 
         foreach ($images as $index => $image) {
             if (!($image instanceof UploadedFile)) {
-                throw new \Exception('File tải lên không hợp lệ!');
+                throw new \Exception('Invalid file upload!');
             }
 
             // Lưu vào thư mục storage/app/public/products
@@ -43,7 +43,7 @@ class ProductImageService
         $image = $this->productImageRepo->findImage($imageId);
 
         if ($image->product_id != $productId) {
-            throw new \Exception("Ảnh không thuộc về sản phẩm này!");
+            throw new \Exception("The image does not belong to this product!");
         }
 
         return $this->productImageRepo->deleteImage($image);

@@ -28,14 +28,14 @@ class ShippingAddressRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'full_name.required' => 'Vui lòng nhập họ và tên người nhận.',
-            'phone.required' => 'Vui lòng nhập số điện thoại.',
-            'province.required' => 'Vui lòng chọn tỉnh/thành phố.',
-            'district.required' => 'Vui lòng chọn quận/huyện.',
-            'ward.required' => 'Vui lòng chọn phường/xã.',
-            'address_detail.required' => 'Vui lòng nhập địa chỉ chi tiết.',
-            'phone.max' => 'Số điện thoại không vượt quá 15 ký tự.',
-            'address_detail.max' => 'Địa chỉ không vượt quá 255 ký tự.',
+            'full_name.required' => 'Please enter the recipient\'s full name.',
+            'phone.required' => 'Please enter a phone number.',
+            'province.required' => 'Please select a province/city.',
+            'district.required' => 'Please select a district.',
+            'ward.required' => 'Please select a ward.',
+            'address_detail.required' => 'Please enter the detailed address.',
+            'phone.max' => 'The phone number must not exceed 15 characters.',
+            'address_detail.max' => 'The address must not exceed 255 characters.',
         ];
     }
 }

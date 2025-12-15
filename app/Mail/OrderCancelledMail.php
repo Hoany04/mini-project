@@ -19,7 +19,7 @@ class OrderCancelledMail extends Mailable
 
     public function build()
     {
-        return $this->subject("Đơn hàng #{$this->order->id} đã bị hủy")
+        return $this->subject("Order #{$this->order->id} has been canceled")
             ->view('emails.orders.cancelled');
     }
 }

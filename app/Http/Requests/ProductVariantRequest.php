@@ -31,9 +31,9 @@ class ProductVariantRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'variant_name.required'  => 'Ten bien the khong duoc de trong',
-            'variant_value.required' => 'Gia tri bien the khong duoc de trong',
-            'stock.required'         => 'So luong bien the khong duoc de trong',
+            'variant_name.required'  => 'Variant names cannot be left blank.',
+            'variant_value.required' => 'The variation value cannot be left blank.',
+            'stock.required'         => 'The number of variants cannot be left blank.',
         ];
     }
 }

@@ -21,8 +21,8 @@ class UpdateCartRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'quantity.required' => 'Vui lòng nhập số lượng.',
-            'quantity.min' => 'Số lượng phải lớn hơn 0.',
+            'quantity.required' => 'Please enter the quantity.',
+            'quantity.min' => 'The number must be greater than 0.',
         ];
     }
 }

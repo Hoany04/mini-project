@@ -28,7 +28,7 @@ class StoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'images.required' => 'anh khong dung dinh dang',
+            'images.required' => 'The image is not in the correct format.',
         ];
     }
 

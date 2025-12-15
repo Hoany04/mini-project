@@ -26,13 +26,13 @@ class StoreUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'username.required' => 'Vui lòng nhập tên đăng nhập',
-            'email.required' => 'Vui lòng nhập email',
-            'email.unique' => 'Email đã tồn tại trong hệ thống',
-            'password.required' => 'Vui lòng nhập mật khẩu',
-            'password.confirmed' => 'Mật khẩu xác nhận không khớp',
-            'role_id.required' => 'Vui lòng chọn vai trò',
-            'status.in' => 'Trạng thái không hợp lệ',
+            'username.required' => 'Please enter a username.',
+            'email.required' => 'Please enter an email address.',
+            'email.unique' => 'This email already exists in the system.',
+            'password.required' => 'Please enter a password.',
+            'password.confirmed' => 'The password confirmation does not match.',
+            'role_id.required' => 'Please select a role.',
+            'status.in' => 'The selected status is invalid.',
         ];
     }
 }

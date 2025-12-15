@@ -20,7 +20,7 @@ class ClientCouponController extends Controller
         $request->validate([
             'coupon' => 'required|string',
         ], [
-            'coupon.required' => 'Vui lòng nhập mã giảm giá trước khi áp dụng!',
+            'coupon.required' => 'Please enter the discount code before applying it.!',
         ]);
 
         try {
@@ -43,7 +43,7 @@ class ClientCouponController extends Controller
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->withErrors($e->errors());
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['coupon' => 'Có lỗi xảy ra khi áp dụng mã.']);
+            return redirect()->back()->withErrors(['coupon' => 'An error occurred while applying the code..']);
         }
     }
 
@@ -69,6 +69,6 @@ class ClientCouponController extends Controller
         }
 
         return redirect()->route('client.pages.cart.index')
-            ->with('success', 'Đã hủy mã giảm giá');
+            ->with('success', 'Discount code has been cancelled.');
     }
 }

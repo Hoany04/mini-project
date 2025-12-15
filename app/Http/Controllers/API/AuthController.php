@@ -16,13 +16,13 @@ class AuthController extends Controller
         ]);
 
         if (!Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Sai email hoặc mật khẩu'], 401);
+            return response()->json(['message' => 'Incorrect email or password'], 401);
         }
 
         $user = Auth::user();
 
         if ($user->status === 0) {
-            return response()->json(['message' => 'Tài khoản đã bị khóa'], 403);
+            return response()->json(['message' => 'The account has been locked.'], 403);
         }
 
         // Xóa token cũ
@@ -31,7 +31,7 @@ class AuthController extends Controller
         $token = $user->createToken('mobile_token')->plainTextToken;
 
         return response()->json([
-            'message' => 'Đăng nhập thành công',
+            'message' => 'Login successful',
             'token' => $token,
             'user' => $user
         ]);
@@ -41,6 +41,6 @@ class AuthController extends Controller
     {
         $request->user()->tokens()->delete();
 
-        return response()->json(['message' => 'Đăng xuất thành công']);
+        return response()->json(['message' => 'Logout successful']);
     }
 }

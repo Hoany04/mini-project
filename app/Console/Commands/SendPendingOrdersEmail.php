@@ -15,7 +15,7 @@ class SendPendingOrdersEmail extends Command
      * @var string
      */
     protected $signature = 'email:pending-orders';
-    protected $description = 'Gui mail den admin cac order chua xu ly trong ngay';
+    protected $description = 'Send an email to the admin with any unprocessed orders for the day.';
 
     /**
      * The console command description.
@@ -36,7 +36,7 @@ class SendPendingOrdersEmail extends Command
             ->get();
 
             if ($orders->isEmpty()) {
-                $this->info('Khong co don hang nao chua xu ly.');
+                $this->info('No orders are pending.');
                 return;
             }
 
@@ -44,6 +44,6 @@ class SendPendingOrdersEmail extends Command
 
             Mail::to($adminEmail)->send(new PendingOrdersMail($orders));
 
-            $this->info('Da gui mail bao cao don hang chua xu ly cho admin.');
+            $this->info('I have sent an email reporting the unprocessed order to the admin.');
     }
 }

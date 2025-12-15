@@ -19,7 +19,7 @@ class OrderShippedMail extends Mailable
 
     public function build()
     {
-        return $this->subject("Đơn hàng #{$this->order->id} đang được giao")
+        return $this->subject("Order #{$this->order->id} currently being delivered")
             ->view('emails.orders.shipped');
     }
 }

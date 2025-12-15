@@ -34,9 +34,10 @@ class StoreProductRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Ten san pham khong duoc vuot qua 255 ki tu',
-            'price.required' => 'Gia san pham bat buoc nhap',
-            'stock.required' => 'So luong ton bat buoc nhap',
+            'name.required' => 'The product name is required.',
+            'name.max' => 'The product name must not exceed 255 characters.',
+            'price.required' => 'The product price is required.',
+            'stock.required' => 'The stock quantity is required.',
         ];
     }
 }

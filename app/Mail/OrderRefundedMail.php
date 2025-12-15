@@ -19,7 +19,7 @@ class OrderRefundedMail extends Mailable
 
     public function build()
     {
-        return $this->subject("Đơn hàng #{$this->order->id} đã được hoàn tiền")
+        return $this->subject("Order #{$this->order->id} Refunded")
             ->view('emails.orders.refunded');
     }
 }

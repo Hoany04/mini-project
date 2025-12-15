@@ -2,12 +2,12 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Đơn hàng đã giao thành công</title>
+  <title>The order has been successfully delivered.</title>
 </head>
 <body>
-  <h2>Xin chào {{ $order->user->name ?? 'Khách hàng' }}</h2>
-  <p>Đơn hàng #{{ $order->id }} của bạn đã được giao thành công 🎉</p>
-  <p><strong>Tổng tiền:</strong> {{ $order->total_amount ?? '0' }}₫</p>
-  <p><strong>Ngày giao:</strong> {{ $order->shipping->delivered_at ?? now() }}</p>
+  <h2>Hello {{ $order->user->name ?? 'Clent' }}</h2>
+  <p>Order #{{ $order->id }} Your order has been successfully delivered. 🎉</p>
+  <p><strong>Total amount:</strong> {{ $order->total_amount ?? '0' }}₫</p>
+  <p><strong>Delivery date:</strong> {{ $order->shipping->delivered_at ?? now() }}</p>
 </body>
 </html>

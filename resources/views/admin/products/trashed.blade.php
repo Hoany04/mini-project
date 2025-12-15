@@ -2,14 +2,14 @@
 <?php
 use Carbon\Carbon;
 ?>
-@section('title', 'Sản phẩm đã xóa')
+@section('title', 'The product has been deleted.')
 
 @section('content')
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="fw-bold mb-0">🗑️ Sản phẩm đã xóa mềm</h4>
+        <h4 class="fw-bold mb-0">🗑️ The product has been gently erased.</h4>
         <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">
-            ← Quay lại danh sách
+            ← Return to list
         </a>
     </div>
 
@@ -21,7 +21,7 @@ use Carbon\Carbon;
     @endif
 
     @if ($products->isEmpty())
-        <div class="alert alert-warning text-center">Không có sản phẩm nào trong thùng rác.</div>
+        <div class="alert alert-warning text-center">There are no products in the trash can..</div>
     @else
         <div class="card shadow-sm">
             <div class="card-body">
@@ -30,12 +30,12 @@ use Carbon\Carbon;
                         <thead class="table-light">
                             <tr>
                                 <th>ID</th>
-                                <th>Ảnh</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Danh mục</th>
-                                <th>Người tạo</th>
-                                <th>Ngày xóa</th>
-                                <th>Hành động</th>
+                                <th>Image</th>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Creator</th>
+                                <th>Date deleted</th>
+                                <th>Act</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,31 +44,31 @@ use Carbon\Carbon;
                                     <td>{{ $product->id }}</td>
                                     <td>
                                         @if($product->mainImage)
-                                            <img src="{{ asset('storage/' . $product->mainImage->path) }}" 
+                                            <img src="{{ asset('storage/' . $product->mainImage->path) }}"
                                                  alt="{{ $product->name }}" width="70" class="rounded">
                                         @else
-                                            <img src="https://via.placeholder.com/70x70?text=No+Image" 
+                                            <img src="https://via.placeholder.com/70x70?text=No+Image"
                                                  alt="No Image" class="rounded">
                                         @endif
                                     </td>
                                     <td>{{ $product->name }}</td>
-                                    <td>{{ $product->category->name ?? 'Chưa có' }}</td>
+                                    <td>{{ $product->category->name ?? 'Not yet' }}</td>
                                     <td>{{ $product->user->username ?? 'N/A' }}</td>
                                     <td>{{ $product->created_at->format('Y/m/d H:i') }}</td>
                                     <td>
                                         <form action="{{ route('admin.products.restore', $product->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             <button type="submit" class="btn btn-success btn-sm">
-                                                <i class="bi bi-arrow-counterclockwise"></i> Khôi phục
+                                                <i class="bi bi-arrow-counterclockwise"></i> Restore
                                             </button>
                                         </form>
 
-                                        <form action="{{ route('admin.products.forceDelete', $product->id) }}" method="POST" class="d-inline" 
-                                              onsubmit="return confirm('Bạn có chắc muốn xóa vĩnh viễn sản phẩm này?')">
+                                        <form action="{{ route('admin.products.forceDelete', $product->id) }}" method="POST" class="d-inline"
+                                              onsubmit="return confirm('Are you sure you want to permanently delete this product??')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="bi bi-trash"></i> Xóa vĩnh viễn
+                                                <i class="bi bi-trash"></i> Permanently delete
                                             </button>
                                         </form>
                                     </td>

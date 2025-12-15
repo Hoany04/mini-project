@@ -37,13 +37,13 @@ class ApiOrderService
 
                 if (!isset($productMap[$productId])) {
                     throw ValidationException::withMessages([
-                        'product_id' => "Sản phẩm ID {$productId} không tồn tại",
+                        'product_id' => "Product ID {$productId} does not exist",
                     ]);
                 }
 
                 if ($productMap[$productId]->stock < $item['quantity']) {
                     throw ValidationException::withMessages([
-                        'stock' => "Không đủ hàng: {$productMap[$productId]->name}",
+                        'stock' => "Insufficient stock: {$productMap[$productId]->name}",
                     ]);
                 }
             }
@@ -102,19 +102,19 @@ class ApiOrderService
             });
 
             return response()->json([
-                'message' => 'Tạo order thành công',
+                'message' => 'Order successfully created.',
                 'order' => $order->load('items.product'),
             ], 201);
 
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => 'Dữ liệu không hợp lệ',
+                'message' => 'Invalid data',
                 'errors' => $e->errors(),
             ], 422);
 
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Lỗi tạo order',
+                'message' => 'Order creation error',
                 'error' => $e->getMessage(),
             ], 500);
         }

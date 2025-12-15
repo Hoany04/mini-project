@@ -4,18 +4,18 @@ use Carbon\Carbon;
 ?>
 @section('content')
 <div class="container card">
-    <h3 class="p-4">Danh sách giao dịch thanh toán</h3>
+    <h3 class="p-4">List of payment transactions</h3>
 
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>#</th>
-                <th>Mã đơn hàng</th>
-                <th>Phương thức</th>
-                <th>Số tiền</th>
+                <th>Order code</th>
+                <th>Method</th>
+                <th>Amount</th>
                 <th>Status</th>
-                <th>Ngày tạo</th>
-                <th>Thao tác</th>
+                <th>Creation date</th>
+                <th>Operation</th>
             </tr>
         </thead>
         <tbody>

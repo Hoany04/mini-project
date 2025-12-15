@@ -71,7 +71,7 @@ class ClientOrderController extends Controller
         $order = $this->orderService->findWithRelations($id);
 
         if(!$order) {
-            return redirect()->route('client.pages.checkout.index')->with('error', 'Don hang khong ton tai');
+            return redirect()->route('client.pages.checkout.index')->with('error', 'The order does not exist.');
         }
         return view('client.pages.checkout.success', compact('order'));
     }
@@ -118,7 +118,7 @@ class ClientOrderController extends Controller
         session()->forget('coupon');
 
         return redirect()->route('client.pages.checkout.success', $order->id)
-                        ->with('success', 'Đơn hàng đã được đặt thành công');
+                        ->with('success', 'The order has been successfully placed.');
     }
 
 }

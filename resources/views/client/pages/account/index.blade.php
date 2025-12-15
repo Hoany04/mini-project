@@ -77,23 +77,23 @@
                                                 <h5>Orders</h5>
                                                 <div class="myaccount-table table-responsive text-center">
                                                     <div class="container py-5">
-                                                        <h2 class="mb-4">🧾 Lịch sử đơn hàng</h2>
-                                                    
+                                                        <h2 class="mb-4">🧾 Order history</h2>
+
                                                         @if($orders->isEmpty())
                                                             <div class="alert alert-info text-center">
-                                                                Bạn chưa có đơn hàng nào.
+                                                                You don't have any orders yet..
                                                             </div>
                                                         @else
                                                             <div class="table-responsive shadow-sm">
                                                                 <table class="table table-bordered align-middle">
                                                                     <thead class="table-light">
                                                                         <tr>
-                                                                            <th>Mã đơn hàng</th>
-                                                                            <th>Ngày đặt</th>
-                                                                            <th>Tổng tiền</th>
-                                                                            <th>Thanh toán</th>
-                                                                            <th>Trạng thái</th>
-                                                                            <th>Hành động</th>
+                                                                            <th>Order code</th>
+                                                                            <th>Date of booking</th>
+                                                                            <th>Total amount</th>
+                                                                            <th>Pay</th>
+                                                                            <th>Status</th>
+                                                                            <th>Act</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -108,20 +108,20 @@
                                                                                 <td>{{ $payment->paymentMethod->name ?? 'Chưa thanh toán' }}</td>
                                                                                 <td>
                                                                                     @if($order->status === 'pending')
-                                                                                        <span class="badge bg-warning text-dark">Chờ xử lý</span>
+                                                                                        <span class="badge bg-warning text-dark">pending</span>
                                                                                     @elseif($order->status === 'paid')
-                                                                                        <span class="badge bg-success">Đã thanh toán</span>
+                                                                                        <span class="badge bg-success">paid</span>
                                                                                     @elseif($order->status === 'shipped')
-                                                                                        <span class="badge bg-info text-dark">Đang giao</span>
+                                                                                        <span class="badge bg-info text-dark">shipped</span>
                                                                                     @elseif($order->status === 'completed')
-                                                                                        <span class="badge bg-primary">Hoàn tất</span>
+                                                                                        <span class="badge bg-primary">completed</span>
                                                                                     @else
-                                                                                        <span class="badge bg-danger">Đã hủy</span>
+                                                                                        <span class="badge bg-danger">Cancelled</span>
                                                                                     @endif
                                                                                 </td>
                                                                                 <td>
                                                                                     <a href="{{ route('client.pages.checkout.show', $order->id) }}" class="btn btn-sm btn-outline-primary">
-                                                                                        Xem chi tiết
+                                                                                        See details
                                                                                     </a>
                                                                                 </td>
                                                                             </tr>
@@ -186,50 +186,50 @@
                                                 <h5>Edit Profile</h5>
                                                 {{-- <div class="tab-pane fade" id="payment-method" role="tabpanel"> --}}
                                                     <div class="container mt-5">
-                                                        <h3 class="mb-4">Cập nhật hồ sơ cá nhân</h3>
-                                                
+                                                        <h3 class="mb-4">Update your personal profile.</h3>
+
                                                         @if(session('success'))
                                                             <div class="alert alert-success">{{ session('success') }}</div>
                                                         @endif
-                                                
+
                                                         <form action="{{ route('client.pages.profile.update') }}" method="POST" enctype="multipart/form-data">
                                                             @csrf
-                                                
+
                                                             <div class="mb-3">
-                                                                <label for="phone" class="form-label">Số điện thoại</label>
+                                                                <label for="phone" class="form-label">Phone number</label>
                                                                 <input type="text" name="phone" id="phone" value="{{ old('phone', $profile->phone) }}" class="form-control">
                                                             </div>
-                                                
+
                                                             <div class="mb-3">
-                                                                <label for="address" class="form-label">Địa chỉ</label>
+                                                                <label for="address" class="form-label">Address</label>
                                                                 <input type="text" name="address" id="address" value="{{ old('address', $profile->address) }}" class="form-control">
                                                             </div>
-                                                
+
                                                             <div class="mb-3">
-                                                                <label for="city" class="form-label">Thành phố</label>
+                                                                <label for="city" class="form-label">City</label>
                                                                 <input type="text" name="city" id="city" value="{{ old('city', $profile->city) }}" class="form-control">
                                                             </div>
-                                                
+
                                                             <div class="mb-3">
-                                                                <label for="country" class="form-label">Quốc gia</label>
+                                                                <label for="country" class="form-label">County</label>
                                                                 <input type="text" name="country" id="country" value="{{ old('country', $profile->country) }}" class="form-control">
                                                             </div>
-                                                
+
                                                             <div class="mb-3">
-                                                                <label for="avatar" class="form-label">Ảnh đại diện</label>
+                                                                <label for="avatar" class="form-label">Avatar</label>
                                                                 <input type="file" name="avatar" id="avatar" class="form-control">
                                                                 @if($profile->avatar)
                                                                     <img src="{{ asset('storage/' . $profile->avatar) }}" alt="Avatar" width="80" class="mt-2 rounded-circle">
                                                                 @endif
                                                             </div>
-                                                
+
                                                             <button type="submit" class="btn btn-primary">
-                                                                {{ $profile->exists ? 'Lưu thay đổi' : 'Tạo hồ sơ' }}
+                                                                {{ $profile->exists ? 'Save changes' : 'Create a profile' }}
                                                             </button>
                                                         </form>
                                                     </div>
                                                 {{-- </div> --}}
-                                                
+
                                             </div>
                                         </div>
                                         <!-- Single Tab Content End -->

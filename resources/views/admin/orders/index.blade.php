@@ -4,7 +4,7 @@ use Carbon\Carbon;
 ?>
 @section('content')
 <div class="container mt-4 card">
-    <h3 class="p-4">Danh sách đơn hàng</h3>
+    <h3 class="p-4">Order list</h3>
 
     @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
@@ -12,18 +12,18 @@ use Carbon\Carbon;
 
     <form method="GET" class="row mb-3">
         <div class="col-md-4">
-            <input type="text" name="search" value="{{ request('search') }}" class="form-control" placeholder="Tìm theo tên hoặc email...">
+            <input type="text" name="search" value="{{ request('search') }}" class="form-control" placeholder="Search by name or email...">
         </div>
         <div class="col-md-3">
             <select name="status" class="form-select" onchange="this.form.submit()">
-                <option value="">-- Trạng thái --</option>
-                @foreach(['pending'=>'Chờ xử lý','paid'=>'Đã thanh toán','shipped'=>'Đang giao','completed'=>'Hoàn tất','cancelled'=>'Hủy'] as $key => $label)
+                <option value="">-- Status --</option>
+                @foreach(['pending'=>'pending','paid'=>'paid','shipped'=>'shipped','completed'=>'completed','cancelled'=>'cancelled'] as $key => $label)
                     <option value="{{ $key }}" {{ request('status')==$key?'selected':'' }}>{{ $label }}</option>
                 @endforeach
             </select>
         </div>
         <div class="col-md-2">
-            <button class="btn btn-primary w-100">Lọc</button>
+            <button class="btn btn-primary w-100">Filter</button>
         </div>
     </form>
 
@@ -31,12 +31,12 @@ use Carbon\Carbon;
         <thead class="table-light">
             <tr>
                 <th>#</th>
-                <th>Người dùng</th>
-                <th>Tổng tiền</th>
-                <th>Mã giảm giá</th>
-                <th>Trạng thái</th>
-                <th>Ngày đặt</th>
-                <th>Thao tác</th>
+                <th>User</th>
+                <th>Total amount</th>
+                <th>Discount code</th>
+                <th>Status</th>
+                <th>Date of booking</th>
+                <th>Operation</th>
             </tr>
         </thead>
         <tbody>
@@ -61,7 +61,7 @@ use Carbon\Carbon;
                         <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-sm btn-primary">👁️</a>
                         <form method="POST" action="{{ route('admin.orders.destroy', $order->id) }}" class="d-inline">
                             @csrf @method('DELETE')
-                            <button onclick="return confirm('Xóa đơn hàng này?')" class="btn btn-sm btn-danger">🗑️</button>
+                            <button onclick="return confirm('Delete this order?')" class="btn btn-sm btn-danger">🗑️</button>
                         </form>
                     </td>
                 </tr>

@@ -30,10 +30,10 @@ class PaymentMethodService
             try {
                 $data['status'] = PaymentMethodStatus::from($data['status'])->value;
             } catch (\ValueError $e) {
-                throw new \Exception("Trạng thái phương thức thanh toán không hợp lệ");
+                throw new \Exception("Invalid payment method status");
             }
         }
-        
+
         return $this->repo->create($data);
     }
 
@@ -43,7 +43,7 @@ class PaymentMethodService
             try {
                 $data['status'] = PaymentMethodStatus::from($data['status'])->value;
             } catch (\ValueError $e) {
-                throw new \Exception("Trạng thái phương thức thanh toán không hợp lệ");
+                throw new \Exception("Invalid payment method status");
             }
         }
 

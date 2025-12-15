@@ -27,11 +27,11 @@ class UpdateUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'username.required' => 'Tên đăng nhập bắt buộc nhập',
-            'email.required' => 'Email bắt buộc nhập',
-            'email.unique' => 'Email đã tồn tại',
-            'role_id.required' => 'Phải chọn vai trò người dùng',
-            'status.required' => 'Phải chọn trạng thái hoạt động',
+            'username.required' => 'The username is required.',
+            'email.required' => 'The email address is required.',
+            'email.unique' => 'This email already exists.',
+            'role_id.required' => 'Please select a user role.',
+            'status.required' => 'Please select an active status.',
         ];
     }
 }

@@ -26,10 +26,10 @@ class UpdateOrderShippingRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'shipping_method_id.required' => 'Vui lòng chọn phương thức vận chuyển.',
-            'shipping_address_id.required' => 'Vui lòng chọn địa chỉ giao hàng.',
-            'status.required' => 'Trạng thái giao hàng là bắt buộc.',
-            'status.in' => 'Trạng thái không hợp lệ.',
+            'shipping_method_id.required' => 'Please select a shipping method.',
+            'shipping_address_id.required' => 'Please select a shipping address.',
+            'status.required' => 'The delivery status is required.',
+            'status.in' => 'The selected status is invalid.',
         ];
     }
 }

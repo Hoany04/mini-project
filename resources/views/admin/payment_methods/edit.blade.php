@@ -4,7 +4,7 @@ use App\Enums\PaymentMethodStatus;
 @endphp
 @section('content')
 <div class="container card mt-4">
-    <h4 class="p-4">Sửa phương thức thanh toán</h4>
+    <h4 class="p-4">Edit payment method</h4>
 
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -25,14 +25,14 @@ use App\Enums\PaymentMethodStatus;
         @method('PUT')
 
         <div class="mb-3">
-            <label for="name">Tên</label>
+            <label for="name">Name</label>
             <input type="text" name="name" id="name"
                    value="{{ old('name', $method->name) }}"
                    class="form-control" required>
         </div>
 
         <div class="mb-3">
-            <label>Trạng thái</label>
+            <label>Status</label>
             <select name="status" class="form-select">
                 @foreach (PaymentMethodStatus::cases() as $status)
                     <option value="{{ $status->value }}"
@@ -43,8 +43,8 @@ use App\Enums\PaymentMethodStatus;
             </select>
         </div>
 
-        <button class="btn btn-success">Cập nhật</button>
-        <a href="{{ route('admin.payment-methods.index') }}" class="btn btn-secondary">Hủy</a>
+        <button class="btn btn-success">Upadate</button>
+        <a href="{{ route('admin.payment-methods.index') }}" class="btn btn-secondary">Cancel</a>
     </form>
     <div class="mt-3"></div>
 </div>

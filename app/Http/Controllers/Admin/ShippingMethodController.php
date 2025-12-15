@@ -30,7 +30,7 @@ class ShippingMethodController extends Controller
     public function store(ShippingMethodRequest $request)
     {
         $this->service->create($request->validated());
-        return redirect()->route('admin.shipping_methods.index')->with('success', 'Da them phuong thuc van chuyen moi');
+        return redirect()->route('admin.shipping_methods.index')->with('success', 'New shipping methods have been added.');
     }
 
     public function edit($id)
@@ -42,13 +42,13 @@ class ShippingMethodController extends Controller
     public function update(ShippingMethodRequest $request, $id)
     {
         $this->service->update($id, $request->validated());
-        return redirect()->route('admin.shipping_methods.index')->with('success', 'Cập nhật thành công');
+        return redirect()->route('admin.shipping_methods.index')->with('success', 'Update successful');
     }
 
     public function destroy($id)
     {
         $this->service->delete($id);
-        return redirect()->route('admin.shipping_methods.index')->with('success', 'Đã xóa phương thức vận chuyển');
+        return redirect()->route('admin.shipping_methods.index')->with('success', 'Shipping method has been removed.');
     }
 
     // AJAX bật/tắt trạng thái

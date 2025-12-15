@@ -29,6 +29,6 @@ class CartController extends Controller
     public function destroy($id)
     {
         $this->cartService->deleteCart($id);
-        return redirect()->route('admin.carts.index')->with('success', 'Xoa gio hang thanh cong');
+        return redirect()->route('admin.carts.index')->with('success', 'Shopping cart deleted successfully');
     }
 }

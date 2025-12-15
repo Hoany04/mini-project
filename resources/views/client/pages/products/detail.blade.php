@@ -87,7 +87,7 @@
                                                 {{-- Số điểm & số lượt đánh giá --}}
                                                 <span class="ms-2">
                                                     <strong>{{ $avg }}</strong> / 5
-                                                    ({{ $product->total_approved_reviews }} đánh giá)
+                                                    ({{ $product->total_approved_reviews }} Evaluate)
                                                 </span>
                                             </div>
                                         </div>
@@ -119,7 +119,7 @@
                                             <div class="pro-size mb-3">
                                                 <h6 class="option-title">Size :</h6>
                                                 <select class="nice-select variant-select" name="variants[size]" data-name="Size">
-                                                    <option value="">-- Chọn size --</option>
+                                                    <option value="">-- Select size --</option>
                                                     @foreach($groupedVariants['Size'] ?? [] as $variant)
                                                         <option
                                                             value="{{ $variant->variant_value }}"
@@ -136,7 +136,7 @@
 
                                             {{-- Màu --}}
                                             <div class="color-option mb-3">
-                                                <h6 class="option-title">Màu :</h6>
+                                                <h6 class="option-title">Color :</h6>
                                                 @if(!empty($groupedVariants['Màu']))
                                                     <div class="d-flex flex-wrap gap-3">
                                                         @foreach($groupedVariants['Màu'] ?? [] as $variant)
@@ -155,13 +155,13 @@
                                                         @endforeach
                                                     </div>
                                                 @else
-                                                    <p class="text-muted">Không có biến thể màu cho sản phẩm này.</p>
+                                                    <p class="text-muted">There are no color variations for this product.</p>
                                                 @endif
                                             </div>
 
                                             {{-- Số lượng --}}
                                             <div class="mt-3">
-                                                <label class="fw-bold">Số lượng:</label>
+                                                <label class="fw-bold">Quantity:</label>
                                                 <input type="number" name="quantity" value="1" min="1" class="form-control w-25 d-inline-block">
                                                 @error('quantity')
                                                     <small class="text-danger">{{ $message }}</small>
@@ -170,7 +170,7 @@
 
                                             {{-- Nút thêm --}}
                                             <button type="submit" class="mt-3 action_link">
-                                                <a class="btn btn-cart2">Thêm vào giỏ hàng</a>
+                                                <a class="btn btn-cart2">Add to cart</a>
                                             </button>
                                         </form>
 
@@ -233,7 +233,7 @@
                                                     <div class="alert alert-success">{{ session('success') }}</div>
                                                 @endif
                                                 <div class="review-form">
-                                                    <h5>{{ $product->reviews->count() }} đánh giá cho
+                                                    <h5>{{ $product->reviews->count() }} rating for
                                                         <span>{{ $product->name }}</span>
                                                     </h5>
 
@@ -274,32 +274,32 @@
                                                             @csrf
                                                             <div class="form-group row">
                                                                 <div class="col">
-                                                                    <label class="col-form-label"><span class="text-danger">*</span> Đánh giá của bạn</label>
+                                                                    <label class="col-form-label"><span class="text-danger">*</span> Your rating</label>
                                                                     <textarea name="comment" class="form-control" required></textarea>
                                                                     <div class="help-block pt-10">
-                                                                        <span class="text-danger">Lưu ý:</span> Không hỗ trợ HTML trong nội dung.
+                                                                        <span class="text-danger">Note:</span> HTML is not supported in the content.
                                                                     </div>
                                                                 </div>
                                                             </div>
 
                                                             <div class="form-group row">
                                                                 <div class="col">
-                                                                    <label class="col-form-label"><span class="text-danger">*</span> Điểm đánh giá</label>
-                                                                    &nbsp;&nbsp;&nbsp; Tệ&nbsp;
+                                                                    <label class="col-form-label"><span class="text-danger">*</span> Rating</label>
+                                                                    &nbsp;&nbsp;&nbsp; Bad&nbsp;
                                                                     @for($i = 1; $i <= 5; $i++)
                                                                         <input type="radio" value="{{ $i }}" name="rating" {{ $i == 5 ? 'checked' : '' }}>
                                                                         &nbsp;
                                                                     @endfor
-                                                                    Tốt
+                                                                    Good
                                                                 </div>
                                                             </div>
 
                                                             <div class="buttons">
-                                                                <button class="btn btn-sqr" type="submit">Gửi đánh giá</button>
+                                                                <button class="btn btn-sqr" type="submit">Submit a review</button>
                                                             </div>
                                                         </form>
                                                     @else
-                                                        <p>Bạn cần <a href="{{ route('login') }}">đăng nhập</a> để gửi đánh giá.</p>
+                                                        <p>You need <a href="{{ route('login') }}">log in</a> to submit a review.</p>
                                                     @endauth
                                                 </div> <!-- end of review-form -->
                                             </div>
@@ -475,15 +475,15 @@
             let errors = [];
 
             if (sizeSelect && (!sizeSelect.value || sizeSelect.value === "")) {
-                errors.push("Vui lòng chọn size.");
+                errors.push("Please select a size.");
             }
 
             if (!colorChecked) {
-                errors.push("Vui lòng chọn màu.");
+                errors.push("Please select a color.");
             }
 
             if (!quantityInput.value || parseInt(quantityInput.value) <= 0) {
-                errors.push("Số lượng phải lớn hơn 0.");
+                errors.push("The number must be greater than 0.");
             }
 
             if (errors.length > 0) {

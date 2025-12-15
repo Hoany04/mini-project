@@ -37,7 +37,7 @@ class ProductVariantController extends Controller
         $data['product_id'] = $productId;
         $this->variantService->create($data);
 
-        return redirect()->route('admin.product_variants.index', $productId)->with('success', 'Them bien the thanh cong');
+        return redirect()->route('admin.product_variants.index', $productId)->with('success', 'Adding a successful variant');
     }
 
     public function edit($productId, $id)
@@ -51,12 +51,12 @@ class ProductVariantController extends Controller
     public function update(ProductVariantRequest $request, $productId, $id)
     {
         $this->variantService->update($id, $request->validated());
-        return redirect()->route('admin.product_variants.index', $productId)->with('success', 'Cap nhat bien the thanh cong');
+        return redirect()->route('admin.product_variants.index', $productId)->with('success', 'Variant update successful');
     }
 
     public function destroy($productId, $id)
     {
         $this->variantService->delete($id);
-        return redirect()->route('admin.product_variants.index', $productId)->with('success', 'Da xoa bien the');
+        return redirect()->route('admin.product_variants.index', $productId)->with('success', 'The variant has been removed.');
     }
 }

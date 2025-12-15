@@ -1,21 +1,21 @@
 @component('mail::message')
-# Báo cáo đơn hàng chưa xử lý
+# Report unprocessed orders
 
-Xin chào Admin,
+Hello Admin,
 
-Dưới đây là danh sách các đơn hàng chưa được xử lý (tính đến {{ now()->format('d/m/Y') }}):
+Below is a list of orders that have not yet been processed (as of now {{ now()->format('d/m/Y') }}):
 
 @foreach ($orders as $order)
-- **Mã đơn:** {{ $order->id }}  
-  **Khách hàng:** {{ $order->user->name ?? 'N/A' }}  
-  **Tổng tiền:** {{ number_format($order->total_amount, 0, ',', '.') }}₫  
-  **Ngày đặt:** {{ $order->created_at->format('d/m/Y H:i') }}
+- **Order code:** {{ $order->id }}
+  **Client:** {{ $order->user->name ?? 'N/A' }}
+  **Total amount:** {{ number_format($order->total_amount, 0, ',', '.') }}₫
+  **Date of booking:** {{ $order->created_at->format('d/m/Y H:i') }}
 @endforeach
 
 @component('mail::button', ['url' => route('admin.orders.index')])
-Xem chi tiết
+See details
 @endcomponent
 
-Cảm ơn,<br>
+Thanks,<br>
 {{ config('app.name') }}
 @endcomponent

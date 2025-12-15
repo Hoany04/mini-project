@@ -46,7 +46,7 @@ class UserController extends Controller
     {
         $this->userService->createUser($request->validated());
 
-        return redirect()->route('admin.users.index')->with('success', 'Them user thanh cong');
+        return redirect()->route('admin.users.index')->with('success', 'User added successfully.');
     }
 
     /**
@@ -65,7 +65,7 @@ class UserController extends Controller
         $user = $this->userService->getUserById($id);
 
         if(!$user) {
-            return redirect()->route('admin.users.index')->with('error', 'User không tồn tại!');
+            return redirect()->route('admin.users.index')->with('error', 'The user does not exist!');
         }
 
         $roles = Role::all();
@@ -79,7 +79,7 @@ class UserController extends Controller
     {
         $this->userService->updateUser($id, $request->validated());
 
-        return redirect()->route('admin.users.index')->with('success', 'Cap nhat thong tin user thanh cong');
+        return redirect()->route('admin.users.index')->with('success', 'User information updated successfully.');
     }
 
     /**
@@ -88,6 +88,6 @@ class UserController extends Controller
     public function destroy($id)
     {
         $this->userService->deleteUser($id);
-        return redirect()->route('admin.users.index')->with('success', 'Da xoa user');
+        return redirect()->route('admin.users.index')->with('success', 'User has been deleted.');
     }
 }

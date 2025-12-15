@@ -38,7 +38,7 @@ class AuthController extends Controller
         }
 
         return redirect()->back()->withErrors([
-            'email' => 'Thong tin nguoi dung khong dung'
+            'email' => 'Incorrect user information'
         ]);
     }
 
@@ -92,11 +92,11 @@ class AuthController extends Controller
         $link = route('password.reset', $token). '?email=' . urlencode($request->email);
 
         // Gui mail
-        Mail::raw("Nhấn vào link để đặt lại mật khẩu: $link", function ($message) use ($request) {
+        Mail::raw("Click the link to reset your password: $link", function ($message) use ($request) {
             $message->to($request->email)->subject('Đặt lại mật khẩu');
         });
 
-        return back()->with('Da gui link dat lai mk den email cua bn');
+        return back()->with('A password reset link has been sent to your email.');
     }
 
     public function showFormReset($token) {
@@ -117,7 +117,7 @@ class AuthController extends Controller
             ->first();
 
         if (!$tokenData) {
-            return back()->withErrors(['token' => 'Mã đặt lại không hợp lệ hoặc đã hết hạn.']);
+            return back()->withErrors(['token' => 'The reset code is invalid or has expired.']);
         }
 
         User::where('email', $request->email)->update([
@@ -126,7 +126,7 @@ class AuthController extends Controller
 
         DB::table('password_reset_tokens')->where('email', $request->email)->delete();
 
-        return redirect()->route('login')->with('success', 'Đặt lại mật khẩu thành công! Vui lòng đăng nhập lại.');
+        return redirect()->route('login')->with('success', 'Password reset successful! Please log in again.');
     }
 
     public function authenticate(Request $request)
@@ -136,11 +136,11 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             if (Auth::user()->status === 'inactive') {
                 Auth::logout();
-                return back()->withErrors(['email' => 'Tài khoản đã bị khóa']);
+                return back()->withErrors(['email' => 'The account has been locked.']);
             }
             return redirect()->intended('/');
         }
 
-        return back()->withErrors(['email' => 'Thông tin không hợp lệ']);
+        return back()->withErrors(['email' => 'Invalid information']);
     }
 }

@@ -41,7 +41,7 @@ class OrderController extends Controller
     {
         $this->orderService->updateStatus($id, $request->status);
 
-        return redirect()->route('admin.orders.index')->with('success', 'Cap nhat trang thai thanh cong');
+        return redirect()->route('admin.orders.index')->with('success', 'Status update successful');
     }
 
     public function updateShipping(UpdateOrderShippingRequest $request, $orderId)
@@ -69,12 +69,12 @@ class OrderController extends Controller
         $shipping->save();
 
         event(new OrderStatusUpdated($order));
-        return redirect()->route('admin.orders.index')->with('success', 'Cập nhật thông tin giao hàng thành công!');
+        return redirect()->route('admin.orders.index')->with('success', 'Delivery information has been successfully updated.!');
     }
 
     public function destroy($id)
     {
         $this->orderService->deleteOrder($id);
-        return redirect()->route('admin.orders.index')->with('success', 'Da xoa don hang');
+        return redirect()->route('admin.orders.index')->with('success', 'Order has been deleted.');
     }
 }

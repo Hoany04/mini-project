@@ -14,11 +14,11 @@
                              <img src="{{ asset('assets/client/img/error400-cover.png') }}" alt="error img"
                                  class="img-fluid">
                              <div class="mt-3">
-                                 <h3 class="text-uppercase">Xin lỗi, Trang không tồn tại 😭</h3>
-                                 <p class="text-muted mb-4">Trang bạn đang tìm kiếm không có sẵn!</p>
+                                 <h3 class="text-uppercase">Sorry, the page does not exist. 😭</h3>
+                                 <p class="text-muted mb-4">The page you are looking for is unavailable.!</p>
                                  <a href="{{ route('client.home') }}" class="btn btn-success">
                                      <i class="mdi mdi-home me-1"></i>
-                                     Quay lại trang chủ
+                                     Return to homepage
                                  </a>
                              </div>
                          </div>

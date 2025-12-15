@@ -2,13 +2,13 @@
 
 @section('content')
 <div class="container mt-4 card">
-<h4 class="p-4">Phương thức thanh toán</h4>
+<h4 class="p-4">Payment methods</h4>
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
     <div class="text-end">
         <a href="{{ route('admin.payment-methods.create') }}" class="btn btn-primary mb-3">
-            + Thêm phương thức
+            + Add methods
         </a>
     </div>
 
@@ -16,9 +16,9 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Tên</th>
-            <th>Trạng thái</th>
-            <th>Hành động</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Act</th>
         </tr>
     </thead>
     <tbody>
@@ -38,7 +38,7 @@
                       method="POST" class="d-inline">
                     @csrf @method('DELETE')
                     <button class="btn btn-danger btn-sm"
-                            onclick="return confirm('Chắc chắn xóa?')">🗑️</button>
+                            onclick="return confirm('Definitely delete?')">🗑️</button>
                 </form>
             </td>
         </tr>

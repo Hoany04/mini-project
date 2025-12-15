@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-5">
-    <h3 class="mb-4">Cập nhật hồ sơ cá nhân</h3>
+    <h3 class="mb-4">Update your personal profile.</h3>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -12,7 +12,7 @@
         @csrf
 
         <div class="mb-3">
-            <label for="phone" class="form-label">Số điện thoại</label>
+            <label for="phone" class="form-label">Phone number</label>
             <input type="text" name="phone" id="phone" value="{{ old('phone', $profile->phone) }}" class="form-control">
             @error('phone')
                 <small class="text-danger">{{ $message }}</small>
@@ -20,7 +20,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="address" class="form-label">Địa chỉ</label>
+            <label for="address" class="form-label">Address</label>
             <input type="text" name="address" id="address" value="{{ old('address', $profile->address) }}" class="form-control">
             @error('address')
                 <small class="text-danger">{{ $message }}</small>
@@ -28,7 +28,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="city" class="form-label">Thành phố</label>
+            <label for="city" class="form-label">City</label>
             <input type="text" name="city" id="city" value="{{ old('city', $profile->city) }}" class="form-control">
             @error('city')
                 <small class="text-danger">{{ $message }}</small>
@@ -36,7 +36,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="country" class="form-label">Quốc gia</label>
+            <label for="country" class="form-label">Country</label>
             <input type="text" name="country" id="country" value="{{ old('country', $profile->country) }}" class="form-control">
             @error('country')
                 <small class="text-danger">{{ $message }}</small>
@@ -44,7 +44,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="avatar" class="form-label">Ảnh đại diện</label>
+            <label for="avatar" class="form-label">Avatar</label>
             <input type="file" name="avatar" id="avatar" class="form-control">
             @if($profile->avatar)
                 <img src="{{ asset('storage/' . $profile->avatar) }}" alt="Avatar" width="80" class="mt-2 rounded-circle">
@@ -54,7 +54,7 @@
             @enderror
         </div>
 
-        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
     </form>
 </div>
 @endsection

@@ -25,7 +25,7 @@ use App\Enums\ProductStatus;
             </div>
             <div class="col-md-3">
                 <select name="category_id" class="form-select">
-                    <option value="">-- Danh mục --</option>
+                    <option value="">-- Category --</option>
                     @foreach ($categories as $cate)
                         <option value="{{ $cate->id }}" {{ request('category_id') == $cate->id ? 'selected' : '' }}>
                             {{ $cate->name }}
@@ -35,7 +35,7 @@ use App\Enums\ProductStatus;
             </div>
             <div class="col-md-3">
                 <select name="status" class="form-select">
-                    <option value="">-- Trạng thái --</option>
+                    <option value="">-- Status --</option>
                     @foreach (ProductStatus::cases() as $status)
                         <option value="{{ $status->value }}"
                             {{ request('status') == $status->value ? 'selected' : '' }}>
@@ -45,16 +45,16 @@ use App\Enums\ProductStatus;
                 </select>
             </div>
             <div class="col-md-3">
-                <button class="btn btn-primary">Lọc</button>
-                <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">Đặt lại</a>
+                <button class="btn btn-primary">filter</button>
+                <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">Reset</a>
             </div>
         </form>
         <div class="text-end mb-3">
-            <a href="{{ route('admin.products.create') }}" class="btn btn-success">+ Thêm mới</a>
+            <a href="{{ route('admin.products.create') }}" class="btn btn-success">+ Add</a>
         </div>
         <div class="text-end mb3">
             <a href="{{ route('admin.products.trashed') }}" class="btn btn-outline-danger">
-                🗑️ Thùng rác
+                🗑️ Trash can
             </a>
         </div>
         <!-- Bảng sản phẩm -->
@@ -62,16 +62,16 @@ use App\Enums\ProductStatus;
             <thead class="table-light text-center">
                 <tr>
                     <th>ID</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Danh mục</th>
-                    <th>Ảnh sản phẩm</th>
-                    <th>Giá</th>
-                    <th>Tồn kho</th>
-                    <th>Đã bán</th>
-                    <th>Đánh giá TB</th>
-                    <th>Trạng thái</th>
-                    <th>Người tạo</th>
-                    <th>Thao tác</th>
+                    <th>Product name</th>
+                    <th>Category</th>
+                    <th>Product Image</th>
+                    <th>Price</th>
+                    <th>Inventory</th>
+                    <th>Sold</th>
+                    <th>Average Rating</th>
+                    <th>Status</th>
+                    <th>Creator</th>
+                    <th>Operation</th>
                 </tr>
             </thead>
             <tbody>
@@ -79,16 +79,16 @@ use App\Enums\ProductStatus;
                     <tr class="text-center">
                         <td>{{ ($products->currentPage() - 1) * $products->perPage() + $key + 1 }}</td>
                         <td class="text-start">{{ $product->name }}</td>
-                        <td>{{ $product->category?->name ?? 'Không có' }}</td>
+                        <td>{{ $product->category?->name ?? 'Not available' }}</td>
                         <td>
                             @if($product->mainImage)
                               <img src="{{ asset('storage/' . $product->mainImage->image_url) }}"
-                                   alt="Ảnh sản phẩm"
+                                   alt="Product Image"
                                    width="70" height="70"
                                    class="rounded border">
                             @else
                               <img src="https://via.placeholder.com/70x70?text=No+Image"
-                                   alt="Không có ảnh"
+                                   alt="No photos"
                                    width="70" height="70"
                                    class="rounded border">
                             @endif
@@ -111,7 +111,7 @@ use App\Enums\ProductStatus;
                             <a href="{{ route('admin.products.edit', $product->id) }}"
                                 class="btn btn-sm btn-warning">✏️</a>
                             <form method="POST" action="{{ route('admin.products.destroy', $product->id) }}"
-                                class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">
+                                class="d-inline" onsubmit="return confirm('Are you sure you want to delete this product?')">
                                 @csrf @method('DELETE')
                                 <button class="btn btn-sm btn-danger">🗑️</button>
                             </form>
@@ -119,7 +119,7 @@ use App\Enums\ProductStatus;
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="11" class="text-center text-muted">Không có sản phẩm nào</td>
+                        <td colspan="11" class="text-center text-muted">No products</td>
                     </tr>
                 @endforelse
             </tbody>
