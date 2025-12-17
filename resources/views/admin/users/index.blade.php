@@ -91,6 +91,32 @@ use App\Enums\UserStatus;
             </tbody>
         </table>
 
+        <form action="{{ route('admin.users.import') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <input type="file" name="file" required>
+            <button class="btn btn-primary">Import Users</button>
+        </form>
+
+        @if(session('import_errors'))
+            <div class="alert alert-danger mt-3">
+                <b>Import failure:</b>
+                <ul>
+                    @foreach(session('import_errors') as $error)
+                        <li>
+                            Current {{ $error['row'] }}:
+                            {{ implode(', ', $error['errors']) }}
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        @if(session('success'))
+            <div class="alert alert-success mt-3">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="mt-3">
             {{ $users->withQueryString()->links() }}
         </div>

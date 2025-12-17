@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
 use App\Models\Role;
+use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -89,5 +90,28 @@ class UserController extends Controller
     {
         $this->userService->deleteUser($id);
         return redirect()->route('admin.users.index')->with('success', 'User has been deleted.');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,csv,ods',
+        ]);
+
+        $relativePath = $request->file('file')->store('imports', 'private');
+
+        // đường dẫn tuyệt đối
+        $absolutePath = storage_path('app/private/' . $relativePath);
+
+        // dd($relativePath, $absolutePath, file_exists($absolutePath));
+
+        if (!file_exists($absolutePath)) {
+            throw new \Exception('File không tồn tại: ' . $absolutePath);
+        }
+
+        $import = new UsersImport();
+        $import->import($absolutePath);
+
+        return back()->with('success', "Import completed: {$import->total}, Created: {$import->created}, Updated: {$import->updated}.");
     }
 }
