@@ -97,23 +97,25 @@ use App\Enums\UserStatus;
             <button class="btn btn-primary">Import Users</button>
         </form>
 
-        @if(session('import_errors'))
-            <div class="alert alert-danger mt-3">
-                <b>Import failure:</b>
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
                 <ul>
-                    @foreach(session('import_errors') as $error)
-                        <li>
-                            Current {{ $error['row'] }}:
-                            {{ implode(', ', $error['errors']) }}
-                        </li>
-                    @endforeach
+                    <li>Total: {{ session('import_summary.total') }}</li>
+                    <li>Created: {{ session('import_summary.created') }}</li>
+                    <li>Updated: {{ session('import_summary.updated') }}</li>
                 </ul>
             </div>
         @endif
 
-        @if(session('success'))
-            <div class="alert alert-success mt-3">
-                {{ session('success') }}
+        @if(session('import_errors') && count(session('import_errors')))
+            <div class="alert alert-warning">
+                <b>Error lines:</b>
+                <ul>
+                    @foreach(session('import_errors') as $error)
+                        <li>Lines {{ $error['row'] }}: {{ $error['message'] }}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
 

@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
 use App\Models\Role;
 use App\Imports\UsersImport;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -95,23 +96,34 @@ class UserController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:xlsx,csv,ods',
+            'file' => 'required|file|mimes:xlsx,csv',
         ]);
 
         $relativePath = $request->file('file')->store('imports', 'private');
 
         // đường dẫn tuyệt đối
-        $absolutePath = storage_path('app/private/' . $relativePath);
+        $absolutePath = Storage::disk('private')->path($relativePath);
 
         // dd($relativePath, $absolutePath, file_exists($absolutePath));
 
-        if (!file_exists($absolutePath)) {
-            throw new \Exception('File không tồn tại: ' . $absolutePath);
+        if (!is_file($absolutePath)) {
+            return back()->withErrors([
+                'file' => 'File upload failed. Please try again.'
+            ]);
         }
 
         $import = new UsersImport();
         $import->import($absolutePath);
 
-        return back()->with('success', "Import completed: {$import->total}, Created: {$import->created}, Updated: {$import->updated}.");
+        return back()->with([
+            'success' => 'Import complete',
+            'import_summary' => [
+                'total' => $import->total,
+                'created' => $import->created,
+                'updated' => $import->updated,
+                'errors' => count($import->errors),
+            ],
+            'import_errors' => $import->errors,
+        ]);
     }
 }

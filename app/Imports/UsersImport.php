@@ -4,6 +4,7 @@ namespace App\Imports;
 use App\Models\User;
 use App\Enums\UserStatus;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
 class UsersImport
@@ -12,8 +13,19 @@ class UsersImport
     public int $created = 0;
     public int $updated = 0;
 
+    public array $errors = [];
+
+    protected array $usersById = [];
+
+    protected array $usersByEmail = [];
+
+    protected int $chunkSize = 500;
+
     public function import(string $path)
     {
+        $this->usersById = User::pluck('id')->flip()->toArray();
+        $this->usersByEmail = User::pluck('id','email')->toArray();
+
         SimpleExcelReader::create($path)
             ->useHeaders([
                 'id',
@@ -23,8 +35,13 @@ class UsersImport
                 'status',
             ])
             ->getRows()
-            ->each(function (array $row) {
-                $this->handleRow($row);
+            ->chunk($this->chunkSize)
+            ->each(function ($rows) {
+                \DB::transaction(function () use ($rows) {
+                    foreach ($rows as $row) {
+                        $this->handleRow($row);
+                    }
+                });
             });
     }
 
@@ -37,13 +54,12 @@ class UsersImport
             empty($data['email']) ||
             !filter_var($data['email'], FILTER_VALIDATE_EMAIL)
         ) {
+            $this->logError('Invalid username or email');
             return;
         }
 
-        $user = null;
-
-        // Có id và id tồn tại trong DB → update theo id
-        if (!empty($data['id'])) {
+        // Có id và id tồn tại trong DB → update theo \id
+        if (!empty($data['id']) && isset($this->usersById[$data['id']])) {
             $user = User::find($data['id']);
 
             if ($user) {
@@ -54,24 +70,30 @@ class UsersImport
         }
 
         // Có id nhưng id không tồn tại → tìm theo email, Không có id và email tồn tại → update theo email
-        $user = User::where('email', $data['email'])->first();
 
-        if ($user) {
-            $this->updateUser($user, $data);
-            $this->updated++;
-        } else { // Cả id và email không tồn tại → tạo mới
-            $this->createUser($data);
-            $this->created++;
+        if (isset($this->usersByEmail[$data['email']])) {
+            $user = User::find($this->usersByEmail[$data['email']]);
+            if ($user) {
+                $this->updateUser($user, $data);
+                $this->updated++;
+                return;
+            }
         }
+
+        $user = $this->createUser($data);
+        $this->created++;
+
+        $this->usersById[$user->id] = true;
+        $this->usersByEmail[$user->email] = $user->id;
     }
 
     protected function createUser(array $data)
     {
-        User::create([
+        return User::create([
             'username' => $data['username'],
             'email' => $data['email'],
             'role_id' => $data['role_id'] ?? null,
-            'password' => Hash::make("123456"),
+            'password' => Hash::make(Str::random(12)),
             'status' => $this->mapStatus($data['status'] ?? null)->value,
         ]);
     }
@@ -87,10 +109,19 @@ class UsersImport
 
     protected function mapStatus($value)
     {
-        return match (strtolower($value)) {
+        $value = strtolower((string) $value);
+        return match ($value) {
             'active' => UserStatus::ACTIVE,
             'inactive' => UserStatus::INACTIVE,
             default => UserStatus::ACTIVE,
         };
+    }
+
+    protected function logError(string $message)
+    {
+        $this->errors[] = [
+            'row' => $this->total,
+            'message' => $message,
+        ];
     }
 }
