@@ -47,14 +47,14 @@ class ChatController extends Controller
     {
         $msg = Message::create([
             'from_id' => auth()->id(),
-            'to_id' => $request->user_id,
+            'to_id' => $request->to_id,
             'message' => $request->message,
             'is_read' => 0,
         ])->load('sender');
 
         \Log::info('NEW MESSAGE: ', $msg->toArray());
 
-        broadcast(new MessageSent($msg))->toOthers();
+        broadcast(new MessageSent($msg));
 
         return response()->json(['success' => true]);
     }

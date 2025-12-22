@@ -97,6 +97,10 @@ use App\Enums\UserStatus;
             <button class="btn btn-primary">Import Users</button>
         </form>
 
+        <button onclick="window.location.href='{{ route('admin.users.export') }}'">
+            Export Users
+        </button>
+
         @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}

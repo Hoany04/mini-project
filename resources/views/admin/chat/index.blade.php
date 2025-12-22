@@ -193,6 +193,7 @@
             let text = input.value.trim();
             if (text === "") return;
 
+            const now = new Date();
             fetch("{{ route('admin.chat.send') }}", {
                 method: "POST",
                 headers: {
@@ -206,10 +207,8 @@
             })
             .then(res => res.json())
             .then(res => {
-                if (res.message) {
-                    appendMyMessage(text, res.message.created_at);
-                    input.value = "";
-                }
+                appendMyMessage(text, now);
+                input.value = "";
             });
 
             window.Echo.private("chat."+adminId)

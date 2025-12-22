@@ -57,6 +57,7 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
         Route::put('{id}', [UserController::class, 'update'])->name('update');
         Route::delete('{id}', [UserController::class, 'destroy'])->name('destroy');
         Route::post('user-import', [UserController::class, 'import'])->name('import');
+        Route::get('user-export', [UserController::class, 'export'])->name('export');
     });
 
     Route::prefix('categorys')

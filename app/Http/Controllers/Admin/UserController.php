@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
 use App\Models\Role;
+use App\Models\User;
 use App\Imports\UsersImport;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -99,21 +101,8 @@ class UserController extends Controller
             'file' => 'required|file|mimes:xlsx,csv',
         ]);
 
-        $relativePath = $request->file('file')->store('imports', 'private');
-
-        // đường dẫn tuyệt đối
-        $absolutePath = Storage::disk('private')->path($relativePath);
-
-        // dd($relativePath, $absolutePath, file_exists($absolutePath));
-
-        if (!is_file($absolutePath)) {
-            return back()->withErrors([
-                'file' => 'File upload failed. Please try again.'
-            ]);
-        }
-
         $import = new UsersImport();
-        $import->import($absolutePath);
+        Excel::import($import, $request->file('file'), 'private');
 
         return back()->with([
             'success' => 'Import complete',
@@ -125,5 +114,10 @@ class UserController extends Controller
             ],
             'import_errors' => $import->errors,
         ]);
+    }
+
+    public function export()
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
     }
 }

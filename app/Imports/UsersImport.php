@@ -4,10 +4,16 @@ namespace App\Imports;
 use App\Models\User;
 use App\Enums\UserStatus;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Spatie\SimpleExcel\SimpleExcelReader;
+use Maatwebsite\Excel\Concerns\{
+    ToCollection,
+    WithHeadingRow,
+    WithChunkReading
+};
+use Illuminate\Support\Collection;
 
-class UsersImport
+class UsersImport implements ToCollection, WithHeadingRow, WithChunkReading
 {
     public int $total = 0;
     public int $created = 0;
@@ -19,30 +25,24 @@ class UsersImport
 
     protected array $usersByEmail = [];
 
-    protected int $chunkSize = 500;
-
-    public function import(string $path)
+    public function __construct()
     {
         $this->usersById = User::pluck('id')->flip()->toArray();
         $this->usersByEmail = User::pluck('id','email')->toArray();
+    }
 
-        SimpleExcelReader::create($path)
-            ->useHeaders([
-                'id',
-                'username',
-                'email',
-                'role_id',
-                'status',
-            ])
-            ->getRows()
-            ->chunk($this->chunkSize)
-            ->each(function ($rows) {
-                \DB::transaction(function () use ($rows) {
-                    foreach ($rows as $row) {
-                        $this->handleRow($row);
-                    }
-                });
-            });
+    public function collection(Collection $rows)
+    {
+        DB::transaction(function () use ($rows) {
+            foreach ($rows as $row) {
+                $this->handleRow($row->toArray());
+            }
+        });
+    }
+
+    public function chunkSize(): int
+    {
+        return 500;
     }
 
     protected function handleRow(array $data)
