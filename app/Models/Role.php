@@ -14,4 +14,8 @@ class Role extends Model
     public function user(){
         return $this->Hasmany(User::class); //Quan hệ 1 - N
     }
+
+    public function permissions(){
+        return $this->belongsToMany(Permission::class, 'role_permissions'); //Quan hệ N - N
+    }
 }

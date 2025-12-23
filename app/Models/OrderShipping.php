@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Observers\OrderShippingObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+#[ObservedBy(OrderShippingObserver::class)]
 class OrderShipping extends Model
 {
     use HasFactory;

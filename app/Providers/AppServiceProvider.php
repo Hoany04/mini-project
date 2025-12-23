@@ -3,9 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Providers\EventServiceProvider;
-use App\Models\OrderShipping;
-use App\Observers\OrderShippingObserver;
+use App\Models\Permission;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Http\Request;
@@ -26,9 +25,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        OrderShipping::observe(OrderShippingObserver::class);
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });
+
+        // Lấy toàn bộ permissions trong DB
+        Permission::all()->each(function ($permission){
+            Gate::define($permission->name, function ($user) use ($permission) {
+                return $user->hasPermission($permission->name);
+            });
         });
     }
 }

@@ -42,7 +42,7 @@ class UsersImport implements ToCollection, WithHeadingRow, WithChunkReading
 
     public function chunkSize(): int
     {
-        return 500;
+        return 100;
     }
 
     protected function handleRow(array $data)

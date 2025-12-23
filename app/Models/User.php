@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\UserStatus;
+use App\Models\Role;
 use Laravel\Cashier\Billable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -56,5 +57,15 @@ class User extends Authenticatable
     public function logs()
     {
         return $this->hasMany(Log::class);
+    }
+
+    public function hasRole($roleName)
+    {
+        return $this->role && $this->role->name === $roleName;
+    }
+
+    public function hasPermission($permissionName)
+    {
+        return $this->role?->permissions->contains('name', $permissionName) ?? false;
     }
 }
