@@ -9,6 +9,8 @@ use App\Services\ProductService;
 use App\Models\Category;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
+use App\Policies\ProductPolicy;
+use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -30,6 +32,7 @@ class ProductController extends Controller
     }
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Product::class);
         $filters = $request->only(['search', 'category_id', 'status']);
 
         $products = $this->productService->getAllProducts($filters);
@@ -43,7 +46,9 @@ class ProductController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Product::class);
         $categories = Category::all();
+
         return view('admin.products.create', compact('categories'));
     }
 
@@ -70,6 +75,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('update', Product::class);
         $product = $this->productService->getProductById($id);
 
         if (!$product) {
@@ -84,6 +90,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, $id)
     {
+        $this->authorize('update', Product::class);
         DB::beginTransaction();
 
         try {
@@ -117,6 +124,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('delete', Product::class);
         $result = $this->productService->deleteProduct($id);
 
         if ($result['success']) {

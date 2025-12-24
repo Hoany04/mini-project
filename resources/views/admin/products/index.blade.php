@@ -49,9 +49,11 @@ use App\Enums\ProductStatus;
                 <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">Reset</a>
             </div>
         </form>
-        <div class="text-end mb-3">
-            <a href="{{ route('admin.products.create') }}" class="btn btn-success">+ Add</a>
-        </div>
+        @can('create' , App\Models\Product::class)
+            <div class="text-end mb-3">
+                <a href="{{ route('admin.products.create') }}" class="btn btn-success">+ Add</a>
+            </div>
+        @endcan
         <div class="text-end mb3">
             <a href="{{ route('admin.products.trashed') }}" class="btn btn-outline-danger">
                 🗑️ Trash can
