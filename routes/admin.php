@@ -24,7 +24,6 @@ Route::post('/admin/notifications/mark-as-read', function () {
 });
 
 Route::prefix('admin')->group(function () {
-    Route::resource('roles', RoleController::class);
     // Route::resource('users', UserController::class);
     Route::resource('user_profiles', UserProfileController::class);
     // Route::resource('products', ProductController::class);
@@ -41,14 +40,21 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
     Route::get('access-logs', [AccessLogController::class, 'index'])->name('access-logs.index');
 
     Route::get('/chat/users', [ChatController::class, 'listUsers'])->name('chat.users');
-    Route::post('/chat/reset-unread/{id}', [ChatController::class, 'resetUnread']);
+    Route::post('/chat/reset-unread/{id}', [ChatController::class, 'resetUnread'])->name('chat.resetUnread');
 
     Route::get('/chat', [ChatController::class, 'userList'])->name('chat.index');
     Route::get('/chat/{userId}', [ChatController::class, 'index'])->name('chat.show');
     Route::post('/chat/send', [ChatController::class, 'sendAdmin'])->name('chat.send');
 
+    Route::prefix('roles')
+    ->as('roles.')
+    ->middleware('auth')
+    ->group(function () {
+        Route::get('/', [RoleController::class, 'index'])->name('index');
+    });
     Route::prefix('users')
     ->as('users.')
+    ->middleware('auth')
     ->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('/create', [UserController::class, 'create'])->name('create');
@@ -62,6 +68,7 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
 
     Route::prefix('categorys')
     ->as('categorys.')
+    ->middleware('auth')
     ->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('index');
         Route::get('/create', [CategoryController::class, 'create'])->name('create');
@@ -73,6 +80,7 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
 
     Route::prefix('products')
     ->as('products.')
+    ->middleware('auth')
     ->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('index');
         Route::get('/create', [ProductController::class, 'create'])->name('create');
@@ -87,6 +95,7 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
 
     Route::prefix('products/{product}/images')
     ->as('products.images.')
+    ->middleware('auth')
     ->group(function () {
         Route::post('/', [ProductImageController::class, 'store'])->name('store');
         Route::delete('{id}', [ProductImageController::class, 'destroy'])->name('destroy');
@@ -94,6 +103,7 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
 
     Route::prefix('products/{productId}/variants')
     ->as('product_variants.')
+    ->middleware('auth')
     ->group(function () {
         Route::get('/', [ProductVariantController::class, 'index'])->name('index');
         Route::get('/create', [ProductVariantController::class, 'create'])->name('create');
@@ -105,6 +115,7 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
 
     Route::prefix('product_reviews')
     ->as('product_reviews.')
+    ->middleware('auth')
     ->group(function () {
         Route::get('/', [ProductReviewController::class, 'index'])->name('index');
         Route::post('{id}/toggle', [ProductReviewController::class, 'toggleVisibility'])->name('toggle');
@@ -113,6 +124,7 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
 
     Route::prefix('carts')
     ->as('carts.')
+    ->middleware('auth')
     ->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('index');
         Route::get('{id}/show', [CartController::class, 'show'])->name('show');
@@ -121,6 +133,7 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
 
     Route::prefix('orders')
     ->as('orders.')
+    ->middleware('auth')
     ->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');
         Route::get('{id}/show', [OrderController::class, 'show'])->name('show');
@@ -132,6 +145,7 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
 
     Route::prefix('coupons')
     ->as('coupons.')
+    ->middleware('auth')
     ->group(function () {
         Route::get('/', [CouponController::class, 'index'])->name('index');
         Route::get('/create', [CouponController::class, 'create'])->name('create');
@@ -143,6 +157,7 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
 
     Route::prefix('shipping_methods')
     ->as('shipping_methods.')
+    ->middleware('auth')
     ->group(function () {
         Route::get('/', [ShippingMethodController::class, 'index'])->name('index');
         Route::get('/create', [ShippingMethodController::class, 'create'])->name('create');
@@ -156,6 +171,7 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
 
     Route::prefix('payment-transactions')
     ->as('payment-transactions.')
+    ->middleware('auth')
     ->group(function () {
         Route::get('/', [PaymentTransactionController::class, 'index'])->name('index');
         Route::get('/{id}', [PaymentTransactionController::class, 'show'])->name('show');
@@ -163,6 +179,7 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
 
     Route::prefix('payment-methods')
     ->as('payment-methods.')
+    ->middleware('auth')
     ->group(function () {
         Route::get('/', [PaymentMethodController::class, 'index'])->name('index');
         Route::get('/create', [PaymentMethodController::class, 'create'])->name('create');

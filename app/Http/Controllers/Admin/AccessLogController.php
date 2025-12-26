@@ -15,6 +15,7 @@ class AccessLogController extends Controller
     }
     public function index(Request $request)
     {
+        $this->authorize('view.logs');
         $logs  = $this->accessLogService->getListFitter($request->all());
 
         return view('admin.access-logs.index', compact('logs'));

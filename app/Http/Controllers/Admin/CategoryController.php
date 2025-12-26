@@ -22,6 +22,7 @@ class CategoryController extends Controller
     }
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Category::class);
         $filters = $request->only(['search']);
         $categories = $this->categoryService->getAllCategories($filters);
 
@@ -33,7 +34,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Category::class);
         $parentCategories = $this->categoryService->getParentCategories();
+
         return view('admin.categorys.create', compact('parentCategories'));
     }
 
@@ -65,6 +68,7 @@ class CategoryController extends Controller
             return redirect()->route('admin.categorys.index')->with('error', 'The category does not exist.');
         }
         $parentCategories = $this->categoryService->getParentCategories();
+
         return view('admin.categorys.edit', compact('parentCategories', 'category'));
     }
 
@@ -73,7 +77,10 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, $id)
     {
+        $category = Category::findOrFail($id);
+        $this->authorize('update', $category);
         $this->categoryService->updateCategory($id, $request->validated());
+
         return redirect()->route('admin.categorys.index')->with('success', 'Catalog update successful');
     }
 
@@ -82,7 +89,10 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+        $category = Category::findOrFail($id);
+        $this->authorize('delete', $category);
         $this->categoryService->deleteCategory($id);
+
         return redirect()->route('admin.categorys.index')->with('success', 'Category deleted successfully.');
     }
 }

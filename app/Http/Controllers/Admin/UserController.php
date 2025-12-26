@@ -26,6 +26,7 @@ class UserController extends Controller
      }
     public function index(Request $request)
     {
+        $this->authorize('viewAny', User::class);
         $filters = $request->only(['search', 'role_id', 'status']);
 
         $users = $this->userService->getUsersWithFilters($filters);
@@ -39,6 +40,7 @@ class UserController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', User::class);
         $roles = Role::all();
         return view('admin.users.create', compact('roles'));
     }
@@ -81,6 +83,8 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, $id)
     {
+        $user = User::findOrFail($id);
+        $this->authorize('update', $user);
         $this->userService->updateUser($id, $request->validated());
 
         return redirect()->route('admin.users.index')->with('success', 'User information updated successfully.');
@@ -91,12 +95,15 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        $user = User::findOrFail($id);
+        $this->authorize('delete', $user);
         $this->userService->deleteUser($id);
         return redirect()->route('admin.users.index')->with('success', 'User has been deleted.');
     }
 
     public function import(Request $request)
     {
+        $this->authorize('import', User::class);
         $request->validate([
             'file' => 'required|file|mimes:xlsx,csv',
         ]);
@@ -118,6 +125,7 @@ class UserController extends Controller
 
     public function export()
     {
+        $this->authorize('export', User::class);
         return Excel::download(new UsersExport, 'users.xlsx');
     }
 }

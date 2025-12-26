@@ -19,12 +19,14 @@ class ShippingMethodController extends Controller
 
     public function index()
     {
+        $this->authorize('viewAny', ShippingMethod::class);
         $methods = $this->service->getAll();
         return view('admin.shipping_methods.index', compact('methods'));
     }
 
     public function create()
     {
+        $this->authorize('create', ShippingMethod::class);
         return view('admin.shipping_methods.create');
     }
     public function store(ShippingMethodRequest $request)
@@ -35,18 +37,23 @@ class ShippingMethodController extends Controller
 
     public function edit($id)
     {
+        $method = ShippingMethod::findOrFail($id);
+        $this->authorize('update', $method);
         $method = $this->service->find($id);
         return view('admin.shipping_methods.edit', compact('method'));
     }
 
     public function update(ShippingMethodRequest $request, $id)
     {
+
         $this->service->update($id, $request->validated());
         return redirect()->route('admin.shipping_methods.index')->with('success', 'Update successful');
     }
 
     public function destroy($id)
     {
+        $method = ShippingMethod::findOrFail($id);
+        $this->authorize('delete', $method);
         $this->service->delete($id);
         return redirect()->route('admin.shipping_methods.index')->with('success', 'Shipping method has been removed.');
     }

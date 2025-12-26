@@ -23,6 +23,7 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Order::class);
         $filters = $request->only(['status', 'search']);
         $orders = $this->orderService->getAllOrders($filters);
 
@@ -34,11 +35,14 @@ class OrderController extends Controller
         $order = Order::with(['user', 'items.product', 'shipping.shippingMethod', 'shipping.shippingAddress'])->findOrFail($id);
         $shippingMethods = \App\Models\ShippingMethod::where('status', 'active')->get();
         $addresses = \App\Models\ShippingAddress::where('user_id', $order->user_id)->get();
+
         return view('admin.orders.show', compact('order', 'shippingMethods', 'addresses'));
     }
 
     public function updateStatus(UpdateOrderStatusRequest  $request, $id)
     {
+        $order = Order::findOrFail($id);
+        $this->authorize('updateOrderStatus', $order);
         $this->orderService->updateStatus($id, $request->status);
 
         return redirect()->route('admin.orders.index')->with('success', 'Status update successful');
@@ -47,6 +51,8 @@ class OrderController extends Controller
     public function updateShipping(UpdateOrderShippingRequest $request, $orderId)
     {
         $order = Order::findOrFail($orderId);
+
+        $this->authorize('updateOrderShipping', $order);
 
         $shipping = $order->shipping ?: new OrderShipping(['order_id' => $order->id]);
         $shipping->fill($request->only([
@@ -74,7 +80,10 @@ class OrderController extends Controller
 
     public function destroy($id)
     {
+        $order = Order::findOrFail($id);
+        $this->authorize('delete', $order);
         $this->orderService->deleteOrder($id);
+
         return redirect()->route('admin.orders.index')->with('success', 'Order has been deleted.');
     }
 }

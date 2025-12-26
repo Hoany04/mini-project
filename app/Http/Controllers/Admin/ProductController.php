@@ -46,7 +46,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Product::class);
+        $this->authorize('create.product');
         $categories = Category::all();
 
         return view('admin.products.create', compact('categories'));
@@ -75,7 +75,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $this->authorize('update', Product::class);
+        $this->authorize('update.product');
         $product = $this->productService->getProductById($id);
 
         if (!$product) {
@@ -90,7 +90,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, $id)
     {
-        $this->authorize('update', Product::class);
+        $this->authorize('update.product');
         DB::beginTransaction();
 
         try {
@@ -124,7 +124,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('delete', Product::class);
+        $this->authorize('delete.product');
         $result = $this->productService->deleteProduct($id);
 
         if ($result['success']) {
@@ -135,18 +135,21 @@ class ProductController extends Controller
 
     public function trashed()
     {
+        $this->authorize('trashed.product');
         $products = $this->productService->getTrashedProducts();
         return view('admin.products.trashed', compact('products'));
     }
 
     public function restore($id)
     {
+        $this->authorize('restore.product');
         $this->productService->restoreProduct($id);
         return redirect()->route('admin.products.trashed')->with('success', 'Product restored!');
     }
 
     public function forceDelete($id)
     {
+        $this->authorize('force.delete.product');
         $this->productService->forceDeleteProduct($id);
         return redirect()->route('admin.products.trashed')->with('success', 'The product has been permanently removed!');
     }

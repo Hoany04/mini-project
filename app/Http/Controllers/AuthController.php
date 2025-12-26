@@ -30,6 +30,8 @@ class AuthController extends Controller
             // Phan quyen chuyen huong
             if(Auth::user()->role && Auth::user()->role->name === 'Admin') {
                 return redirect()->route('admin.home');
+            } elseif (Auth::user()->role && Auth::user()->role->name === 'SuperAdmin') {
+                return redirect()->route('admin.home');
             } elseif (Auth::user()->role && Auth::user()->role->name === 'Customer') {
                 return redirect()->route('client.home');
             } elseif (Auth::user()->role && Auth::user()->role->name === 'Staff') {

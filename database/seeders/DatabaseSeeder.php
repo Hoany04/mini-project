@@ -24,14 +24,15 @@ class DatabaseSeeder extends Seeder
             CouponSeeder::class,
             PaymentMethodSeeder::class,
             ShippingMethodSeeder::class,
+            PermissionSeeder::class,
         ]);
 
         // Tạo thêm dữ liệu ngẫu nhiên
-        \App\Models\User::factory(10)->create();
-        \App\Models\Category::factory(5)->create();
-        \App\Models\Product::factory(20)->create();
-        \App\Models\ProductReview::factory(50)->create();
-        \App\Models\Order::factory(10)->create();
-        \App\Models\OrderItem::factory(30)->create();
+        User::factory(10)->create();
+        Category::factory(5)->create();
+        Product::factory(10)->create();
+        ProductReview::factory(50)->create();
+        Order::factory(10)->create();
+        OrderItem::factory(10)->create();
     }
 }

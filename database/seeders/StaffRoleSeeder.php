@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Permission;
-use App\Models\Role;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Database\Seeder;
 
 class StaffRoleSeeder extends Seeder
@@ -13,36 +13,14 @@ class StaffRoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $staff = Role::where('name', 'Staff')->first();
-
-        $permissions = Permission::whereIn('name',
-        [
-            'view-dashboard',
-
-            'view-product',
-            'view-product-variant',
-
-            'view-category',
-
-            'view-cart',
-            'show-cart-details',
-
-            'view-order',
-            'update-order-status',
-
-            'view-coupon',
-
-            'view-user',
-
-            'view-shipping',
-
-            'view-payment-transaction',
-            'show-payment-transaction-details',
-
-            'view-chat-support',
-            'reply-chat-support',
-        ]
-        )->pluck('id');
-        $staff->permissions()->sync($permissions);
+        User::all()->each(function ($user) {
+            if ($user->role_id) {
+                $role = Role::find($user->role_id);
+                if ($role) {
+                    $user->assignRole($role);
+                }
+            }
+        });
     }
 }
+

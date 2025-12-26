@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\PaymentMethodService;
 use App\Http\Requests\StorePaymentMethodRequest;
 use App\Http\Requests\UpdatePaymentMethodRequest;
+use App\Models\PaymentMethod;
 
 class PaymentMethodController extends Controller
 {
@@ -18,12 +19,14 @@ class PaymentMethodController extends Controller
 
     public function index()
     {
+        $this->authorize('viewAny', PaymentMethod::class);
         $methods = $this->service->list();
         return view('admin.payment_methods.index', compact('methods'));
     }
 
     public function create()
     {
+        $this->authorize('create', PaymentMethod::class);
         return view('admin.payment_methods.create');
     }
 
@@ -36,6 +39,8 @@ class PaymentMethodController extends Controller
 
     public function edit($id)
     {
+        $method = PaymentMethod::findOrFail($id);
+        $this->authorize('update', $method);
         $method = $this->service->find($id);
         return view('admin.payment_methods.edit', compact('method'));
     }
@@ -49,6 +54,8 @@ class PaymentMethodController extends Controller
 
     public function destroy($id)
     {
+        $method = PaymentMethod::findOrFail($id);
+        $this->authorize('delete', $method);
         $this->service->delete($id);
         return back()->with('success', 'Deleted successfully!');
     }

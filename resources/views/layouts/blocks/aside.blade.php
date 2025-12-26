@@ -193,7 +193,7 @@
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="{{ route('roles.index') }}" class="menu-link">
+            <a href="{{ route('admin.roles.index') }}" class="menu-link">
               <div data-i18n="Roles">Roles</div>
             </a>
           </li>

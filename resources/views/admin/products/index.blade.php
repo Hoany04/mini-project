@@ -56,7 +56,7 @@ use App\Enums\ProductStatus;
         @endcan
         <div class="text-end mb3">
             <a href="{{ route('admin.products.trashed') }}" class="btn btn-outline-danger">
-                🗑️ Trash can
+                🗑️ Soft Delete
             </a>
         </div>
         <!-- Bảng sản phẩm -->
@@ -110,8 +110,10 @@ use App\Enums\ProductStatus;
                             <a href="{{ route('admin.product_variants.index', $product->id) }}" class="btn btn-sm btn-info">
                                 👁️
                             </a>
+                            {{-- @can('viewAny', App\Models\ProductVariant::class) --}}
                             <a href="{{ route('admin.products.edit', $product->id) }}"
                                 class="btn btn-sm btn-warning">✏️</a>
+                            {{-- @endcan --}}
                             <form method="POST" action="{{ route('admin.products.destroy', $product->id) }}"
                                 class="d-inline" onsubmit="return confirm('Are you sure you want to delete this product?')">
                                 @csrf @method('DELETE')

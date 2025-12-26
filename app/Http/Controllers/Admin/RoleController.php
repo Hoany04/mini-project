@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Policies\RolePolicy;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -13,6 +14,7 @@ class RoleController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Role::class);
         $roles = Role::all();
         return view('admin.roles.index', compact('roles'));
     }

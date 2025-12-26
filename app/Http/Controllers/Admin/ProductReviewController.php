@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ProductReview;
 use App\Services\ProductReviewService;
 use Illuminate\Http\Request;
 
@@ -20,6 +21,7 @@ class ProductReviewController extends Controller
     }
     public function index(Request $request)
     {
+        $this->authorize('viewAny', ProductReview::class);
         $reviews = $this->productReviewService->getPaginatedReviews(10);
         return view('admin.product_reviews.index', compact('reviews'));
     }
@@ -36,6 +38,8 @@ class ProductReviewController extends Controller
 
     public function destroy($id)
     {
+        $review = ProductReview::findOrFail($id);
+        $this->authorize('delete', $review);
         try {
             $this->productReviewService->deleteReview($id);
             return back()->with('success', 'Review successfully deleted');

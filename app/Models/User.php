@@ -8,11 +8,12 @@ use Laravel\Cashier\Billable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Billable, Notifiable;
+    use HasApiTokens, HasFactory, Billable, Notifiable, HasRoles;
 
     protected $casts = [
         'status' => UserStatus::class,
@@ -66,6 +67,8 @@ class User extends Authenticatable
 
     public function hasPermission($permissionName)
     {
-        return $this->role?->permissions->contains('name', $permissionName) ?? false;
+        return optional($this->role->permissions)
+        ?->contains('name', $permissionName) ?? false;
+
     }
 }
