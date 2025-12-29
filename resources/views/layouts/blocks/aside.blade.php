@@ -151,26 +151,32 @@
                   <div data-i18n="Account">Account</div>
                 </a>
               </li>
-              <li class="menu-item">
-                <a href="{{ route('admin.product_reviews.index') }}" class="menu-link">
-                  <div data-i18n="Evaluate">Evaluate</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="{{ route('admin.access-logs.index') }}" class="menu-link">
-                  <div data-i18n="Ghi Logs">Ghi Logs</div>
-                </a>
-              </li>
+              @can('view.product-reviews', App\Models\ProductReview::class)
+                <li class="menu-item">
+                    <a href="{{ route('admin.product_reviews.index') }}" class="menu-link">
+                    <div data-i18n="Evaluate">Evaluate</div>
+                    </a>
+                </li>
+              @endcan
+              @can('view.access_logs', App\Models\AccessLog::class)
+                <li class="menu-item">
+                    <a href="{{ route('admin.access-logs.index') }}" class="menu-link">
+                    <div data-i18n="Ghi Logs">Ghi Logs</div>
+                    </a>
+                </li>
+              @endcan
               <li class="menu-item">
                 <a href="{{ route('admin.shipping_methods.index') }}" class="menu-link">
                   <div data-i18n="Shipping Method">Shipping Method</div>
                 </a>
               </li>
-              <li class="menu-item">
-                <a href="{{ route('admin.payment-transactions.index') }}" class="menu-link">
-                  <div data-i18n="Payment">Payment</div>
-                </a>
-              </li>
+              @can('view.payment-transactions', App\Models\PaymentTransaction::class)
+                <li class="menu-item">
+                    <a href="{{ route('admin.payment-transactions.index') }}" class="menu-link">
+                    <div data-i18n="Payment">Payment</div>
+                    </a>
+                </li>
+              @endcan
               </li>
               <li class="menu-item">
                 <a href="{{ route('admin.payment-methods.index') }}" class="menu-link">
@@ -186,24 +192,26 @@
           </li>
         </ul>
       </li>
-      <li class="menu-item">
-        <a href="javascript:void(0);" class="menu-link menu-toggle">
-          <i class='menu-icon tf-icons bx bx-check-shield'></i>
-          <div data-i18n="Roles & Permissions">Roles & Permissions</div>
-        </a>
-        <ul class="menu-sub">
-          <li class="menu-item">
-            <a href="{{ route('admin.roles.index') }}" class="menu-link">
-              <div data-i18n="Roles">Roles</div>
+      @can('view.roles-permissions', App\Models\User::class)
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class='menu-icon tf-icons bx bx-check-shield'></i>
+            <div data-i18n="Roles & Permissions">Roles & Permissions</div>
             </a>
-          </li>
-          <li class="menu-item">
-            <a href="app-access-permission.html" class="menu-link">
-              <div data-i18n="Permission">Permission</div>
-            </a>
-          </li>
-        </ul>
-      </li>
+            <ul class="menu-sub">
+            <li class="menu-item">
+                <a href="{{ route('admin.roles.index') }}" class="menu-link">
+                <div data-i18n="Roles">Roles</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="app-access-permission.html" class="menu-link">
+                <div data-i18n="Permission">Permission</div>
+                </a>
+            </li>
+            </ul>
+        </li>
+      @endcan
 
       <!-- Misc -->
       <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Misc">Misc</span></li>

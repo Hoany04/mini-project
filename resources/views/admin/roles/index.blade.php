@@ -5,15 +5,15 @@
         <h2 class="p-4">List of authorizations</h2>
 
         <div class="text-end">
-            <a href="" class="btn btn-primary mb-3">Add</a>
+            <a href="{{ route('admin.roles.create') }}" class="btn btn-primary mb-3">Add</a>
         </div>
 
         <table class="table table-bordered">
             <thead class="table-dark">
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
+                    <th>Role</th>
+                    <th>Permissions</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -22,15 +22,15 @@
                     <tr>
                         <td>{{ $role->id }}</td>
                         <td>{{ $role->name }}</td>
-                        <td>{{ $role->description ?? '-'}}</td>
+                        <td>{{ $role->permissions->pluck('name')->join(', ') }}</td>
                         <td>
                             {{-- {{ route('roles.edit', $role->id) }} --}}
-                            <a href="" class="btn btn-sm btn-warning">✏️</a>
+                            <a href="{{ route('admin.roles.edit', $role->id) }}" class="btn btn-sm btn-warning">✏️</a>
                             {{-- {{ route('roles.destroy', $role->id) }} --}}
-                            <form action="" method="POST" class="d-inline">
+                            {{-- <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" class="d-inline">
                                 @csrf @method('DELETE')
                                 <button class="btn btn-sm btn-danger" onclick="return confirm('are you sure you want to delete?')">🗑️</button>
-                            </form>
+                            </form> --}}
                         </td>
                     </tr>
                 @endforeach

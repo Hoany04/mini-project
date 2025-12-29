@@ -51,7 +51,12 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
     ->middleware('auth')
     ->group(function () {
         Route::get('/', [RoleController::class, 'index'])->name('index');
+        Route::get('/create', [RoleController::class, 'create'])->name('create');
+        Route::post('/', [RoleController::class, 'store'])->name('store');
+        Route::get('{role}/edit', [RoleController::class, 'edit'])->name('edit');
+        Route::put('{role}', [RoleController::class, 'update'])->name('update');
     });
+
     Route::prefix('users')
     ->as('users.')
     ->middleware('auth')
