@@ -70,7 +70,7 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         $role->syncPermissions($request->permissions ?? []);
-        return redirect()->route('admin.roles.index')->with('success', 'Role updated successfully.');
+        return redirect()->route('admin.roles.index', compact('role'))->with('success', 'Role updated successfully.');
     }
 
     /**

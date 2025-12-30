@@ -4,6 +4,12 @@
     <div class="container mt-4 card">
         <h2 class="p-4">List of authorizations</h2>
 
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="text-end">
             <a href="{{ route('admin.roles.create') }}" class="btn btn-primary mb-3">Add</a>
         </div>
@@ -22,7 +28,11 @@
                     <tr>
                         <td>{{ $role->id }}</td>
                         <td>{{ $role->name }}</td>
-                        <td>{{ $role->permissions->pluck('name')->join(', ') }}</td>
+                        <td>
+                            @foreach($role->permissions as $permission)
+                                <span>{{ $permission->name }}</span>
+                            @endforeach
+                        </td>
                         <td>
                             {{-- {{ route('roles.edit', $role->id) }} --}}
                             <a href="{{ route('admin.roles.edit', $role->id) }}" class="btn btn-sm btn-warning">✏️</a>
