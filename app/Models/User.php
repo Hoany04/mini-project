@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasPermissions;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Billable, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Billable, Notifiable, HasRoles, HasPermissions;
 
     protected $casts = [
         'status' => UserStatus::class,
@@ -63,12 +64,5 @@ class User extends Authenticatable
     public function hasRole($roleName)
     {
         return $this->role && $this->role->name === $roleName;
-    }
-
-    public function hasPermission($permissionName)
-    {
-        return optional($this->role->permissions)
-        ?->contains('name', $permissionName) ?? false;
-
     }
 }

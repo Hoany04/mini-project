@@ -6,12 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreUserRequest extends FormRequest
 {
-    public function authorize(): bool
-    {
-        // Chỉ admin mới được thêm user
-        return auth()->check() && auth()->user()->role->name === 'Admin';
-    }
-
     public function rules(): array
     {
         return [

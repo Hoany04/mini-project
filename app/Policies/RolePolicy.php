@@ -2,7 +2,6 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Role;
 
 class RolePolicy
 {
@@ -11,11 +10,11 @@ class RolePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermission('view.role');
+        return $user->checkPermissionTo('view.role');
     }
 
-    public function view(User $user, Role $role): bool
+    public function view(User $user): bool
     {
-        return $user->hasPermission('view.role');
+        return $user->checkPermissionTo('view.role');
     }
 }

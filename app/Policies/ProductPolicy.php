@@ -12,15 +12,15 @@ class ProductPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermission('view.product');
+        return $user->checkPermissionTo('view.product');
     }
 
     /**
      * Determine whether the user hasPermission view the model.
      */
-    public function view(User $user, Product $product): bool
+    public function view(User $user): bool
     {
-        return $user->hasPermission('view.product');
+        return $user->checkPermissionTo('view.product');
     }
 
     /**
@@ -28,34 +28,34 @@ class ProductPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermission('create.product');
+        return $user->checkPermissionTo('create.product');
     }
 
     public function edit(User $user): bool
     {
-        return $user->hasPermission('create.product');
+        return $user->checkPermissionTo('create.product');
     }
 
     /**
      * Determine whether the user hasPermission update the model.
      */
-    public function update(User $user, Product $product): bool
+    public function update(User $user): bool
     {
-        return $user->hasPermission('update.product');
+        return $user->checkPermissionTo('update.product');
     }
 
     /**
      * Determine whether the user hasPermission delete the model.
      */
-    public function delete(User $user, Product $product): bool
+    public function delete(User $user): bool
     {
-        return $user->hasPermission('delete.product');
+        return $user->checkPermissionTo('delete.product');
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Product $product): bool
+    public function restore(User $user): bool
     {
         return false;
     }
@@ -63,7 +63,7 @@ class ProductPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Product $product): bool
+    public function forceDelete(User $user): bool
     {
         return false;
     }

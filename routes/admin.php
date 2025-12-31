@@ -57,19 +57,16 @@ Route::middleware(['auth', 'CheckActive'])->prefix('admin')
         Route::put('{role}', [RoleController::class, 'update'])->name('update');
     });
 
-    Route::prefix('users')
-    ->as('users.')
-    ->middleware('auth')
-    ->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('index');
-        Route::get('/create', [UserController::class, 'create'])->name('create');
-        Route::post('/', [UserController::class, 'store'])->name('store');
-        Route::get('{id}/edit', [UserController::class, 'edit'])->name('edit');
-        Route::put('{id}', [UserController::class, 'update'])->name('update');
-        Route::delete('{id}', [UserController::class, 'destroy'])->name('destroy');
-        Route::post('user-import', [UserController::class, 'import'])->name('import');
-        Route::get('user-export', [UserController::class, 'export'])->name('export');
-    });
+    Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
+            Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::get('/create', [UserController::class, 'create'])->name('create');
+            Route::post('/', [UserController::class, 'store'])->name('store');
+            Route::get('{id}/edit', [UserController::class, 'edit'])->name('edit');
+            Route::put('{id}', [UserController::class, 'update'])->name('update');
+            Route::delete('{id}', [UserController::class, 'destroy'])->name('destroy');
+            Route::post('user-import', [UserController::class, 'import'])->name('import');
+            Route::get('user-export', [UserController::class, 'export'])->name('export');
+        });
 
     Route::prefix('categorys')
     ->as('categorys.')

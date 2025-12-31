@@ -84,7 +84,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, $id)
     {
         $user = User::findOrFail($id);
-        $this->authorize('update', $user);
+        $user->can('update', User::class);
         $this->userService->updateUser($id, $request->validated());
 
         return redirect()->route('admin.users.index')->with('success', 'User information updated successfully.');

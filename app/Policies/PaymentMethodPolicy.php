@@ -2,32 +2,31 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\PaymentMethod;
 
 class PaymentMethodPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasPermission('view.payment-method');
+        return $user->checkPermissionTo('view.payment-method');
     }
 
-    public function view(User $user, PaymentMethod $paymentMethod): bool
+    public function view(User $user): bool
     {
-        return $user->hasPermission('view.payment-method');
+        return $user->checkPermissionTo('view.payment-method');
     }
 
     public function create(User $user): bool
     {
-        return $user->hasPermission('create.payment-method');
+        return $user->checkPermissionTo('create.payment-method');
     }
 
-    public function update(User $user, PaymentMethod $paymentMethod): bool
+    public function update(User $user): bool
     {
-        return $user->hasPermission('update.payment-method');
+        return $user->checkPermissionTo('update.payment-method');
     }
 
-    public function delete(User $user, PaymentMethod $paymentMethod): bool
+    public function delete(User $user): bool
     {
-        return $user->hasPermission('delete.payment-method');
+        return $user->checkPermissionTo('delete.payment-method');
     }
 }

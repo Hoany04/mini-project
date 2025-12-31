@@ -2,7 +2,6 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Cart;
 
 class CartPolicy
 {
@@ -11,21 +10,21 @@ class CartPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermission('view.cart');
+        return $user->checkPermissionTo('view.cart');
     }
 
-    public function view(User $user, Cart $cart): bool
+    public function view(User $user): bool
     {
-        return $user->hasPermission('view.cart');
+        return $user->checkPermissionTo('view.cart');
     }
 
-    public function show(User $user, Cart $cart): bool
+    public function show(User $user): bool
     {
-        return $user->hasPermission('show.cart-details');
+        return $user->checkPermissionTo('show.cart-details');
     }
 
-    public function delete(User $user, Cart $cart): bool
+    public function delete(User $user): bool
     {
-        return $user->hasPermission('delete.cart');
+        return $user->checkPermissionTo('delete.cart');
     }
 }

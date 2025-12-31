@@ -2,32 +2,31 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Coupon;
 
 class CouponPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasPermission('view.coupon');
+        return $user->checkPermissionTo('view.coupon');
     }
 
-    public function view(User $user, Coupon $coupon): bool
+    public function view(User $user): bool
     {
-        return $user->hasPermission('view.coupon');
+        return $user->checkPermissionTo('view.coupon');
     }
 
     public function create(User $user): bool
     {
-        return $user->hasPermission('create.coupon');
+        return $user->checkPermissionTo('create.coupon');
     }
 
-    public function update(User $user, Coupon $coupon): bool
+    public function update(User $user): bool
     {
-        return $user->hasPermission('update.coupon');
+        return $user->checkPermissionTo('update.coupon');
     }
 
-    public function delete(User $user, Coupon $coupon): bool
+    public function delete(User $user): bool
     {
-        return $user->hasPermission('delete.coupon');
+        return $user->checkPermissionTo('delete.coupon');
     }
 }

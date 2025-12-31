@@ -32,13 +32,6 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
-        // Lấy toàn bộ permissions trong DB
-        Permission::all()->each(function ($permission){
-            Gate::define($permission->name, function ($user) use ($permission) {
-                return $user->hasPermission($permission->name);
-            });
-        });
-
         Gate::before(function ($user, $ability) {
             return $user->hasRole('SuperAdmin') ? true : null;
         });

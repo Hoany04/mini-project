@@ -2,17 +2,16 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\ProductReview;
 
 class ProductReviewPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasPermission('view.product-review');
+        return $user->checkPermissionTo('view.product-review');
     }
 
-    public function delete(User $user, ProductReview $review): bool
+    public function delete(User $user): bool
     {
-        return $user->hasPermission('delete.product-review');
+        return $user->checkPermissionTo('delete.product-review');
     }
 }

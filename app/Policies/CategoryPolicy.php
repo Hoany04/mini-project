@@ -8,26 +8,26 @@ class CategoryPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasPermission('view.category');
+        return $user->checkPermissionTo('view.category');
     }
 
-    public function view(User $user, Category $category): bool
+    public function view(User $user): bool
     {
-        return $user->hasPermission('view.category');
+        return $user->checkPermissionTo('view.category');
     }
 
     public function create(User $user): bool
     {
-        return $user->hasPermission('create.category');
+        return $user->checkPermissionTo('create.category');
     }
 
-    public function update(User $user, Category $category): bool
+    public function update(User $user): bool
     {
-        return $user->hasPermission('update.category');
+        return $user->checkPermissionTo('update.category');
     }
 
-    public function delete(User $user, Category $category): bool
+    public function delete(User $user): bool
     {
-        return $user->hasPermission('delete.category');
+        return $user->checkPermissionTo('delete.category');
     }
 }

@@ -75,7 +75,6 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $this->authorize('update.product');
         $product = $this->productService->getProductById($id);
 
         if (!$product) {
@@ -90,7 +89,8 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, $id)
     {
-        $this->authorize('update.product');
+        $product = Product::findOrFail($id);
+        $this->authorize('update', $product);
         DB::beginTransaction();
 
         try {

@@ -2,32 +2,31 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\ShippingMethod;
 
 class ShippingMethodPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasPermission('view.shipping');
+        return $user->checkPermissionTo('view.shipping');
     }
 
-    public function view(User $user, ShippingMethod $shippingMethod): bool
+    public function view(User $user): bool
     {
-        return $user->hasPermission('view.shipping');
+        return $user->checkPermissionTo('view.shipping');
     }
 
     public function create(User $user): bool
     {
-        return $user->hasPermission('create.shipping');
+        return $user->checkPermissionTo('create.shipping');
     }
 
-    public function update(User $user, ShippingMethod $shippingMethod): bool
+    public function update(User $user): bool
     {
-        return $user->hasPermission('update.shipping');
+        return $user->checkPermissionTo('update.shipping');
     }
 
-    public function delete(User $user, ShippingMethod $shippingMethod): bool
+    public function delete(User $user): bool
     {
-        return $user->hasPermission('delete.shipping');
+        return $user->checkPermissionTo('delete.shipping');
     }
 }

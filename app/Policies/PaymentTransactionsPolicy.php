@@ -8,11 +8,11 @@ class PaymentTransactionsPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasPermission('view.payment-transaction');
+        return $user->checkPermissionTo('view.payment-transaction');
     }
 
-    public function view(User $user, PaymentTransaction $transaction): bool
+    public function view(User $user): bool
     {
-        return $user->hasPermission('show.payment-transaction-details');
+        return $user->checkPermissionTo('show.payment-transaction-details');
     }
 }

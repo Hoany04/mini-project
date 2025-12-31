@@ -6,12 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUserRequest extends FormRequest
 {
-    public function authorize(): bool
-    {
-        // Chỉ admin được sửa user
-        return auth()->check() && auth()->user()->role->name === 'Admin';
-    }
-
     public function rules(): array
     {
         $id = $this->route('id'); // Lấy id từ route model hoặc param
