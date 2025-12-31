@@ -14,7 +14,7 @@ use Spatie\Permission\Traits\HasPermissions;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Billable, Notifiable, HasRoles, HasPermissions;
+    use HasApiTokens, HasFactory, Billable, Notifiable, HasRoles;
 
     protected $casts = [
         'status' => UserStatus::class,
@@ -59,10 +59,5 @@ class User extends Authenticatable
     public function logs()
     {
         return $this->hasMany(Log::class);
-    }
-
-    public function hasRole($roleName)
-    {
-        return $this->role && $this->role->name === $roleName;
     }
 }

@@ -11,6 +11,7 @@ use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use App\Policies\ProductPolicy;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 

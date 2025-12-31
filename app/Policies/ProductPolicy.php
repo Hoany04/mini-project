@@ -12,7 +12,7 @@ class ProductPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->checkPermissionTo('view.product');
+        return $user->hasPermissionTo('view.product', 'web');
     }
 
     /**
@@ -33,7 +33,7 @@ class ProductPolicy
 
     public function edit(User $user): bool
     {
-        return $user->checkPermissionTo('create.product');
+        return $user->checkPermissionTo('update.product');
     }
 
     /**

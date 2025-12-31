@@ -6,6 +6,7 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class PermissionSeeder extends Seeder
 {
@@ -90,20 +91,21 @@ class PermissionSeeder extends Seeder
             'delete.payment-method',
         ];
 
-        foreach ($permissions as $permission) {
-
-            Permission::firstOrCreate([
+        Permission::insert(array_map(function($permission) {
+            return [
                 'name' => $permission,
                 'guard_name' => 'web',
-            ]);
-        }
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }, $permissions));
 
         $superAdmin = Role::firstOrCreate([
             'name' => 'SuperAdmin',
             'guard_name' => 'web',
         ]);
 
-        $superAdmin->syncPermissions(Permission::all());
+        $superAdmin->syncPermissions($permissions);
 
         $admin = Role::where('name', 'Admin')->first();
 
