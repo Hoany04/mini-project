@@ -50,8 +50,26 @@ use App\Enums\UserStatus;
 
         <a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3">+ Add user</a>
 
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+                <ul>
+                    <li>Total: {{ session('import_summary.total') }}</li>
+                    <li>Created: {{ session('import_summary.created') }}</li>
+                    <li>Updated: {{ session('import_summary.updated') }}</li>
+                </ul>
+            </div>
+        @endif
+
+        @if(session('import_errors') && count(session('import_errors')))
+            <div class="alert alert-warning">
+                <b>Error lines:</b>
+                <ul>
+                    @foreach(session('import_errors') as $error)
+                        <li>Lines {{ $error['row'] }}: {{ $error['message'] }}</li>
+                    @endforeach
+                </ul>
+            </div>
         @endif
 
         <table class="table table-bordered">
@@ -100,28 +118,6 @@ use App\Enums\UserStatus;
         <button onclick="window.location.href='{{ route('admin.users.export') }}'">
             Export Users
         </button>
-
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-                <ul>
-                    <li>Total: {{ session('import_summary.total') }}</li>
-                    <li>Created: {{ session('import_summary.created') }}</li>
-                    <li>Updated: {{ session('import_summary.updated') }}</li>
-                </ul>
-            </div>
-        @endif
-
-        @if(session('import_errors') && count(session('import_errors')))
-            <div class="alert alert-warning">
-                <b>Error lines:</b>
-                <ul>
-                    @foreach(session('import_errors') as $error)
-                        <li>Lines {{ $error['row'] }}: {{ $error['message'] }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
 
         <div class="mt-3">
             {{ $users->withQueryString()->links() }}
